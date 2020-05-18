@@ -1,0 +1,56 @@
+<script>
+  let testNum = 20
+  console.log(`testNumber:${testNum}`)
+
+  // 暴力
+  function fib1(n) {
+    if (n == 1 || n == 2) {
+      return 1
+    }
+    return fib1(n - 1) + fib1(n - 2)
+  }
+  // 4 3 2 1 2 ans:4 注意递归顺序
+  console.time('fib1')
+  console.log('ans:' + fib1(testNum))
+  console.timeEnd('fib1') //fib1: 0.76611328125ms
+
+  // 备忘录memo
+  //  memo中是否有值 有则拿出不进行递归，无则递归计算
+  function fib2(n) {
+    let memo = new Array(n + 1)
+    memo[1] = memo[2] = 1
+    function _fn(n) {
+      if (memo[n]) {
+        return memo[n]
+      }
+      memo[n] = _fn(n - 1) + _fn(n - 2)
+      return memo[n]
+    }
+
+    return _fn(n)
+  }
+  console.time('fib2')
+  console.log('ans:' + fib2(testNum))
+  // fib2: 0.14404296875ms 提速还是蛮明显的
+  // 减少了很多不必要的计算
+  console.timeEnd('fib2')
+
+  /*
+    递归一般都是自顶向下
+    而动态规划的思路则是自底向上⬆️
+    动态规划（Dynamic programming）
+    利用DP table
+  */
+  function fib3(n) {
+    let dp = new Array(n + 1)
+    dp[1] = dp[2] = 1
+    for (let i = 3; i <= n; i++) {
+      dp[i] = dp[i - 1] + dp[i - 2]
+    }
+    return dp[n]
+  }
+  console.time('fib3')
+  console.log('ans:'+fib3(testNum))
+  // fib3: 0.08203125ms快得飞起
+  console.timeEnd('fib3')
+</script>
