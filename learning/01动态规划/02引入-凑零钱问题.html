@@ -1,0 +1,78 @@
+<body>
+  <div>
+    <h1>凑零钱</h1>
+    <div>
+      先看下题目：给你 k 种面值的硬币，面值分别为 c1, c2 ... ck，每种硬币的数量无限，再给一个总金额 amount，问你最少需要几枚硬币凑出这个金额，如果不可能凑出，算法返回 -1 。算法的函数签名如下：
+    </div>
+    <div>
+      // coins 中是可选硬币面值，amount 是目标金额<br>
+      int coinChange(int[] coins, int amount);
+    </div>
+  </div>
+  <script>
+    /*
+      0. 是否是动态规划问题？ 
+      1. 确定状态，原问题与子问题中的变量
+          因为硬币数量无限，所以是目标金额
+      2. 定义dp函数
+          当前的目标金额是n，则至少需要dp(n)个硬币来凑出该金额
+      3. 选择择优
+          从已有面额中选择一个硬币，目标金额会减少
+      4. 明确 base case
+          当目标金额为0 -》 0 ， 小于0 -》 无解，-1
+    */
+
+    // 自顶向下递归
+    function coinChange1(coins, amount) {
+      let memo = new Array(amount + 1)
+      function dp(n) {
+        if (memo[n]) {
+          return memo[n]
+        }
+        if (n < 0) {
+          // 不可能的情况
+          return -1
+        }
+        if (n === 0) {
+          return 0
+        }
+        // 求最小值，用最大值初始化
+        let res = Number.MAX_VALUE
+        for (let coin of coins) {
+          let subProblem = dp(n - coin)
+          if (subProblem === -1) {
+            continue
+          }
+          res = Math.min(res, 1 + subProblem)
+        }
+        return res === Number.MAX_VALUE ? -1 : res
+      }
+      return dp(amount)
+    }
+    // 14.455810546875ms
+    console.time('1')
+    console.log(coinChange1([1, 2, 5], 20))
+    console.timeEnd('1')
+
+    // 自底向上循环
+    function coinChange2(coins, amount) {
+      let dp = new Array(amount + 1)
+      // 需要的最大个数不会超过目标大小本身(即使用都是1的硬币)
+      dp.fill(amount + 1)
+      dp[0] = 0
+      for (let i = 1; i < dp.length; i++) {
+        for (let coin of coins) {
+          if (i - coin < 0) {
+            continue
+          }
+          dp[i] = Math.min(dp[i], 1 + dp[i - coin])
+        }
+      }
+      return dp[amount] === amount + 1 ? -1 : dp[amount]
+    }
+    // 0.23193359375ms
+    console.time('2')
+    console.log(coinChange2([1, 2, 5], 20))
+    console.timeEnd('2')
+  </script>
+</body>
