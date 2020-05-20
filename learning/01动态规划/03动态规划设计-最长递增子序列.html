@@ -1,0 +1,42 @@
+<body>
+  <img
+    src="https://gblobscdn.gitbook.com/assets%2F-LrtQOWSnDdXhp3kYN4k%2F-M3U3aNXgGJVkKZ-TldN%2F-LrtQ_eB8xJ9fJkJCpTt%2Ftitle.png?alt=media"
+    alt="">
+  <h1>提前break问题研究</h1>
+  <img src="http://picbed.sedationh.cn/20200520123037.png" alt="">
+  <script>
+    /*
+      分析：
+        变量：每次所包含的数字范围不同
+        目标：max subsequence
+      dp：
+        dp[i]为以i为index的数作为subsequence的结尾的 longest increasing subsequence
+      选择:
+        从已经确定的dp中找到max(所有比nums[i]小的值 他的dp值+1)
+      base:
+        最短就自己 1
+    */
+    function lengthOfLIS(nums) {
+      if (nums.length === 0) {
+        return 0
+      }
+      let dp = new Array(nums.length)
+      dp.fill(1)
+      for (let i = 1; i < nums.length; i++) {
+        for (let j = 0; j < i; j++) {
+          // if (nums[j] === nums[i]) {
+          //   dp[i] = dp[j]
+          //   break
+          // }
+          if (nums[j] < nums[i]) {
+            dp[i] = Math.max(dp[i], dp[j] + 1)
+          }
+        }
+      }
+      return Math.max(...dp)
+    }
+    console.log(lengthOfLIS(
+      [3, 5, 6, 2, 5, 4, 19, 5, 6, 7, 12]
+    ))
+  </script>
+</body>
