@@ -1,0 +1,59 @@
+<style>
+  body {
+    white-space: pre-line;
+  }
+</style>
+
+<body>
+  <div>
+    给你一个可装载重量为 W 的背包和 N 个物品，每个物品有重量和价值两个属性。其中第 i 个物品的重量为 wt[i]，价值为 val[i]，现在让你用这个背包装物品，最多能装的价值是多少？
+  </div>
+  <div>
+    N = 3, W = 4
+    wt = [2, 1, 3]
+    val = [4, 2, 3]
+  </div>
+  <script>
+    /*
+      分析
+        变量：背包容量，能够选择的物品
+        目标: 特定规格(w,n)背包的物品最大价值
+      dp
+        dp[i][j] 对于前i个物品，背包容量为j的状态下，可以装的最大价值
+      base
+        dp[0][x] 0
+        dp[x][0] 0
+      选择
+        对于第i个物品我们都可以选或者不选 注意因为是“第”的原因，对应物品的index = i-1
+        选：dp[i][j] = dp[i-1][j-wt[i-1] ]+wal[i-1]
+        不：dp[i][j] = dp[i-1][j]
+      编码+边界情况处理
+    */
+    function knapsack(W, N, wt, val) {
+      // 创建dp[N+1][M]数组 N+1是因为涉及第的问题，初始化 0
+      const dp = new Array(N + 1)
+      for (let i = 0; i < W; i++) {
+        dp[i] = new Array(W + 1)
+        dp[i].fill(0)
+      }
+      for (let i = 1; i <= N; i++) {
+        for (let j = 1; j <= W; j++) {
+          if (j - wt[i - 1] < 0) {
+            dp[i][j] = dp[i - 1][j]
+          } else {
+            dp[i][j] = Math.max(
+              dp[i - 1][j - wt[i - 1]] + val[i - 1],
+              dp[i - 1][j]
+            )
+          }
+        }
+      }
+      return dp[N][W]
+    }
+    console.log(
+      knapsack(
+        4, 3, [2, 1, 3], [4, 2, 3]
+      )
+    ) // 6
+  </script>
+</body>
