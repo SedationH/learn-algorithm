@@ -1,0 +1,79 @@
+<style>
+  body {
+    white-space: pre-line;
+  }
+</style>
+
+<body>
+  给定一个只包含正整数的非空数组。是否可以将这个数组分割成两个子集，使得两个子集的元素和相等。
+  注意:
+  每个数组中的元素不会超过 100
+  数组的大小不会超过 200
+  示例 1:
+
+  输入: [1, 5, 11, 5]
+
+  输出: true
+
+  解释: 数组可以分割成 [1, 5, 5] 和 [11].
+
+  <script>
+    /*
+    问题转换 w = sum/2 一共n个数字nums[n] 求 dp[n][w]
+      分析
+        变量 w n
+        目标 dp[n][w]
+      dp
+        dp[i][j]表示使用前i个数字，是否能够恰好装满(true)
+      base
+        dp[0][x] = false 不用数字没法装满
+        dp[x][0] = true 没有容量，肯定装满
+      选择
+        对于第i个数字可以选也可以不选
+        选 dp[i][j] = dp[i-1][j-nums[i-1] ]
+        不 dp[i][j] = dp[i-1][j]
+    */
+    var canPartition = function (nums) {
+      let sum = nums.reduce((prev, curr) => {
+        return prev + curr
+      }, 0)
+      const n = nums.length, w = sum / 2
+      if (w % 1 !== 0) {
+        return false
+      }
+      const dp = new Array(n + 1)
+      for (let i = 0; i < n + 1; i++) {
+        dp[i] = new Array(w + 1).fill(false)
+        dp[i][0] = true
+      }
+      for (let i = 1; i <= n; i++) {
+        for (let j = 1; j <= w; j++) {
+          // j-nums[i]可能造成越界返回undefined
+          // 根据js中||的特点只能是下面｜｜的左右顺序
+          dp[i][j] = dp[i - 1][j - nums[i - 1]] || dp[i - 1][j]
+        }
+      }
+      return dp[n][w]
+    };
+    console.log(
+      canPartition(
+        [1, 5, 11, 5]
+      ), canPartition(
+        [1, 2, 5]
+      )
+    )
+
+    // 进行状态压缩dp[i][x] 都是 通过上一行转移来的dp[i-1][x]
+    for (let i = 1; i <= n; i++) {
+      for (let j = 1; j <= w; j++) {
+        dp[i][j] = dp[i - 1][j - nums[i - 1]] || dp[i - 1][j]
+      }
+    }
+    // 可以优化为
+    for (let i = 1; i <= n; i++) {
+      for (let j = 1; j <= w; j++) {
+        dp[j] = dp[j - nums[i - 1]] || dp[j]
+      }
+    }
+  </script>
+</body>

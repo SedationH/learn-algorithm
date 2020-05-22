@@ -32,7 +32,7 @@
     function knapsack(W, N, wt, val) {
       // 创建dp[N+1][M]数组 N+1是因为涉及第的问题，初始化 0
       const dp = new Array(N + 1)
-      for (let i = 0; i < W; i++) {
+      for (let i = 0; i < N+1; i++) {
         dp[i] = new Array(W + 1)
         dp[i].fill(0)
       }
