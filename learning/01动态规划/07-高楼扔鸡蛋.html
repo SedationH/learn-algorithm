@@ -1,0 +1,55 @@
+<body>
+  <div>
+    <a href="https://leetcode-cn.com/problems/super-egg-drop/">题目链接</a>
+  </div>
+</body>
+<script>
+  /*
+    ana
+      var nums of eggs, nums of floors(dont mearn height)
+      tar f
+    dp
+      dp[i][j] use i eggs to measure j floors
+      dp[1][x] = 1 
+      dp[x][0] = 0
+    choose
+      broken dp[i-1][j-1]
+      no     dp[i][j-1]
+  */
+  /**
+  * @param {number} K 鸡蛋熟练
+  * @param {number} N 测试楼层
+  * @return {number}
+  */
+  var superEggDrop = function (K, N) {
+    const memo = new Array(K + 1)
+    for (let i = 0; i <= K; i++) {
+      memo[i] = new Array(N + 1).fill(-1)
+    }
+    function dp(K, N) {
+      if (K === 1) {
+        return N
+      }
+      if (N === 0) {
+        return 0
+      }
+      if (memo[K][N] !== -1) {
+        return memo[K][N]
+      }
+      let res = Number.MAX_VALUE
+      for (let i = 1; i <= N; i++) {
+        res = Math.min(
+          res,
+          Math.max(
+            dp(K, N - i),
+            dp(K - 1, i - 1)
+          ) + 1
+        )
+      }
+      memo[K][N] = res
+      return res
+    }
+    return dp(K, N)
+  };
+  console.log(superEggDrop(4, 2000))
+</script>
