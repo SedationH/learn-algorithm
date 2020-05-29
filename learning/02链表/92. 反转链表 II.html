@@ -1,0 +1,50 @@
+<body>
+  <a href="https://leetcode-cn.com/problems/reverse-linked-list-ii/">Link</a>
+  <script src="linkTool.js"></script>
+  <script>
+    var reverseBetween = function (head, m, n) {
+      let cnt = 1
+      let a = null, b = null, c = null
+      let p = head
+      while (p) {
+        if (cnt + 1 === m) {
+          a = p
+          b = p.next
+        }
+        if (cnt - 1 === n) {
+          c = p
+        }
+        cnt++
+        p = p.next
+      }
+
+      var reverseList = function (head) {
+        if (head === null) {
+          return null
+        }
+        let pre = null, cur = head
+        while (cur !== null) {
+          let tem = cur.next
+          cur.next = pre
+          pre = cur
+          cur = tem
+        }
+        return pre
+      }
+
+      b = reverseList(b)
+      if (a !== null) {
+        a.next = b
+      }
+      while (b.next !== null) {
+        b = b.next
+      }
+      b.next = c
+      return head
+    }; 
+    showListNode(
+      reverseBetween(head,2,4)
+    )
+    // 不对劲🤨
+  </script>
+</body>

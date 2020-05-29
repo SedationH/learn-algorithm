@@ -1,0 +1,45 @@
+<body>
+  <a href="https://leetcode-cn.com/problems/reverse-linked-list/comments/">Link</a>
+  <script src="linkTool.js"></script>
+  <script>
+   
+
+    // 使用stack保存读到val
+    var reverseList1 = function (head) {
+      if (head === null) {
+        return null
+      }
+      const stack = new Array()
+      while (head !== null) {
+        stack.push(head.val)
+        head = head.next
+      }
+      let tem = head = new ListNode(stack.pop())
+      while (stack.length !== 0) {
+        tem.next = new ListNode(stack.pop())
+        tem = tem.next
+      }
+      return head
+    }
+
+    // 1 使用的空间有点多，优化一下
+    // 操作的不方便源于链表的单向，所以如果能够保存经过的值就能解决问题
+    var reverseList2 = function (head) {
+      if (head === null) {
+        return null
+      }
+      let pre = null, cur = head
+      while (cur !== null) {
+        let tem = cur.next
+        cur.next = pre
+        pre = cur
+        cur = tem
+      }
+      return pre
+    }
+
+    showListNode(
+      reverseList2(head)
+    )
+  </script>
+</body>
