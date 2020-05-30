@@ -1,0 +1,35 @@
+<body>
+  <a href="https://leetcode-cn.com/problems/odd-even-linked-list/">Link</a>
+  <script src="linkTool.js"></script>
+  <script>
+    var oddEvenList = function (head) {
+      if (head === null || head.next === null) {
+        return head
+      }
+      let evenHead = head.next, // 偶数头
+        temHead = head, // 移动用
+        temEvenHead = head.next,
+        p = head.next.next,
+        flag = true
+      while (p) {
+        // ture odd
+        if (flag) {
+          temHead.next = p
+          temHead = temHead.next
+        } else {
+          temEvenHead.next = p
+          temEvenHead = temEvenHead.next
+        }
+        flag = !flag
+        p = p.next
+      }
+      temHead.next = evenHead
+      // 这一处容易忘cpu就飙升
+      temEvenHead.next = null
+      return head
+    };
+    showListNode(
+      oddEvenList(head)
+    )
+  </script>
+</body>
