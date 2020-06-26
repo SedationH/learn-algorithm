@@ -1,0 +1,39 @@
+<body>
+  利用hash空间换时间
+  <script>
+    var twoSum = function (nums, target) {
+      let hashtable = {}
+      nums.forEach((e, i) => hashtable[e] = i)
+      for (let i = 0; i < nums.length; i++) {
+        let sub = target - nums[i]
+        let subIndex = hashtable[sub]
+        if (i === subIndex) {
+          continue
+        }
+        if (subIndex) {
+          return Array(i, subIndex)
+        }
+      }
+    };
+
+    function solution1() {
+      // brute force
+      let ans = []
+      for (let i = 0; i < nums.length; i++) {
+        for (let j = i + 1; j < nums.length; j++) {
+          if (nums[i] + nums[j] === target) {
+            ans.push(i, j)
+            return ans
+          }
+        }
+      }
+    }
+
+    console.log(
+      twoSum(
+        [2, 7, 11, 15],
+        9
+      )
+    )
+  </script>
+</body>
