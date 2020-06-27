@@ -1,0 +1,31 @@
+<body>
+  <a href="https://leetcode-cn.com/problems/add-two-numbers/">Go</a>
+  <script>
+    var addTwoNumbers = function (l1, l2) {
+
+      let carry = 0
+      let first = new ListNode('head')
+      let p = first
+
+      while (l1 || l2) {
+        let a = l1 === null ? 0 : Number(l1.val)
+        let b = l2 === null ? 0 : Number(l2.val)
+        let sum = a + b + carry
+        carry = 0
+        if (sum >= 10) {
+          carry = 1
+          sum -= 10
+        }
+        let temNode = new ListNode(sum)
+        p.next = temNode
+        p = temNode
+
+        if (l1 !== null) l1 = l1.next
+        if (l2 !== null) l2 = l2.next
+      }
+      // if (carry) p.next = new ListNode(carry)
+      carry && (p.next = new ListNode(carry))
+      return first.next
+    };
+  </script>
+</body>
