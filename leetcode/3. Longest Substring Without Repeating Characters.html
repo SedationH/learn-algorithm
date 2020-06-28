@@ -1,0 +1,26 @@
+<body>
+<a href="https://leetcode-cn.com/problems/longest-substring-without-repeating-characters/submissions/">Go</a>
+  <script>
+    var lengthOfLongestSubstring = function (s) {
+      // 维护一个hash存出现过的字母
+      let memo = {}
+      let ans = 0
+      // 利用双指针控制区间内的字符串不重复
+      for (let l = 0, r = 0; r < s.length; r++) {
+        if (memo[s[r]] !== undefined) {
+          // 仅仅回到重复元素原来的位置+1是不够的，可能会把区间扩大，如'abba'这样的例子
+          // 通过max保证不扩大
+          l = Math.max(memo[s[r]] + 1, l)
+        }
+        memo[s[r]] = r
+        ans = Math.max(r - l + 1, ans)
+      }
+
+      return ans
+    };
+
+    console.log(
+      lengthOfLongestSubstring('abba')
+    )
+  </script>
+</body>
