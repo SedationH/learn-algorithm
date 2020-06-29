@@ -1,0 +1,25 @@
+<body>
+
+  <script>
+    var nextGreatestLetter = function (letters, target) {
+      let left = 0, right = letters.length - 1
+      while (left < right) {
+        let mid = Math.floor((left + right) / 2)
+        if (letters[mid] <= target) {
+          left = mid + 1
+        } else {
+          right = mid
+        }
+      }
+      return letters[left] > target ? letters[left] : letters[0]
+    };
+
+    console.log(
+      nextGreatestLetter(
+
+        ["c", "f", "j"],
+        "c"
+      )
+    )
+  </script>
+</body>

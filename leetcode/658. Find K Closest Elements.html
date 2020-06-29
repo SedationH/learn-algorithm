@@ -1,0 +1,47 @@
+<body>
+
+  <script>
+    var findClosestElements = function (arr, k, x) {
+      let left = 0, right = arr.length - 1
+      while (left + 1 < right) {
+        let mid = Math.floor((left + right) / 2)
+        if (arr[mid] < x) {
+          left = mid
+        } else {
+          right = mid
+        }
+      }
+      // 从此时的left和right分别向两边找k个需要的elements
+      let [i, j] = [left, right], ans = []
+      while (i >= 0 && j <= arr.length - 1 && ans.length < k) {
+        // 注意这里，when tie smaller is better 所以才上的 = 
+        if (x - arr[i] <= arr[j] - x) {
+          ans.push(arr[i])
+          i--
+          if (i === -1) {
+            let cnt = k - ans.length
+            while (cnt--) {
+              ans.push(arr[j++])
+            }
+          }
+        } else {
+          ans.push(arr[j])
+          j++
+          if (j === arr.length) {
+            let cnt = k - ans.length
+            while (cnt--) {
+              ans.push(arr[i--])
+            }
+          }
+        }
+      }
+      return ans.sort((a, b) => a - b)
+    };
+    console.log(
+      findClosestElements(
+        [1, 2, 3, 4, 5],
+        4, 3
+      )
+    )
+  </script>
+</body>
