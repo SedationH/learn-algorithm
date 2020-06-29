@@ -2,7 +2,7 @@
 
   <script>
     // 寻找arr中大于等于tar的一个元素
-    function search(arr, tar) {
+    function searchFirst(arr, tar) {
       let left = 0, right = arr.length - 1
       while (left < right) {
         let mid = Math.floor((left + right) / 2)
@@ -15,9 +15,24 @@
       return left
     }
 
+    // 寻找arr中大于等于tar的最后一个元素
+    function searchLast(arr, tar) {
+      let left = 0, right = arr.length - 1
+      while (left < right) {
+        let mid = Math.floor((left + right) / 2)
+        if (arr[mid] > tar) {
+          right = mid - 1
+        } else {
+          left = mid
+        }
+      }
+      return right
+    }
+
     let arr = [1, 2, 2, 2, 3, 3, 4]
     console.log(
-      search(arr, 2)
+      searchFirst(arr, 2),
+      searchLast(arr, 2)
     )
   </script>
 </body>

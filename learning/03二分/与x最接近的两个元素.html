@@ -1,0 +1,26 @@
+<body>
+
+  <script>
+    // 寻找最接近的两个，if tie choose smaller
+    function search(arr, tar) {
+      let left = 0, right = arr.length - 1
+      while (left + 1 < right) {
+        let mid = Math.floor((left + right) / 2)
+        if (arr[mid] < tar) {
+          left = mid
+        } else {
+          right = mid
+        }
+      }
+      return [left, right]
+    }
+    let arr = [1, 2, 2, 2, 3, 4, 5]
+
+    console.log(
+      search(
+        arr, 3.1
+      )
+    )
+
+  </script>
+</body>
