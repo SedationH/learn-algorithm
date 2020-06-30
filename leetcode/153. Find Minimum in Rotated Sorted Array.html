@@ -1,0 +1,48 @@
+<body>
+
+  <script>
+    var findMin1 = function (nums) {
+      let left = 0, right = nums.length - 1
+      if (right === 0) {
+        return nums[0]
+      }
+      nums.push(Infinity)
+      while (left < right) {
+        let mid = Math.floor((left + right) / 2)
+        if (nums[mid] > nums[right]) {
+          left = mid + 1
+        } else {
+          right = mid
+        }
+        if (nums[mid + 1] - nums[mid] < 0) {
+          return nums[mid + 1]
+        }
+      }
+      return nums[0]
+    };
+
+    var findMin2 = function (nums) {
+      let left = 0, right = nums.length - 1
+      while (left < right) {
+        let mid = Math.floor((left + right) / 2)
+        if (nums[mid] > nums[right]) {
+          // 通过这里跳出的时候，条件的含义是最后一个满足nums[mid] > nums[right]的元素
+          // mid+1后就是我们寻找的位置
+          left = mid + 1
+        } else {
+          right = mid
+        }
+      }
+      return nums[left]
+    };
+
+    console.log(
+      findMin1(
+        [4, 5, 6, 7, 0, 1, 2]
+      ),
+      findMin2(
+        [4, 5, 6, 7, 0, 1, 2]
+      )
+    )
+  </script>
+</body>

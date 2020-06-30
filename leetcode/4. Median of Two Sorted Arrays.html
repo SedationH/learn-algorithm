@@ -1,0 +1,35 @@
+<body>
+  <script>
+    var findMedianSortedArrays = function (nums1, nums2) {
+      let len = nums1.length + nums2.length
+      let midLen = Math.floor((nums1.length + nums2.length) / 2)
+      let p1 = 0, p2 = 0, cnt = 0
+      let l = 0, r = 0
+      // 防止对比的时候越界 即最后一次cnt = midLen 时候 
+      // if (nums1[p1] <= nums2[p2]) { 比对
+      nums1.push(Infinity)
+      nums2.push(Infinity)
+      // 双指针遍历即可
+      while (cnt <= midLen) {
+        if (nums1[p1] <= nums2[p2]) {
+          l = r
+          r = nums1[p1]
+          p1++
+        } else {
+          l = r
+          r = nums2[p2]
+          p2++
+        }
+        cnt++
+      }
+      return len % 2 === 0 ? (r + l) / 2 : r
+    };
+
+    console.log(
+      findMedianSortedArrays(
+        [1, 2],
+        [3, 4]
+      )
+    )
+  </script>
+</body>
