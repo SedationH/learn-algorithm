@@ -1,7 +1,10 @@
 <body>
 
   <script>
-    // 寻找arr中大于等于tar的一个元素
+    let arrWithRepeat = [1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 4, 5]
+
+    // 左边界
+    // 寻找第一个大于等于tar的元素
     function searchFirst(arr, tar) {
       let left = 0, right = arr.length - 1
       while (left < right) {
@@ -15,11 +18,12 @@
       return left
     }
 
-    // 寻找arr中大于等于tar的最后一个元素
+    // 右边界
+    // 寻找最后一个大约等于tar的元素
     function searchLast(arr, tar) {
       let left = 0, right = arr.length - 1
       while (left < right) {
-        let mid = Math.floor((left + right) / 2)
+        let mid = Math.floor((left + right) / 2) + 1
         if (arr[mid] > tar) {
           right = mid - 1
         } else {
@@ -29,10 +33,13 @@
       return right
     }
 
-    let arr = [1, 2, 2, 2, 3, 3, 4]
     console.log(
-      searchFirst(arr, 2),
-      searchLast(arr, 2)
+      searchFirst(
+        arrWithRepeat, 2
+      ),
+      searchLast(
+        arrWithRepeat, 2
+      )
     )
   </script>
 </body>
