@@ -1,11 +1,7 @@
 <body>
-
+  说实在的，尽管写出来了，我还是有点迷糊😒
+  如果对于assending的判定严格一些，我就不用那么纠结了
   <script>
-    /**
- * @param {number[][]} matrix
- * @param {number} k
- * @return {number}
- */
     var kthSmallest = function (matrix, k) {
       let n = matrix.length
       if (n < 1) return null
@@ -16,6 +12,8 @@
         if (cnt < k) {
           left = mid + 1
         } else {
+          // 因为找的是最后一个大于的元素 
+          // cnt > k的时候依然可能已经找到了目标元素
           right = mid
         }
       }
@@ -37,16 +35,16 @@
                 cnt--
               }
             }
-            return cnt
           }
         }
+        return cnt
       }
     };
 
 
     console.log(
       kthSmallest(
-        [[1, 2], [1, 3]],
+        [[1, 1, 1], [1, 1, 1][1, 1, 1]],
         2
       )
     )
