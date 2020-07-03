@@ -1,0 +1,49 @@
+<body>
+  看看官解,理解下BST
+  <script>
+    /**
+    * Definition for a binary tree node.
+    * function TreeNode(val) {
+    *     this.val = val;
+    *     this.left = this.right = null;
+    * }
+    */
+    /**
+     * @param {number[]} nums
+     * @return {TreeNode}
+     */
+    var sortedArrayToBST = function (nums) {
+
+      return getBST(0, nums.length - 1)
+
+
+      /**
+       * [left, right]
+       */
+      function getBST(left, right) {
+        if (left <= right) {
+          let mid = (left + right) >> 1
+          var root = new TreeNode(nums[mid])
+          root.left = getBST(left, mid - 1)
+          root.right = getBST(mid + 1, right)
+        } else {
+          return null
+        }
+        return root
+      }
+    };
+
+    var solution = function (nums) {
+      // 由于数组是排序好的，因此一个思路就是将数组分成两半，一半是左子树，另一半是右子树
+      // 然后运用“树的递归性质”递归完成操作即可。
+      if (nums.length === 0) return null;
+      const mid = nums.length >> 1;
+      const root = new TreeNode(nums[mid]);
+
+      root.left = sortedArrayToBST(nums.slice(0, mid));
+      root.right = sortedArrayToBST(nums.slice(mid + 1))
+      return root;
+    };
+
+  </script>
+</body>
