@@ -62,7 +62,7 @@ function searchFirst(arr, tar) {
 function searchLast(arr, tar) {
   let left = 0, right = arr.length - 1
   while (left < right) {
-    let mid = Math.floor((left + right) / 2)
+    let mid = Math.ceil((left + right) / 2)
     if (arr[mid] > tar) {
       right = mid - 1
     } else {
