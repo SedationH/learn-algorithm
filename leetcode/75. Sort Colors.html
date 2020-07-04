@@ -1,0 +1,39 @@
+<!--
+ * @Author: SedationH
+ * @Date: 2020-07-04 17:45:41
+ * @LastEditTime: 2020-07-04 21:16:01
+ * @FilePath: /learn-algorithm/leetcode/75. Sort Colors.html
+-->
+
+<body>
+
+  <script>
+    var sortColors = function (nums) {
+      if (nums.length < 2) {
+        return nums
+      }
+      /**
+       * all in [0,zero) is 0
+       * all in [zero,i) is 1
+       * all in [two,len) is 2
+       * 初始都为空
+       */
+      let zero = 0, i = 0, two = nums.length
+      while (i < two) {
+        if (nums[i] === 0) {
+          [nums[i], nums[zero]] = [nums[zero], nums[i]]
+          i++, zero++
+        } else if (nums[i] === 2) {
+          two--
+          [nums[i], nums[two]] = [nums[two], nums[i]]
+        } else {
+          i++
+        }
+      }
+    };
+
+    nums = [2, 0, 1, 0, 1]
+    sortColors(nums)
+    console.log(nums)
+  </script>
+</body>

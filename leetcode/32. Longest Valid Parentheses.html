@@ -1,0 +1,82 @@
+<!--
+ * @Author: SedationH
+ * @Date: 2020-07-04 14:12:17
+ * @LastEditTime: 2020-07-04 16:06:09
+ * @FilePath: /learn-algorithm/leetcode/32. Longest Valid Parentheses.html
+-->
+
+<body>
+
+  <script>
+
+    // 本题目栈方法的实现关键点在于界点的控制
+    // (()()
+    // ))(())
+    var longestValidParentheses = function (s) {
+      const stack = [-1]
+      let ans = 0
+      for (let i = 0; i < s.length; i++) {
+        if (s[i] === '(') {
+          stack.push(i)
+        } else {
+          stack.pop()
+          if (stack.length === 0) {
+            // 加入新边界
+            stack.push(i)
+          } else {
+            ans = Math.max(ans, i - stack[stack.length - 1])
+          }
+        }
+      }
+      return ans
+    }
+
+    // 用本身坐标做差无法实现
+    var solutionFail = function (s) {
+      const stack = []
+      let len = 0
+      for (let i = 0; i < s.length; i++) {
+        if (s[i] === '(') {
+          stack.push(i)
+        } else {
+          if (stack.length !== 0) {
+            len = Math.max(len, i - stack[stack.length - 1] + 1)
+            stack.pop()
+          }
+        }
+      }
+      return len
+    }
+
+
+    // 单调栈问题，入符号的意义不大,通过入索引可以帮我们建立有效区间
+    var solutionFail = function (s) {
+      const stack = []
+      let ans = 0, max = 0
+      for (let i = 0; i < s.length; i++) {
+        if (s[i] === '(') {
+          stack.push('(')
+        }
+        if (s[i] === ')') {
+          if (stack[stack.length - 1] === '(') {
+            stack.pop()
+            ans += 2
+          } else {
+            stack.length = 0
+            max = Math.max(max, ans)
+            ans = 0
+          }
+        }
+      }
+      max = Math.max(max, ans)
+      return max
+    };
+
+    console.log(
+      longestValidParentheses(
+        ")()())"
+      )
+    )
+  </script>
+</body>
+    
