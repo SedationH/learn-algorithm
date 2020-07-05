@@ -1,0 +1,58 @@
+<!--
+ * @Author: SedationH
+ * @Date: 2020-07-05 19:57:16
+ * @LastEditTime: 2020-07-05 21:55:54
+ * @FilePath: /learn-algorithm/leetcode/5454. Count Submatrices With All Ones.html
+-->
+
+<body>
+
+  <script>
+    var numSubmat = function (mat) {
+      /**
+       * 二位矩阵统计 -> 一维
+       * 列
+       */
+      let n = mat.length, m = mat[0].length
+      /**
+       * 通过i，j确定上下边界
+       */
+      let sum = Array(m).fill(0), ans = 0
+      for (let i = 0; i < n; i++) {
+        for (let j = i; j < n; j++) {
+          // 从上边界加到下边界
+          // 所选区间长度
+          let len = j - i + 1
+          // 用于判断连续
+          let conti = 0
+          // 列
+          for (let k = 0; k < m; k++) {
+            // 行
+            for (let e = 0; e < len; e++) {
+              sum[k] += mat[i + e][k]
+            }
+            // 1 1 1 -> conti: 1 2 3
+            //          ans  : 1 3 6
+            // 即使在len !== 1的时候，也是如此计算，conti表现的就是当前len的矩阵
+            if (sum[k] === len) {
+              conti++
+            } else {
+              conti = 0
+            }
+            ans += conti
+          }
+          sum.fill(0)
+        }
+      }
+      return ans
+    };
+
+    console.log(
+      numSubmat(
+        [[0, 1, 1, 0],
+        [0, 1, 1, 1],
+        [1, 1, 1, 0]]
+      )
+    )
+  </script>
+</body>

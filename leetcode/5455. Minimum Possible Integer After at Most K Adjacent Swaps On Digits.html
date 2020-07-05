@@ -1,0 +1,59 @@
+<!--
+ * @Author: SedationH
+ * @Date: 2020-07-05 10:49:04
+ * @LastEditTime: 2020-07-05 19:45:11
+ * @FilePath: /learn-algorithm/leetcode/week-contest/196/4.html
+-->
+
+<body>
+  数据限制不严格，应考虑使用数状数组，还不会使用
+  <a href="  https://leetcode-cn.com/problems/minimum-possible-integer-after-at-most-k-adjacent-swaps-on-digits/">Go</a>
+  <script>
+    var minInteger = function (num, k) {
+      // 尽量把小的数字放到最大位置
+      let stepLeft = k
+      num = num.split('')
+      for (let i = 0; i < num.length; i++) {
+        let minIndex = i
+        // 寻找的时候要考虑stepLeft的值
+        for (let j = minIndex; j < num.length && (stepLeft - (j - i)) >= 0; j++) {
+          if (num[j] < num[minIndex]) {
+            minIndex = j
+          }
+        }
+        stepLeft -= minIndex - i;
+        swapToTarget(i, minIndex)
+        // // 剩余步数够
+        // if (stepLeft - (minIndex - i) >= 0) {
+
+        // } else {
+        //   // 尽可能往前面移动
+        //   let temIndex = minIndex - stepLeft
+        //   stepLeft = 0
+        //   swapToTarget(temIndex, minIndex)
+        // }
+      }
+      return num.join('')
+
+      // [from,to]
+      function swapToTarget(from, to) {
+        let t = num[to]
+        num.splice(
+          from,
+          to - from + 1,
+          ...[t, ...num.slice(from, to)]
+        )
+      }
+
+    };
+
+    console.log(
+      minInteger(
+        "9438957234785635408", 23
+      ),
+      // minInteger(
+      //   "100", 1
+      // )
+    )
+  </script>
+</body>

@@ -1,0 +1,26 @@
+<!--
+ * @Author: SedationH
+ * @Date: 2020-07-05 19:49:01
+ * @LastEditTime: 2020-07-05 19:56:51
+ * @FilePath: /learn-algorithm/leetcode/5452. Can Make Arithmetic Progression From Sequence.html
+-->
+
+<body>
+
+  <script>
+    var getLastMoment = function (n, left, right) {
+      /**
+       * 解题需要换个思路
+       * 相碰相等于穿过
+       */
+      let ans = 0
+      for (const l of left) {
+        ans = Math.max(ans, l - 0)
+      }
+      for (const r of right) {
+        ans = Math.max(ans, n - r)
+      }
+      return ans
+    };
+  </script>
+</body>
