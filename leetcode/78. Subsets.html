@@ -1,0 +1,40 @@
+<!--
+ * @Author: SedationH
+ * @Date: 2020-07-06 15:48:16
+ * @LastEditTime: 2020-07-06 16:27:06
+ * @FilePath: /learn-algorithm/leetcode/78. Subsets.html
+-->
+
+<body>
+
+  <script>
+    var subsets = function (nums) {
+      const ans = []
+      backtrack([], 0)
+      return ans
+
+      /**
+       * track 记录选择过程
+       * start 控制选择开始的位置  
+       */
+      function backtrack(track, start) {
+        // 记录此时的track的状态
+        ans.push(track.slice())
+        for (let i = start; i < nums.length; i++) {
+          // 选择
+          track.push(nums[i])
+          // 下一轮
+          backtrack(track, i + 1)
+          // 撤销选择
+          track.pop()
+        }
+      }
+    };
+
+    console.table(
+      subsets(
+        []
+      )
+    )
+  </script>
+</body>

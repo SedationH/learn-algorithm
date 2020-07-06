@@ -1,0 +1,38 @@
+<!--
+ * @Author: SedationH
+ * @Date: 2020-07-06 17:01:39
+ * @LastEditTime: 2020-07-06 18:18:27
+ * @FilePath: /learn-algorithm/leetcode/46. Permutations.html
+-->
+
+<body>
+
+  <script>
+    var permute = function (nums) {
+      const ans = []
+      let track = []
+      backtrack()
+      return ans
+
+      function backtrack() {
+        if (track.length === nums.length) {
+          ans.push(track.slice())
+          return
+        }
+        for (let i = 0; i < nums.length; i++) {
+          if (track.includes(nums[i])) continue
+          // 选择
+          track.push(nums[i])
+          // 下一轮
+          backtrack()
+          // 撤销
+          track.pop()
+        }
+      }
+    };
+
+    console.log(
+      permute([1, 2, 3])
+    )
+  </script>
+</body>

@@ -1,0 +1,31 @@
+<!--
+ * @Author: SedationH
+ * @Date: 2020-07-06 18:31:33
+ * @LastEditTime: 2020-07-06 18:35:00
+ * @FilePath: /learn-algorithm/leetcode/62. Unique Paths.html
+-->
+
+<body>
+
+  <script>
+    var uniquePaths = function (m, n) {
+      // m行n列
+      // 对dp的定义： 到dp[i][j] 表示为从0行0列 到 i-1列j-1行的路的条数
+      let dp = Array.from({ length: m + 1 }, () => Array(n + 1).fill(0))
+      // init -> 初始dp[1][1]点为1
+      dp[0][1] = 1
+      for (let i = 1; i <= m; i++) {
+        for (let j = 1; j <= n; j++) {
+          dp[i][j] = dp[i - 1][j] + dp[i][j - 1]
+        }
+      }
+      return dp[m][n]
+    }
+
+    console.log(
+      uniquePaths(
+        3, 2
+      )
+    )
+  </script>
+</body>

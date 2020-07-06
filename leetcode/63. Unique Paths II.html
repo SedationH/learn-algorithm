@@ -1,7 +1,7 @@
 <!--
  * @Author: SedationH
  * @Date: 2020-07-06 15:09:37
- * @LastEditTime: 2020-07-06 15:32:14
+ * @LastEditTime: 2020-07-06 18:32:42
  * @FilePath: /learn-algorithm/leetcode/63. Unique Paths II.html
 -->
 
@@ -9,7 +9,7 @@
 
   <script>
     var uniquePathsWithObstacles = function (obstacleGrid) {
-      //  m是列数，n是行数
+      //  m行，n列
       let m = obstacleGrid.length, n = obstacleGrid[0].length
       let dp = Array.from({ length: m + 1 }, () => Array(n + 1).fill(0))
       dp[1][0] = 1
