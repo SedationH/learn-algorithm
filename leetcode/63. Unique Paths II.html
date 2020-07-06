@@ -1,0 +1,55 @@
+<!--
+ * @Author: SedationH
+ * @Date: 2020-07-06 15:09:37
+ * @LastEditTime: 2020-07-06 15:32:14
+ * @FilePath: /learn-algorithm/leetcode/63. Unique Paths II.html
+-->
+
+<body>
+
+  <script>
+    var uniquePathsWithObstacles = function (obstacleGrid) {
+      //  m是列数，n是行数
+      let m = obstacleGrid.length, n = obstacleGrid[0].length
+      let dp = Array.from({ length: m + 1 }, () => Array(n + 1).fill(0))
+      dp[1][0] = 1
+      for (let i = 1; i <= m; i++) {
+        for (let j = 1; j <= n; j++) {
+          if (obstacleGrid[i - 1][j - 1] === 1) {
+            dp[i][j] = 0
+          } else {
+            dp[i][j] = dp[i - 1][j] + dp[i][j - 1]
+          }
+        }
+      }
+      return dp[m][n]
+    };
+
+    // TLE
+    var solutionByDFS = function (obstacleGrid) {
+      let m = obstacleGrid.length, n = obstacleGrid[0].length
+      let cnt = 0
+      dfs(0, 0)
+      return cnt
+
+      function dfs(x, y) {
+        // 出界或者遭遇obstacle
+        if (x === m || y === n || obstacleGrid[x][y] === 1) {
+          return
+        }
+        // 到达目标点
+        if (x === m - 1 && y === n - 1) {
+          cnt++
+          return
+        }
+        dfs(x + 1, y)
+        dfs(x, y + 1)
+      }
+    };
+    console.log(
+      uniquePathsWithObstacles(
+        [[0, 0, 0], [0, 1, 0], [0, 0, 0]]
+      )
+    )
+  </script>
+</body>
