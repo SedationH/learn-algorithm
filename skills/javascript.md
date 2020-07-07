@@ -4,3 +4,11 @@
 
 [object](https://javascript.info/object)
 
+
+
+快速创建二维数组
+
+```js
+let dp = Array.from({length: m+1},() => Array(n+1))
+```
+

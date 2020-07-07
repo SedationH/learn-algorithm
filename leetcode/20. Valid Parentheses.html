@@ -1,0 +1,43 @@
+<!--
+ * @Author: SedationH
+ * @Date: 2020-07-07 14:10:52
+ * @LastEditTime: 2020-07-07 14:17:00
+ * @FilePath: /learn-algorithm/leetcode/20. Valid Parentheses.html
+-->
+
+<body>
+
+  <script>
+    var isValid = function (s) {
+      const stack = []
+      for (let i = 0; i < s.length; i++) {
+        if (s[i] === '(' || s[i] === '[' || s[i] === '{') {
+          stack.push(s[i])
+        } else {
+          let flag = false
+          if (s[i] === ')' && stack[stack.length - 1] === '(') {
+            stack.pop()
+            flag = true
+          }
+          if (s[i] === ']' && stack[stack.length - 1] === '[') {
+            stack.pop()
+            flag = true
+          }
+          if (s[i] === '}' && stack[stack.length - 1] === '{') {
+            stack.pop()
+            flag = true
+          }
+          if (flag === false) return false
+        }
+      }
+
+      return stack.length === 0
+    };
+
+    console.log(
+      isValid(
+        "[({})]]"
+      )
+    )
+  </script>
+</body>
