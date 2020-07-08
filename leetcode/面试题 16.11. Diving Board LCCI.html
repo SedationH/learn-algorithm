@@ -1,0 +1,34 @@
+<!--
+ * @Author: SedationH
+ * @Date: 2020-07-08 11:42:42
+ * @LastEditTime: 2020-07-08 11:46:12
+ * @FilePath: /learn-algorithm/leetcode/面试题 16.11. Diving Board LCCI.html
+-->
+
+<body>
+
+  <script>
+    /**
+    * @param {number} shorter
+    * @param {number} longer
+    * @param {number} k
+    * @return {number[]}
+    */
+    var divingBoard = function (shorter, longer, k) {
+      let ans = []
+      if (k === 0) return ans
+      for (let i = 0; i <= k; i++) {
+        let ansItem = i * shorter + (k - i) * longer
+        ans.push(ansItem)
+      }
+      ans = Array.from(new Set(ans))
+      return ans
+    };
+
+    console.log(
+      divingBoard(
+        1,1,1000
+      )
+    )
+  </script>
+</body>
