@@ -1,7 +1,7 @@
 <!--
  * @Author: SedationH
  * @Date: 2020-07-08 19:51:20
- * @LastEditTime: 2020-07-08 21:11:24
+ * @LastEditTime: 2020-07-09 10:31:23
  * @FilePath: /learn-algorithm/leetcode/92. Reverse Linked List II.html
 -->
 
@@ -9,6 +9,12 @@
 
   <script src="./kit/ListNode.js"></script>
   <script>
+    /**
+     * 分析：
+     * 1. 通过创建一个头节点，减少特殊判断
+     * 2. 记录四个关键位置
+     * 3. 结合关键位置进行reverse
+     */
     var reverseBetween = function (head, m, n) {
       let cnt = 0
       let preStart = null, start = null, end = null, afterEnd = null

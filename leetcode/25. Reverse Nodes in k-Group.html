@@ -1,0 +1,146 @@
+<!--
+ * @Author: SedationH
+ * @Date: 2020-07-09 10:31:51
+ * @LastEditTime: 2020-07-09 20:47:31
+ * @FilePath: /learn-algorithm/leetcode/25. Reverse Nodes in k-Group.html
+-->
+
+<body>
+
+  <script src="./kit/ListNode.js"></script>
+  <script>
+
+    /**
+     * Definition for singly-linked list.
+     * function ListNode(val) {
+     *     this.val = val;
+     *     this.next = null;
+     * }
+     */
+    /**
+     * @param {ListNode} head
+     * @param {number} k
+     * @return {ListNode}
+     */
+    var reverseKGroup = function (head, k) {
+      let cnt = 0
+      const dommyHead = new ListNode(null)
+      dommyHead.next = head
+      let p1 = dommyHead, p2 = dommyHead.next
+      while (p2) {
+        cnt++
+        // 当cnt = 2的时候，p2指向将要变换区间的末尾
+        if (cnt % k === 0) {
+          p1 = reverseHelp(p1, p2.next)
+          p2 = p1.next
+        } else {
+          p2 = p2.next
+        }
+      }
+      return dommyHead.next
+
+      /**
+       * start->1->2->end
+       * 把1 2 换下位置
+       * 函数返回的是指向1的指针
+       */
+      function reverseHelp(start, end) {
+
+        let p1 = start.next, p2 = p1.next
+        let first = p1
+        // 循环跳出的时候p1指向区间的最后一个位置
+        while (p2 !== end) {
+          let tem = p2.next
+          p2.next = p1
+          p1 = p2
+          p2 = tem
+        }
+        // 原来的区间首位被换到最后，指向区间后面的第一个位置
+        first.next = end
+        start.next = p1
+        return first
+      }
+    };
+
+    /**
+     * @param {ListNode} head
+     * @param {number} k
+     * @return {ListNode}
+     */
+    var solutionByOtherPeople = function (head, k) {
+      // 标兵
+      let dummy = new ListNode();
+      dummy.next = head;
+      let [start, end] = [dummy, dummy.next];
+      let count = 0;
+      while (end) {
+        count++;
+        if (count % k === 0) {
+          start = reverseList(start, end.next);
+          end = start.next;
+        } else {
+          end = end.next;
+        }
+      }
+      return dummy.next;
+
+      // 翻转stat -> end的链表
+      function reverseList(start, end) {
+        let [pre, cur] = [start, start.next];
+        const first = cur;
+        while (cur !== end) {
+          let next = cur.next;
+          cur.next = pre;
+          pre = cur;
+          cur = next;
+        }
+        start.next = pre;
+        first.next = cur;
+        return first;
+      }
+    };
+
+
+    // 92题是对所选区间进行反转，现在要反转的更多了，把反转抽象为一个函数进行调用
+    var solutionFail = function (head, k) {
+      let cnt = 0
+      let preStart = null, start = null, end = null, afterEnd = null
+      const dommyHead = new ListNode(null)
+      dommyHead.next = head
+      let p1 = dommyHead, p2 = head
+      while (true) {
+        if (cnt >= k && cnt % k === 0) {
+          end = p1
+          afterEnd = p2
+          preStart.next = end
+          start.next = afterEnd
+        }
+        if (cnt % k === 0) {
+          preStart = p1
+          start = p2
+        }
+        if (p2 === null) {
+          break
+        }
+        let tem = p2.next
+        if (cnt % k > 0) {
+          p2.next = p1
+        }
+        p1 = p2
+        p2 = tem
+        cnt++
+      }
+
+      return dommyHead.next
+    };
+
+    ShowListNode(
+
+      reverseKGroup(
+        Array2ListNode(
+          [1, 2, 3, 4, 5, 6, 7, 8]
+        ), 3
+      )
+    )
+  </script>
+</body>
