@@ -1,0 +1,44 @@
+<!--
+ * @Author: SedationH
+ * @Date: 2020-07-10 11:01:18
+ * @LastEditTime: 2020-07-10 11:42:17
+ * @FilePath: /learn-algorithm/leetcode/560. Subarray Sum Equals K.html
+-->
+
+<body>
+
+  <script>
+    /**
+    * @param {number[]} nums
+    * @param {number} k
+    * @return {number}
+    */
+    var subarraySum = function (nums, k) {
+      // 我们使用的前缀和只关心值和出现的次数
+      // 代表前缀和为0的出现了一次
+      const preSum = {
+        0: 1
+      }
+      let curSum = 0, ans = 0
+      for (let i = 0; i < nums.length; i++) {
+        curSum += nums[i]
+        if (preSum[curSum - k] !== undefined) {
+          ans += preSum[curSum - k]
+        }
+        if (preSum[curSum] !== undefined) {
+          preSum[curSum]++
+        } else {
+          preSum[curSum] = 1
+        }
+      }
+
+      return ans
+    };
+
+    console.log(
+      subarraySum(
+        [1, 1, 0, 1, 2], 2
+      )
+    )
+  </script>
+</body>

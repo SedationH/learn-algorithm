@@ -1,0 +1,73 @@
+<!--
+ * @Author: SedationH
+ * @Date: 2020-07-10 18:18:10
+ * @LastEditTime: 2020-07-10 19:58:26
+ * @FilePath: /learn-algorithm/leetcode/1371. Find the Longest Substring Containing Vowels in Even Counts.html
+-->
+
+<body>
+
+  链接：https://leetcode-cn.com/problems/find-the-longest-substring-containing-vowels-in-even-counts/solution/jiang-ti-mu-yi-bu-bu-deng-jie-zhuan-hua-fei-qi-ji-/
+  <script>
+    // 前缀和
+    var findTheLongestSubstring = function (s) {
+      // 用来保存第一次出现某种状态的时候 对应的位置
+      // [i,j]中元音满足 等价于 [0,j]的state = [0,i-1]的state
+      // 为了处理当i等于0的边界情况，引入-1,让初始状态在-1位置存在
+      const prefixState = {
+        0: -1
+      }
+      // 元音字母表用于异或 ^
+      /**
+       * a: 00001
+       * b: 00010 ...
+       */
+      const vowel = {
+        'a': 1, 'e': 2, 'i': 4, 'o': 8, 'u': 16
+      }
+      // 记录此时的状态
+      let state = 0, ans = 0
+      for (let i = 0; i < s.length; i++) {
+        const char = s[i]
+        // 当此时的字符为元音字母的时候，更改状态
+        if (vowel[char] !== undefined) {
+          state ^= vowel[char]
+          // 如果这个状态是第一次出现，就进行记录，因为是求最远的距离，所以只用记录第一次就好
+          if (prefixState[state] === undefined) {
+            prefixState[state] = i
+          }
+        }
+        ans = Math.max(ans, i - prefixState[state])
+      }
+      return ans
+    };
+
+    // 暴力法
+    var solution = function (s) {
+      // 区间长度
+      for (let i = s.length; i > 0; i--) {
+        // 选择开始位置，根据结尾index卡范围
+        for (let j = 0; j + i - 1 <= s.length; j++) {
+          const sub = s.substring(j, j + i)
+          // 暴力枚举其中元音字母的个数
+          let isEven = true
+          const choose = ['a', 'e', 'i', 'o', 'u']
+          for (const e of choose) {
+            if ((sub.split(e).length - 1) % 2 !== 0) {
+              isEven = false
+            }
+          }
+          if (isEven) {
+            return i
+          }
+        }
+      }
+    };
+
+    console.log(
+      findTheLongestSubstring(
+        "aa"
+      )
+    )
+  </script>
+</body>
