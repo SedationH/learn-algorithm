@@ -1,0 +1,74 @@
+<!--
+ * @Author: SedationH
+ * @Date: 2020-07-11 12:00:45
+ * @LastEditTime: 2020-07-12 04:02:15
+ * @FilePath: /learn-algorithm/leetcode/144. Binary Tree Preorder Traversal.html
+-->
+
+<body>
+
+  <script>
+    /**
+    * Definition for a binary tree node.
+    * function TreeNode(val) {
+    *     this.val = val;
+    *     this.left = this.right = null;
+    * }
+    */
+    /**
+     * @param {TreeNode} root
+     * @return {number[]}
+     */
+    var preorderTraversalRecursive = function (root) {
+      const ans = []
+      preorderTraversalHelp(root)
+      return ans
+
+      function preorderTraversalHelper(root) {
+        if (root === null) {
+          return
+        }
+        ans.push(root.val)
+        preorderTraversalHelper(root.left)
+        preorderTraversalHelper(root.right)
+      }
+    };
+
+    var preorderTraversalIteration1 = function (root) {
+      /**
+       * 原来是调用栈帮助我们自动维护顺序
+       * 现在要自己实现stack进行顺序维护
+       */
+      const ans = [], stack = [root]
+      while (stack.length !== 0) {
+        let root = stack.pop()
+        if (root === null) continue
+        ans.push(root.val)
+        /**
+         * 注意这里的差异，我们想要先打印左边的内容，就要先把右边入栈
+         */
+        stack.push(root.right)
+        stack.push(root.left)
+      }
+      return ans
+    }
+    /**
+     * 上面的解法在实现的时候没有展现指针的感觉
+     */
+    var preorderTraversalIteration2 = function (root) {
+      const ans = [], stack = [], ptr = root
+      while (stack.length !== 0 || ptr !== null) {
+        while (ptr !== null) {
+          stack.push(ptr)
+          ans.push(ptr.val)
+          ptr = ptr.left
+        }
+        // 当跳出上面的循环的时候，此时栈顶为最左边的节点
+        const tem = stack.pop()
+        ptr = tem.right
+      }
+      return ans
+    }
+
+  </script>
+</body>

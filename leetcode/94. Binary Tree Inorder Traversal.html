@@ -1,0 +1,39 @@
+<!--
+ * @Author: SedationH
+ * @Date: 2020-07-12 02:45:00
+ * @LastEditTime: 2020-07-12 04:00:04
+ * @FilePath: /learn-algorithm/leetcode/94. Binary Tree Inorder Traversal.html
+-->
+
+<body>
+
+  <script>
+    var inorderTraversalRecursive = function (root) {
+      const ans = []
+      inorderTraversalHelp(root)
+      return ans
+
+      function inorderTraversalHelper(root) {
+        if (root === null) return
+        inorderTraversalHelper(root.left)
+        ans.push(root.val)
+        inorderTraversalHelper(root.right)
+      }
+    };
+
+    var inorderTraversalIteration = function (root) {
+      const ans = [], stack = []
+      let ptr = root
+      while (ptr !== null || stack.length !== 0) {
+        while (ptr !== null) {
+          stack.push(ptr)
+          ptr = ptr.left
+        }
+        const tem = stack.pop()
+        ans.push(tem.val)
+        ptr = tem.right
+      }
+      return ans
+    }
+  </script>
+</body>

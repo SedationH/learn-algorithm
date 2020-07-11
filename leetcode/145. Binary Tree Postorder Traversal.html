@@ -1,0 +1,48 @@
+<!--
+ * @Author: SedationH
+ * @Date: 2020-07-12 04:00:45
+ * @LastEditTime: 2020-07-12 04:23:22
+ * @FilePath: /learn-algorithm/leetcode/145. Binary Tree Postorder Traversal.html
+-->
+
+<body>
+
+  <script>
+    var postorderTraversalRecursive = function (root) {
+      const ans = []
+      postorderTraversalHelper(root)
+      return ans
+
+      function postorderTraversalHelper(root) {
+        if (root === null) return
+        postorderTraversalHelper(root.left)
+        postorderTraversalHelper(root.right)
+        ans.push(root.val)
+      }
+    };
+
+    /**
+     * preorder: root left right
+     * postorder: left right root
+     * 我们把先序查找作为思考起始点
+     * 更改优先查找子树为右子树 -> root right left
+     * res.reverse() -> left right root
+     * nb！😄
+     * 查找顺序倒置 <=> 结果倒置 这里存疑
+     */
+    var postorderTraversalIteration = function (root) {
+      const ans = [], stack = []
+      let ptr = root
+      while (ptr !== null || stack.length !== 0) {
+        while (ptr !== null) {
+          stack.push(ptr)
+          ans.push(ptr.val)
+          ptr = ptr.right
+        }
+        const tem = stack.pop()
+        ptr = ptr.left
+      }
+      return ans.reverse()
+    }
+  </script>
+</body>
