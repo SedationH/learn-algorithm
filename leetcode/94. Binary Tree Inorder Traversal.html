@@ -1,7 +1,7 @@
 <!--
  * @Author: SedationH
  * @Date: 2020-07-12 02:45:00
- * @LastEditTime: 2020-07-12 04:00:04
+ * @LastEditTime: 2020-07-13 16:14:35
  * @FilePath: /learn-algorithm/leetcode/94. Binary Tree Inorder Traversal.html
 -->
 
@@ -21,7 +21,7 @@
       }
     };
 
-    var inorderTraversalIteration = function (root) {
+    var inorderTraversalIteration1 = function (root) {
       const ans = [], stack = []
       let ptr = root
       while (ptr !== null || stack.length !== 0) {
@@ -32,6 +32,22 @@
         const tem = stack.pop()
         ans.push(tem.val)
         ptr = tem.right
+      }
+      return ans
+    }
+
+    var inorderTraversalIteration2 = function (root) {
+      const stack = [[0, root]], ans = []
+      while (stack.length !== 0) {
+        const [state, node] = stack.pop()
+        if (node === null) continue
+        if (state === 0) {
+          stack.push([0, node.right])
+          stack.push([1, node])
+          stack.push([0, node.left])
+        } else {
+          ans.push(node.val)
+        }
       }
       return ans
     }

@@ -1,12 +1,12 @@
 <!--
  * @Author: SedationH
  * @Date: 2020-07-11 12:00:45
- * @LastEditTime: 2020-07-12 04:02:15
+ * @LastEditTime: 2020-07-13 16:09:02
  * @FilePath: /learn-algorithm/leetcode/144. Binary Tree Preorder Traversal.html
 -->
 
 <body>
-
+  <script src="./kit/ListNode.js"></script>
   <script>
     /**
     * Definition for a binary tree node.
@@ -70,5 +70,40 @@
       return ans
     }
 
+    /**
+     * 标记迭代法
+     * 多创建一段空间用于状态标记
+     * 双倍的空间 -> 双倍的快乐
+     */
+    /**
+     *     中
+     *    /  \
+     *  左    右
+     * 
+     * 先序    ： 中 左 右
+     * 入栈    ： 右 左 后 
+     */
+    var preorderTraversalIteration3 = function (root) {
+      // 0没遍历过，1遍历过
+      const stack = [[0, root]], ans = []
+      while (stack.length !== 0) {
+        const [state, node] = stack.pop()
+        if (node === null) continue
+        if (state === 0) {
+          stack.push([0, node.right])
+          stack.push([0, node.left])
+          stack.push([1, node])
+        } else {
+          ans.push(node.val)
+        }
+      }
+      return ans
+    }
+    const root = BinaryTree(
+      [1, null, 2, 3]
+    )
+    console.log(
+      preorderTraversalIteration3(root)
+    )
   </script>
 </body>

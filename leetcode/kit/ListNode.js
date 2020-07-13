@@ -1,7 +1,7 @@
 /*
  * @Author: SedationH
  * @Date: 2020-07-08 21:10:32
- * @LastEditTime: 2020-07-13 15:29:44
+ * @LastEditTime: 2020-07-13 16:00:27
  * @FilePath: /learn-algorithm/leetcode/kit/ListNode.js
  */
 function ListNode(val) {

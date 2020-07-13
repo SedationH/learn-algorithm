@@ -1,7 +1,7 @@
 <!--
  * @Author: SedationH
  * @Date: 2020-07-12 04:00:45
- * @LastEditTime: 2020-07-13 15:29:15
+ * @LastEditTime: 2020-07-13 16:25:37
  * @FilePath: /learn-algorithm/leetcode/145. Binary Tree Postorder Traversal.html
 -->
 
@@ -30,7 +30,7 @@
      * nb！😄
      * 查找顺序倒置 <=> 结果倒置 这里存疑
      */
-    var postorderTraversalIteration = function (root) {
+    var postorderTraversalIteration1 = function (root) {
       const ans = [], stack = []
       let ptr = root
       while (ptr !== null || stack.length !== 0) {
@@ -45,9 +45,27 @@
       return ans.reverse()
     }
 
-    let tree = BinaryTree(
-      [1, 2, 3, null, 4, null, 5]
+    var postorderTraversalIteration2 = function (root) {
+      const stack = [[0, root]], ans = []
+      while (stack.length !== 0) {
+        const [state, node] = stack.pop()
+        if (node === null) continue
+        if (state === 0) {
+          stack.push([1, node])
+          stack.push([0, node.right])
+          stack.push([0, node.left])
+        } else {
+          ans.push(node.val)
+        }
+      }
+      return ans
+    }
+
+    let root = BinaryTree(
+      [3, 1, 2]
     )
-    let a = 1
+    console.log(
+      postorderTraversalIteration2(root)
+    )
   </script>
 </body>
