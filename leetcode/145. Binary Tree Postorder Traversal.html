@@ -1,12 +1,12 @@
 <!--
  * @Author: SedationH
  * @Date: 2020-07-12 04:00:45
- * @LastEditTime: 2020-07-12 04:23:22
+ * @LastEditTime: 2020-07-13 15:29:15
  * @FilePath: /learn-algorithm/leetcode/145. Binary Tree Postorder Traversal.html
 -->
 
 <body>
-
+  <script src="./kit/ListNode.js"></script>
   <script>
     var postorderTraversalRecursive = function (root) {
       const ans = []
@@ -40,9 +40,14 @@
           ptr = ptr.right
         }
         const tem = stack.pop()
-        ptr = ptr.left
+        ptr = tem.left
       }
       return ans.reverse()
     }
+
+    let tree = BinaryTree(
+      [1, 2, 3, null, 4, null, 5]
+    )
+    let a = 1
   </script>
 </body>

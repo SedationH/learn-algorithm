@@ -1,7 +1,7 @@
 /*
  * @Author: SedationH
  * @Date: 2020-07-08 21:10:32
- * @LastEditTime: 2020-07-09 10:35:29
+ * @LastEditTime: 2020-07-13 15:29:44
  * @FilePath: /learn-algorithm/leetcode/kit/ListNode.js
  */
 function ListNode(val) {
@@ -21,5 +21,60 @@ function ShowListNode(head) {
   while (head !== null) {
     console.log(head.val)
     head = head.next
+  }
+}
+
+function BinaryTree(arr) {
+  /**
+   * 传入数组中的元素应该按照2n+1 2n+2 n为index的格式填入
+   * 2n+1 left
+   * 2n+2 right
+   */
+  // for (let i = 0; i < arr.length; i++) {
+  //   if (arr[i] === null) continue
+  //   let tem = new ListNode(arr[i])
+  //   if (i === 0) {
+  //     var root = tem
+  //   }
+  //   tem.left = new ListNode(arr[2 * i + 1])
+  //   tem.right = new ListNode(arr[2 * i + 2])
+  // }
+  // return root
+
+  /**
+   * 但发现lc的传入数组并不满足完全二叉树的映射规则，具体实现问了问问大佬
+   * 采用队列的方式
+   */
+  if (!arr.length) return null
+  const root = new ListNode(arr[0])
+  const queue = [root]
+  let i = 1
+  // 每次拿出队列首位，后面的两个元素（能够放入的queue）就是它的左右子元素
+  // 每次创建成功子元素，都加入队列中
+  while (i < arr.length) {
+    const top = queue.shift()
+    if (i < arr.length) {
+      if (arr[i] !== null) {
+        top.left = new ListNode(arr[i])
+        queue.push(top.left)
+      }
+      i++
+    }
+    if (i < arr.length) {
+      if (arr[i] !== null) {
+        top.right = new ListNode(arr[i])
+        queue.push(top.right)
+      }
+      i++
+    }
+  }
+  return root
+
+  function ListNode(val) {
+    if (val === undefined) {
+      val = null
+    }
+    this.val = val
+    this.left = this.right = null
   }
 }
