@@ -1,0 +1,57 @@
+<!--
+ * @Author: SedationH
+ * @Date: 2020-07-14 23:19:08
+ * @LastEditTime: 2020-07-15 09:38:02
+ * @FilePath: /learn-algorithm/leetcode/174. Dungeon Game.html
+-->
+
+<body>
+
+  <script>
+    /**
+    * @param {number[][]} dungeon
+    * @return {number}
+    */
+    var calculateMinimumHP = function (dungeon) {
+      const m = dungeon.length, n = dungeon[0].length
+      const dp = Array.from({ length: m }, () => Array(n))
+      /**
+       * dp[i][j]表示在[i][j]位置上扣完血之后剩余的最少血量
+       * 我们的目标是求得开始的最小血量
+       * 血量大于等于0 -> 1
+       * 当我们到达最后一个位置的时候血量为1 那么我们就血赚
+       */
+      dp[m - 1][n - 1] = 1
+      for (let i = m - 1; i >= 0; i--) {
+        for (let j = n - 1; j >= 0; j--) {
+          /**
+           * 逆着路径遍历，来源可能有下 or 右 注意边界处理
+           */
+          if (i === m - 1 && j === n - 1) {
+            continue
+          }
+          if (i === m - 1) {
+            const right = Math.max(dp[i][j + 1] - dungeon[i][j + 1], 1)
+            dp[i][j] = right
+            continue
+          }
+          if (j === n - 1) {
+            const down = Math.max(dp[i + 1][j] - dungeon[i + 1][j], 1)
+            dp[i][j] = down
+            continue
+          }
+          const down = Math.max(dp[i + 1][j] - dungeon[i + 1][j], 1)
+          const right = Math.max(dp[i][j + 1] - dungeon[i][j + 1], 1)
+          dp[i][j] = Math.min(down, right)
+        }
+      }
+      return (dp[0][0] - dungeon[0][0] <= 0) ? 1 : dp[0][0] - dungeon[0][0]
+    };
+
+    console.log(
+      calculateMinimumHP(
+        [[-1, -2], [-3, -4]]
+      )
+    )
+  </script>
+</body>
