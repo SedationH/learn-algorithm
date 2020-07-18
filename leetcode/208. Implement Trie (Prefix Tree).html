@@ -1,0 +1,95 @@
+<!--
+ * @Author: SedationH
+ * @Date: 2020-07-17 20:11:03
+ * @LastEditTime: 2020-07-17 20:27:54
+ * @FilePath: /learn-algorithm/leetcode/208. Implement Trie (Prefix Tree).html
+-->
+
+<body>
+
+  <script>
+    const TrieNode = function () {
+      this.isEnd = false
+      this.next = {}
+    }
+
+    /**
+     * Initialize your data structure here.
+     */
+    var Trie = function () {
+      this.root = new TrieNode()
+    };
+
+    /**
+     * Inserts a word into the trie. 
+     * @param {string} word
+     * @return {void}
+     */
+    Trie.prototype.insert = function (word) {
+      let node = this.root
+      for (let i = 0; i < word.length; i++) {
+        // 根据节点的有无考虑创建还是复用
+        if (node.next[word[i]] === undefined) {
+          let nextNode = new TrieNode()
+          node.next[word[i]] = nextNode
+          node = nextNode
+        } else {
+          node = node.next[word[i]]
+        }
+      }
+      node.isEnd = true
+    };
+
+    /**
+     * Returns if the word is in the trie. 
+     * @param {string} word
+     * @return {boolean}
+     */
+    Trie.prototype.search = function (word) {
+      let node = this.root
+      for (let i = 0; i < word.length; i++) {
+        const tar = node.next[word[i]]
+        if (tar !== undefined) {
+          node = tar
+        } else {
+          return false
+        }
+      }
+      return node.isEnd
+    };
+
+    /**
+     * Returns if there is any word in the trie that starts with the given prefix. 
+     * @param {string} prefix
+     * @return {boolean}
+     */
+    Trie.prototype.startsWith = function (prefix) {
+      let node = this.root
+      for (let i = 0; i < prefix.length; i++) {
+        const tar = node.next[prefix[i]]
+        if (tar !== undefined) {
+          node = tar
+        } else {
+          return false
+        }
+      }
+      return true
+    };
+
+    /**
+     * Your Trie object will be instantiated and called as such:
+     * var obj = new Trie()
+     * obj.insert(word)
+     * var param_2 = obj.search(word)
+     * var param_3 = obj.startsWith(prefix)
+     */
+    let trie = new Trie();
+
+    trie.insert("apple");
+    trie.insert('app')
+
+    console.dir(
+      trie.search('apple')
+    )
+  </script>
+</body>

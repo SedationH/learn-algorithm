@@ -1,0 +1,105 @@
+<!--
+ * @Author: SedationH
+ * @Date: 2020-07-18 09:24:57
+ * @LastEditTime: 2020-07-18 09:53:28
+ * @FilePath: /learn-algorithm/leetcode/677. Map Sum Pairs.html
+-->
+
+<body>
+
+  <script>
+    const Node = function () {
+      this.next = {}
+      this.end = {
+        isEnd: false
+      }
+    }
+    /**
+     * Initialize your data structure here.
+     */
+    var MapSum = function () {
+      this.root = new Node()
+    };
+
+    /** 
+     * @param {string} key 
+     * @param {number} val
+     * @return {void}
+     */
+    /**
+     * 需要先检验一下插入串是否已经存在，存在就把原来记录的减去，再加上新的值
+     * 相当于加上差值
+     */
+    MapSum.prototype.insert = function (key, val) {
+      let node = this.root
+      let { isEnd, endVal } = help(node)
+      if (isEnd) {
+        val -= endVal
+      }
+      for (let i = 0; i < key.length; i++) {
+        if (node.next[key[i]] === undefined) {
+          let newNode = new Node()
+          node.next[key[i]] = [
+            newNode,
+            val
+          ]
+          node = newNode
+        } else {
+          node.next[key[i]][1] += val
+          node = node.next[key[i]][0]
+        }
+      }
+      node.end = {
+        isEnd: true,
+        endVal: val
+      }
+      /**
+       * 用于检验是否已经存在
+       */
+      function help(root) {
+        let node = root
+        for (let i = 0; i < key.length; i++) {
+          if (node.next[key[i]] !== undefined) {
+            node = node.next[key[i]][0]
+          } else {
+            return false
+          }
+        }
+        return node.end
+      }
+    };
+
+    /** 
+     * @param {string} prefix
+     * @return {number}
+     */
+    MapSum.prototype.sum = function (prefix) {
+      let node = this.root, ans = 0
+      for (let i = 0; i < prefix.length; i++) {
+        if (node.next[prefix[i]] !== undefined) {
+          ans = node.next[prefix[i]][1]
+          node = node.next[prefix[i]][0]
+        } else {
+          return 0
+        }
+      }
+      return ans
+    };
+
+    /**
+     * Your MapSum object will be instantiated and called as such:
+     * var obj = new MapSum()
+     * obj.insert(key,val)
+     * var param_2 = obj.sum(prefix)
+     */
+    let obj = new MapSum()
+    obj.insert('appp', 3)
+    console.log(
+      obj.sum('app')
+    )
+    obj.insert('app', 2)
+    console.log(
+      obj.sum('app')
+    )
+  </script>
+</body>
