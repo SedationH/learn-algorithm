@@ -21,13 +21,13 @@
 ```js
 class UnionFind {
   constructor(size) {
-    this.parent = Array(size)
+    this.parents = Array(size)
       .fill(0)
       .map((_, i) => i)
   }
   find(x) {
-    while (x !== this.parent[x]) {
-      x = this.parent[x]
+    while (x !== this.parents[x]) {
+      x = this.parents[x]
     }
     return x
   }
@@ -37,7 +37,7 @@ class UnionFind {
   union(a, b) {
     const fa = this.find(a), fb = this.find(b)
     if (fa !== fb) {
-      this.parent[fb] = fa
+      this.parents[fb] = fa
     }
   }
 }
@@ -55,9 +55,9 @@ class UnionFind {
 
 ```js
 function find(x){
-  while(x !== parent[x]){
+  while(x !== parents[x]){
     // 隔代压缩
-    parent[x] = parent[parent[x]]
+    parents[x] = parents[parents[x]]
   }
 }
 ```
@@ -68,8 +68,8 @@ function find(x){
 
 ```js
 function find(x){
-  if(x === parent[x]) return x
-  parent[x] = find(parent(x))
+  if(x === parents[x]) return x
+  parents[x] = find(parents(x))
 }
 ```
 
@@ -79,5 +79,77 @@ function find(x){
 
 ### #2 Rank
 
-懒得用了，**就这吧😎**
+我们union(a,b)的操作均是把b加入a所在的集合，这一定是最优的吗？
+
+在#1 的路径压缩中，我们需要让每一个节点直接指向root，所以，让集合小的加入集合大的，所需要改变的节点数目最少，我们针对这一点进行优化。
+
+为了方便比集合中元素的个数，引入**size**进行记录
+
+```js
+/**
+ * 比对size的大小，把小的加入大的，相等就b加入a
+ */
+function union(a, b) {
+  const fa = this.find(a), fb = this.find(b)
+  if (fa !== fb) {
+    if (this.sizes[fa] < this.sizes[fb]) {
+      this.parents[fa] = fb
+      // fb是root
+      this.sizes[fb] += this.sizes[fa]
+    } else {
+      this.parents[fb] = fa
+      // fa是root
+      this.sizes[fa] += this.sizes[fb]
+    }
+  }
+}
+```
+
+
+
+## 总结
+
+```js
+class UnionFind {
+
+  constructor(size) {
+    this.parents = Array(size)
+      .fill(0)
+      .map((_, i) => i)
+    this.sizes = Array(size).fill(1)
+  }
+
+  find(x) {
+    if (x === this.parents[x]) return x
+    parent[x] = this.find(parent[x])
+  }
+
+  /**
+   * 获取所在集合的大小
+   */
+  getSize(x) {
+    return this.sizes[
+      this.find(x)
+    ]
+  }
+
+  /**
+   * 比对size的大小，把小的加入大的，相等就b加入a
+   */
+  union(a, b) {
+    const fa = this.find(a), fb = this.find(b)
+    if (fa !== fb) {
+      if (this.sizes[fa] < this.sizes[fb]) {
+        this.parents[fa] = fb
+        // fb是root
+        this.sizes[fb] += this.sizes[fa]
+      } else {
+        this.parents[fb] = fa
+        // fa是root
+        this.sizes[fa] += this.sizes[fb]
+      }
+    }
+  }
+}
+```
 
