@@ -1,0 +1,40 @@
+<!--
+ * @Author: SedationH
+ * @Date: 2020-07-26 11:22:29
+ * @LastEditTime: 2020-07-26 11:46:41
+ * @FilePath: /learn-algorithm/leetcode/814. Binary Tree Pruning.html
+-->
+
+<body>
+
+  <script>
+    /**
+     * Definition for a binary tree node.
+     * function TreeNode(val) {
+     *     this.val = val;
+     *     this.left = this.right = null;
+     * }
+     */
+    /**
+     * @param {TreeNode} root
+     * @return {TreeNode}
+     */
+    /**
+     * 一种有趣的写递归方法
+     *  产品
+     *    已经有了pruneTree方法，可以把一颗树中不包含1的枝节删除掉
+     *  子问题
+     *    pruneTree(root.left) & pruneTree(root.right)
+     *  大小问题(父子)
+     *    首先，我们用 pruneTree(root.left) 和 pruneTree(root.right) 的结果分别替换掉原本的左子树和右子树。接着，再决定这棵树要不要保留。
+     *  递归出口  
+     *    if null return null
+     */ 
+    var pruneTree = function (root) {
+      if (root === null) return null
+      root.left = pruneTree(root.left)
+      root.right = pruneTree(root.right)
+      return root.val === 0 && root.left === null && root.right === null ? null : root
+    };
+  </script>
+</body>

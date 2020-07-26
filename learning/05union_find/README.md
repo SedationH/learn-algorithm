@@ -68,8 +68,10 @@ function find(x){
 
 ```js
 function find(x){
-  if(x === parents[x]) return x
-  parents[x] = find(parents(x))
+  if(x !== parents[x]) {
+    parents[x] = find(parents[x])
+  }
+  return parents[x]
 }
 ```
 
@@ -116,6 +118,7 @@ class UnionFind {
     this.parents = Array(size)
       .fill(0)
       .map((_, i) => i)
+    // 集合大小
     this.sizes = Array(size).fill(1)
   }
 
