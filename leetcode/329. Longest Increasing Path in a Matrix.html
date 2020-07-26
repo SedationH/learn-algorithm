@@ -1,7 +1,7 @@
 <!--
  * @Author: SedationH
  * @Date: 2020-07-26 21:25:24
- * @LastEditTime: 2020-07-26 22:00:05
+ * @LastEditTime: 2020-07-26 23:57:38
  * @FilePath: /learn-algorithm/leetcode/329. Longest Increasing Path in a Matrix.html
 -->
 
@@ -13,6 +13,60 @@
      * @return {number}
      */
     var longestIncreasingPath = function (matrix) {
+      if (matrix.length === 0) return 0
+      let ans = 1, cnt = 1
+      const
+        // 定义dp[i][j] 为到达该i,j点所能达到的最大步数
+        dp = Array.from({ length: matrix.length }, () => Array(matrix[0].length).fill(0)),
+        dir = [
+          [1, 0], [0, 1], [-1, 0], [0, -1]
+        ]
+      /**
+       * 枚举每一个点作为起始点，进行dfs，记录此时最大值
+       */
+      for (let i = 0; i < matrix.length; i++) {
+        for (let j = 0; j < matrix[i].length; j++) {
+          ans = Math.max(ans, dfs(i, j))
+        }
+      }
+
+      return ans
+
+      /**
+       * 产品法
+       *  产品
+       *    dfs(x,y) 获得x,y点的能够达到的最大值
+       *  子问题
+       *    [x,y]上下左右的最值
+       *  大小问题关系
+       *    [x,y]比周围isVaild的点的最值大一就好
+       *  边界
+       *    没得比，那就自己变为1
+       */
+      function dfs(x, y) {
+        /**
+         * 向上右下左四个方向走
+         */
+        if (dp[x][y] !== 0) return dp[x][y]
+        let nextX, nextY, maxStep = 1
+        for (let i = 0; i < 4; i++) {
+          nextX = x + dir[i][0]
+          nextY = y + dir[i][1]
+          if (isValid(nextX, nextY) && matrix[nextX][nextY] > matrix[x][y]) {
+            dfs(nextX, nextY)
+            // 只要比周围的四个之中的有效点中的最大值大一就好了
+            maxStep = Math.max(maxStep, dp[nextX][nextY] + 1)
+          }
+        }
+        return dp[x][y] = maxStep
+      }
+
+      function isValid(x, y) {
+        return x >= 0 && x < matrix.length && y >= 0 && y <= matrix[0].length
+      }
+    }
+
+    var TIMEOUTsolution = function (matrix) {
       if (matrix.length === 0) return 0
       let ans = 1, cnt = 1
       let flag = Array.from({ length: matrix.length }, () => Array(matrix[0].length).fill(0))
