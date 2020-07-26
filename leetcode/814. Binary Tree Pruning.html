@@ -1,7 +1,7 @@
 <!--
  * @Author: SedationH
  * @Date: 2020-07-26 11:22:29
- * @LastEditTime: 2020-07-26 11:46:41
+ * @LastEditTime: 2020-07-26 11:48:14
  * @FilePath: /learn-algorithm/leetcode/814. Binary Tree Pruning.html
 -->
 
@@ -29,7 +29,7 @@
      *    首先，我们用 pruneTree(root.left) 和 pruneTree(root.right) 的结果分别替换掉原本的左子树和右子树。接着，再决定这棵树要不要保留。
      *  递归出口  
      *    if null return null
-     */ 
+     */
     var pruneTree = function (root) {
       if (root === null) return null
       root.left = pruneTree(root.left)
