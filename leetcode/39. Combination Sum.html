@@ -1,0 +1,85 @@
+<body>
+
+  <script>
+
+    var pruneCombinationSum = function (candidates, target) {
+      /**
+       * 优化逻辑，对candidates进行排序，从小到大
+       * 如果当前sum>target可以跳出整个for,后面的不用再去尝试
+       */
+      candidates.sort((a, b) => a - b)
+      const sulutionSet = [], temSet = []
+      let sum = 0, flag = false
+      backtrack(0)
+      return sulutionSet
+
+      function backtrack(start) {
+        if (sum === target) {
+          sulutionSet.push(temSet.slice())
+          flag = true
+          return
+        } else if (sum > target) {
+          flag = true
+          return
+        }
+        for (let i = start; i < candidates.length; i++) {
+          if (flag) {
+            flag = false
+            break
+          }
+          // 进行选择
+          temSet.push(candidates[i])
+          sum += candidates[i]
+          if (temSet.toString() === [2, 2, 5].toString()) {
+            a = 1
+          }
+          // next track
+          backtrack(i)
+          // 撤销选择
+          temSet.pop(candidates[i])
+          sum -= candidates[i]
+        }
+        // 有时候跳出循环就没有执行flag = false
+        flag = false
+      }
+    };
+
+    /**
+      * @param {number[]} candidates
+      * @param {number} target
+      * @return {number[][]}
+      */
+    var combinationSum = function (candidates, target) {
+
+      const sulutionSet = [], temSet = []
+      let sum = 0
+      backtrack(0)
+      return sulutionSet
+
+      function backtrack(start) {
+        if (sum === target) {
+          sulutionSet.push(temSet.slice())
+        } else if (sum > target) {
+          return
+        }
+        for (let i = start; i < candidates.length; i++) {
+          // 进行选择
+          temSet.push(candidates[i])
+          sum += candidates[i]
+          // next track
+          backtrack(i)
+          // 撤销选择
+          temSet.pop(candidates[i])
+          sum -= candidates[i]
+        }
+      }
+    };
+
+    console.log(
+      pruneCombinationSum(
+        [2, 3, 5],
+        8
+      )
+    )
+  </script>
+</body>
