@@ -1,0 +1,45 @@
+<body>
+  <img src="http://picbed.sedationh.cn/20200729141146.png" alt="">
+  <script>
+    /**
+      * @param {number[]} nums
+      * @return {number[][]}
+      */
+    var permuteUnique = function (nums) {
+      nums.sort((a, b) => a - b)
+      /**
+       * 选下标不选数，再把重复的剪掉
+       */
+      const ans = [], temIndexAns = []
+      let used = null
+      backtrack(true)
+      return ans
+
+      // flag用于标记 是在进行树的深入选入还是本层的for结构
+      function backtrack(flag) {
+        if (temIndexAns.length === nums.length) {
+          ans.push(
+            temIndexAns.map(index => nums[index])
+          )
+          return
+        }
+        for (let i = 0; i < nums.length; i++) {
+          if (temIndexAns.includes(i)) continue
+          // 如果不是首次
+          if (!flag && nums[i] === used) continue
+          temIndexAns.push(i)
+          // 当在本层循环中添加了数字就不是首次了
+          flag = false
+          backtrack(true)
+          used = nums[temIndexAns.pop()]
+        }
+      }
+    };
+
+    console.log(
+      permuteUnique(
+        [2, 2, 1, 1]
+      )
+    )
+  </script>
+</body>

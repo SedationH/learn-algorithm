@@ -1,0 +1,56 @@
+<body>
+
+  <script>
+    /**
+     * @param {number[]} candidates
+     * @param {number} target
+     * @return {number[][]}
+     */
+    var combinationSum2 = function (candidates, target) {
+      // 排序的意义在于让相等的挨在一起,也便于剪枝
+      candidates.sort((a, b) => a - b)
+      const solution = [], temSolution = []
+      let sum = 0, flag = false
+      backtrack(0)
+      return solution
+
+      function backtrack(start) {
+        /**
+         * 当大于等于 就没必要再尝试了
+         */
+        if (sum > target) {
+          flag = true
+          return
+        }
+        if (sum === target) {
+          flag = true
+          solution.push(temSolution.slice())
+          return
+        }
+        /**
+         * 同一个for里选择的元素相同，下面的回溯一致，就创建了duplicate
+         * 可以把for想像成同一层的事情，递归是树形的深入结构
+         */
+        for (let i = start; i < candidates.length; i++) {
+          // 此时i!==start意味着在同一层的操作
+          if (i !== start && candidates[i] === candidates[i - 1]) continue
+          temSolution.push(candidates[i])
+          sum += candidates[i]
+          backtrack(i + 1)
+          temSolution.pop()
+          sum -= candidates[i]
+          if (flag) {
+            flag = false
+            break
+          }
+        }
+      }
+    };
+    console.log(
+      combinationSum2(
+        [10, 1, 2, 7, 6, 1, 5],
+        8
+      )
+    )
+  </script>
+</body>
