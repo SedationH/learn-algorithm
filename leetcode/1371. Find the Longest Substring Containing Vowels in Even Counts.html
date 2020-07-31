@@ -12,7 +12,7 @@
     // 前缀和
     var findTheLongestSubstring = function (s) {
       // 用来保存第一次出现某种状态的时候 对应的位置
-      // [i,j]中元音满足 等价于 [0,j]的state = [0,i-1]的state
+      // [i,j]中元音满足 等价于 [0,j]的state - [0,i-1]的state
       // 为了处理当i等于0的边界情况，引入-1,让初始状态在-1位置存在
       const prefixState = {
         0: -1
@@ -66,7 +66,7 @@
 
     console.log(
       findTheLongestSubstring(
-        "aa"
+        "ab"
       )
     )
   </script>

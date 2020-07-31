@@ -1,0 +1,81 @@
+<body>
+
+  <script>
+
+    class Heap {
+      constructor(initArray) {
+        this.heap = [...initArray]
+
+      }
+
+      /**
+       * 由上至下，从index开始，[index,end],end结束，包含end(下标)检查堆，保持最大堆的性质
+       * 使用前提是index的左右均为最大堆
+       */
+      maxHeapify(index, end) {
+        var
+          iMax = index,
+          iLeft = 2 * index + 1,
+          iRight = 2 * index + 2,
+          end = this.heap.length
+        if (iLeft <= end || iRight <= end) {
+          if (this.heap[iMax] < this.heap[iLeft]) {
+            iMax = iLeft
+          }
+          if (this.heap[iMax] < this.heap[iRight]) {
+            iMax = iRight
+          }
+        }
+        if (iMax !== index) {
+          [this.heap[iMax], this.heap[index]] = [this.heap[index], this.heap[iMax]]
+          // 查看调整后的位置时候需要接着调整
+          this.maxHeapify(iMax, end)
+        }
+      }
+      /**
+       * 通过调用maxHeapify自下而上改造this.heap，建立最大堆
+       * 因为是从最底层开始的，所以可以保证了在使用maxHeapify的时候，左右
+       * 子树均为满足条件的堆结构
+       */
+      buildMaxHeap() {
+        var
+          heapSize = this.heap.length,
+          // 找到最后一节点的parent，从这里开始
+          iParent = Math.floor((heapSize - 2) / 2)
+
+        for (let i = iParent; i >= 0; i--) {
+          this.maxHeapify(i, heapSize - 1)
+        }
+      }
+
+      showHeap() {
+        for (let i = 0; i < this.heap.length; i++) {
+          console.log(this.heap[i])
+        }
+        console.log('-----------')
+      }
+
+      /**
+       * 依据buildMaxHeap & maxHeapify[可用是因为以一次buildMaxHeap使得所需结构建立]
+       * 每次可以把最大的选出来，进行sort
+       * 最终是从小到大的排序
+       */
+      sortByMaxHeap() {
+        var heapSize = this.heap.length
+        this.buildMaxHeap()
+
+        for (let i = heapSize - 1; i > 0; i--) {
+          [this.heap[0], this.heap[i]] = [this.heap[i], this.heap[0]]
+          // 缩小范围，挑出最大的
+          this.maxHeapify(0, i - 1)
+        }
+      }
+    }
+
+    const hp = new Heap([1, 2, 3, 4, 5])
+    hp.buildMaxHeap()
+    hp.showHeap()
+    hp.sortByMaxHeap()
+    hp.showHeap()
+  </script>
+</body>
