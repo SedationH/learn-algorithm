@@ -1,0 +1,75 @@
+<body>
+
+  <script>
+    /**
+    * @param {number[]} nums
+    * @param {number} k
+    * @return {number}
+    */
+    var findKthLargest = function (nums, k) {
+
+      class Heap {
+        constructor(arr) {
+          this.heap = [...arr]
+        }
+
+        swap(a, b) {
+          [this.heap[a], this.heap[b]] = [this.heap[b], this.heap[a]]
+        }
+
+        maxHeapify(index, end) {
+          var
+            iMax = index,
+            iLeft = 2 * index + 1,
+            iRight = 2 * index + 2
+
+          if (iLeft <= end && this.heap[iMax] < this.heap[iLeft]) {
+            iMax = iLeft
+          }
+          if (iRight <= end && this.heap[iMax] < this.heap[iRight]) {
+            iMax = iRight
+          }
+          if (iMax !== index) {
+            this.swap(iMax, index)
+            this.maxHeapify(iMax, end)
+          }
+        }
+
+        buildMaxHeap() {
+          var
+            heapSize = this.heap.length,
+            iParent = Math.floor((heapSize - 2) / 2);
+
+          for (let i = iParent; i >= 0; i--) {
+            this.maxHeapify(i, heapSize - 1)
+          }
+        }
+
+        sortByMaxHeap(times) {
+          var
+            heapSize = this.heap.length,
+            ans;
+          this.buildMaxHeap()
+          for (let i = 0; i < times; i++) {
+            ans = this.heap[0]
+            this.swap(0, heapSize - i - 1)
+            this.maxHeapify(0, heapSize - i - 2)
+          }
+          return ans
+        }
+      }
+      /**
+       * 利用堆排序，排序k次第k大的数字就找出来了
+       */
+      const hp = new Heap(nums)
+      return hp.sortByMaxHeap(k)
+    };
+
+    console.log(
+      findKthLargest(
+        [3, 2, 1, 5, 6, 4],
+        2
+      )
+    )
+  </script>
+</body>

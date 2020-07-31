@@ -84,8 +84,8 @@ class Heap {
     var
       iMax = index,
       iLeft = 2 * index + 1,
-      iRight = 2 * index + 2,
-      end = this.heap.length
+      iRight = 2 * index + 2
+    
     if (iLeft <= end || iRight <= end) {
       if (this.heap[iMax] < this.heap[iLeft]) {
         iMax = iLeft

@@ -16,15 +16,12 @@
         var
           iMax = index,
           iLeft = 2 * index + 1,
-          iRight = 2 * index + 2,
-          end = this.heap.length
-        if (iLeft <= end || iRight <= end) {
-          if (this.heap[iMax] < this.heap[iLeft]) {
-            iMax = iLeft
-          }
-          if (this.heap[iMax] < this.heap[iRight]) {
-            iMax = iRight
-          }
+          iRight = 2 * index + 2;
+        if (iLeft <= end && this.heap[iMax] < this.heap[iLeft]) {
+          iMax = iLeft
+        }
+        if (iRight <= end && this.heap[iMax] < this.heap[iRight]) {
+          iMax = iRight
         }
         if (iMax !== index) {
           [this.heap[iMax], this.heap[index]] = [this.heap[index], this.heap[iMax]]
@@ -72,7 +69,7 @@
       }
     }
 
-    const hp = new Heap([1, 2, 3, 4, 5])
+    const hp = new Heap([3, 2, 1, 5, 6, 4])
     hp.buildMaxHeap()
     hp.showHeap()
     hp.sortByMaxHeap()
