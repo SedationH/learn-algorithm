@@ -1,0 +1,58 @@
+<body>
+
+  <script>
+    /**
+     * @param {number[][]} grid
+     * @return {number}
+     */
+    var minSwaps = function (grid) {
+      const n = grid.length
+      let ans = Infinity, cnt = 0
+      backtrack()
+      return ans === Infinity ? -1 : ans
+
+
+      /**
+       * 回溯 做选择,
+       * 注意，上次选过的不能再选
+       */
+      function backtrack(choosed) {
+        if (isValid()) {
+          ans = Math.min(ans, cnt)
+          return
+        }
+        for (let i = 0; i < n - 1; i++) {
+          if (i === choosed) continue
+          swap(i, i + 1)
+          cnt++
+          backtrack(i, i + 1)
+          swap(i + 1, i)
+          cnt--
+        }
+      }
+
+
+      function isValid() {
+        let flag = true
+        for (let i = n - 2; i >= 0; i--) {
+          for (let j = n - 1; j > i; j--) {
+            if (grid[i][j] === 1) {
+              flag = false
+            }
+          }
+        }
+        return flag
+      }
+
+      function swap(a, b) {
+        [grid[a], grid[b]] = [grid[b], grid[a]]
+      }
+    };
+
+    console.log(
+      minSwaps(
+        [[0, 1, 0, 0], [0, 1, 0, 0], [0, 1, 1, 0], [0, 1, 1, 0]]
+      )
+    )
+  </script>
+</body>

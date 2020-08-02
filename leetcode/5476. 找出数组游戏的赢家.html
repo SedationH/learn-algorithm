@@ -1,0 +1,32 @@
+<body>
+
+  <script>
+    /**
+     * @param {number[]} arr
+     * @param {number} k
+     * @return {number}
+     */
+    var getWinner = function (arr, k) {
+      let cnt = 0, max = Math.max(...arr)
+      const len = arr.length
+      while (cnt !== k) {
+        if(arr[0] === max) break
+        if (arr[0] > arr[1]) {
+          cnt++
+          arr.push(arr[1])
+          arr.splice(1, 1)
+        } else {
+          cnt = 1
+          arr.push(arr.shift())
+        }
+      }
+      return arr[0]
+    };
+
+    console.log(
+      getWinner(
+        arr = [1, 11, 22, 33, 44, 55, 66, 77, 88, 99], k = 1000000000
+      )
+    )
+  </script>
+</body>
