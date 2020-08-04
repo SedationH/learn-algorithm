@@ -1,11 +1,11 @@
 <body>
 
   <script>
-    let arrWithRepeat = [1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 4, 5]
+    let arrWithRepeat = [1, 1, 1, 2, 2, 2, 2, 4, 5]
 
     // 左边界
     // 寻找第一个大于等于tar的元素
-    function searchFirst(arr, tar) {
+    function searchFirst1(arr, tar) {
       let left = 0, right = arr.length - 1
       while (left < right) {
         let mid = Math.floor((left + right) / 2)
@@ -18,9 +18,29 @@
       return left
     }
 
+    function searchFirst2(arr, tar) {
+      let left = 0, right = arr.length - 1
+      while (left <= right) {
+        let mid = Math.floor((left + right) / 2)
+        if (arr[mid] < tar) {
+          left = mid + 1
+        } else {
+          right = mid - 1
+        }
+      }
+      return left
+    }
+
+    console.log(
+      searchFirst2(
+        [1, 1, 2, 2, 3],
+        0
+      )
+    )
+
     // 右边界
     // 寻找最后一个大约等于tar的元素
-    function searchLast(arr, tar) {
+    function searchLast1(arr, tar) {
       let left = 0, right = arr.length - 1
       while (left < right) {
         let mid = Math.ceil((left + right) / 2)
@@ -33,13 +53,26 @@
       return right
     }
 
-    console.log(
-      searchFirst(
-        arrWithRepeat, 2
-      ),
-      searchLast(
-        arrWithRepeat, 2
-      )
-    )
+    function searchLast2(arr, tar) {
+      let left = 0, right = arr.length - 1
+      while (left <= right) {
+        let mid = Math.floor((left + right) / 2)
+        if (arr[mid] > tar) {
+          right = mid - 1
+        } else {
+          left = mid + 1
+        }
+      }
+      return right
+    }
+
+    // console.log(
+    //   searchFirst1(
+    //     arrWithRepeat, 1.5
+    //   ),
+    //   searchLast1(
+    //     arrWithRepeat, 1.5
+    //   )
+    // )
   </script>
 </body>

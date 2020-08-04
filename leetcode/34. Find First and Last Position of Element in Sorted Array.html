@@ -5,11 +5,14 @@
       return [findLeft(nums, target), findRight(nums, target)]
     };
 
+    // 找到一个元素x，x前面的元素都严格小于x
     function findLeft(nums, tar) {
       let left = 0, right = nums.length - 1
       while (left < right) {
         let mid = Math.floor((left + right) / 2)
+        // 先判断哪些不是解的条件，进行排除
         if (nums[mid] < tar) {
+          // 一定不是解 需要进行排除 下一轮搜索区间 [mid+1,right]
           left = mid + 1
         } else {
           right = mid
@@ -18,11 +21,13 @@
       return nums[left] === tar ? left : -1
     }
 
+    // 找到一个元素y，y后面的元素都严格大于y
     function findRight(nums, tar) {
       let left = 0, right = nums.length - 1
       while (left < right) {
-        let mid = Math.floor((left + right) / 2) + 1
+        let mid = Math.ceil((left + right) / 2) 
         if (nums[mid] > tar) {
+          // 需要进行排除 下一轮搜索区间 [left,mid-1]
           right = mid - 1
         } else {
           left = mid

@@ -1,0 +1,36 @@
+<body>
+
+  <script>
+    /**
+      * @param {number[]} nums
+      * @param {number} target
+      * @return {number}
+      */
+    var search = function (nums, target) {
+      const len = nums.length
+      // 定义搜索区间为[0,len-1]
+      let left = 0, right = len - 1
+      // 只要搜索区间内还有元素，就执行循环
+      while (left <= right) {
+        const mid = Math.floor(left + (right - left) / 2)
+        if (nums[mid] === target) {
+          return mid
+        } else if (nums[mid] > target) {
+          // 下一轮搜索区间 [left,mid-1]
+          right = mid - 1
+        } else {
+          // 下一轮搜索区间 [mid+1,right]
+          left = mid + 1
+        }
+      }
+      return -1
+    };
+
+    console.log(
+      search(
+        nums = [-1, 0, 3, 5, 9, 12], target = 12
+      )
+    )
+
+  </script>
+</body>
