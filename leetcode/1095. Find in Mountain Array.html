@@ -1,0 +1,107 @@
+<body>
+
+  <script>
+    /**
+      * // This is the MountainArray's API interface.
+      * // You should not implement it, or speculate about its implementation
+      * function MountainArray() {
+      *     @param {number} index
+      *     @return {number}
+      *     this.get = function(index) {
+      *         ...
+      *     };
+      *
+      *     @return {number}
+      *     this.length = function() {
+      *         ...
+      *     };
+      * };
+      */
+    class MountainArray {
+      constructor(initArray) {
+        this.array = [...initArray]
+      }
+
+      get(index) {
+        return this.array[index]
+      }
+
+      length() {
+        return this.array.length
+      }
+    }
+
+
+    /**
+     * @param {number} target
+     * @param {MountainArray} mountainArr
+     * @return {number}
+     */
+    var findInMountainArray = function (target, mountainArr) {
+      const len = mountainArr.length()
+
+      const mountainIndex = getMountainIndex()
+      // 分别在[0,mountainIndex] 区间和[mountainIndex+1,len-1]两个区间进行搜索 target
+      const ans = Math.min(
+        BinarySearch1(0, mountainIndex),
+        BinarySearch2(mountainIndex + 1, len - 1)
+      )
+      return ans === Infinity ? -1 : ans
+
+
+      function getMountainIndex() {
+        const len = mountainArr.length()
+        let left = 0, right = len - 1
+        while (left < right) {
+          const mid = Math.floor(left + (right - left) / 2)
+          if (mountainArr.get(mid) < mountainArr.get(mid + 1)) {
+            left = mid + 1
+          } else {
+            right = mid
+          }
+        }
+        return left
+      }
+
+      // [start, end] 升序序列
+      function BinarySearch1(start, end) {
+        let left = start, right = end
+        while (left <= right) {
+          const mid = Math.floor(left + (right - left) / 2)
+          if (mountainArr.get(mid) < target) {
+            left = mid + 1
+          } else if (mountainArr.get(mid) > target) {
+            right = mid - 1
+          } else {
+            return mid
+          }
+        }
+        return Infinity
+      }
+
+      function BinarySearch2(start, end) {
+        let left = start, right = end
+        while (left <= right) {
+          const mid = Math.floor(left + (right - left) / 2)
+          if (mountainArr.get(mid) < target) {
+            right = mid - 1
+          } else if (mountainArr.get(mid) > target) {
+            left = mid + 1
+          } else {
+            return mid
+          }
+        }
+        return Infinity
+      }
+    };
+
+    console.log(
+      findInMountainArray(
+        3,
+        new MountainArray(
+          [0, 1, 2, 4, 2, 1]
+        ),
+      )
+    )
+  </script>
+</body>

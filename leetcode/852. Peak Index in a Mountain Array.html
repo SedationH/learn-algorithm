@@ -1,0 +1,29 @@
+<body>
+
+  <script>
+    /**
+      * @param {number[]} A
+      * @return {number}
+      */
+    var peakIndexInMountainArray = function (A) {
+      const len = A.length
+      let left = 0, right = len - 1
+      while (left < right) {
+        const mid = Math.floor(left + (right - left) / 2)
+        if (A[mid] < A[mid + 1]) {
+          // 当前是递增区间
+          left = mid + 1
+        } else {
+          right = mid
+        }
+      }
+      return left
+    };
+
+    console.log(
+      peakIndexInMountainArray(
+        [0, 2, 1, 0]
+      )
+    )
+  </script>
+</body>
