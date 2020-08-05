@@ -25,7 +25,7 @@
     function findRight(nums, tar) {
       let left = 0, right = nums.length - 1
       while (left < right) {
-        let mid = Math.ceil((left + right) / 2) 
+        let mid = Math.ceil((left + right) / 2)
         if (nums[mid] > tar) {
           // 需要进行排除 下一轮搜索区间 [left,mid-1]
           right = mid - 1

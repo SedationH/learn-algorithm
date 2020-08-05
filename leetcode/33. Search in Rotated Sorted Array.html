@@ -1,0 +1,77 @@
+<body>
+  两种写法 因为floor和ceil的差异而产生
+  <script>
+    /**
+      * @param {number[]} nums
+      * @param {number} target
+      * @return {number}
+      */
+    var search = function (nums, target) {
+      const len = nums.length
+      let left = 0, right = len - 1
+      while (left < right) {
+        const mid = Math.ceil(left + (right - left) / 2)
+
+        if (nums[mid] < nums[right]) {
+          // [mid,right]有序
+          // 先写好判断的情况
+          if (target >= nums[mid] && target <= nums[right]) {
+            left = mid
+          } else {
+            right = mid - 1
+          }
+
+        } else {
+          /**
+           * 数字都不相等，要么 < 要么 >
+           * [left,mid]有序
+           * 但为了mid的计算统一 我们仅仅认为[left,mid-1]有序 
+           * 这一点的理解需要晓得 left || mid = mid  floor ceil 三者的关系
+           */
+          if (target >= nums[left] && target <= nums[mid - 1]) {
+            right = mid - 1
+          } else {
+            left = mid
+          }
+        }
+      }
+      return nums[left] === target ? left : -1
+    };
+
+    var search2 = function (nums, target) {
+      const len = nums.length
+      let left = 0, right = len - 1
+      while (left < right) {
+        const mid = Math.floor(left + (right - left) / 2)
+
+        if (nums[mid] < nums[right]) {
+          // [mid,right]有序
+          // 先写好判断的情况
+          // 为了统一判读 仅仅认为[mid + 1, right]有序
+          if (target >= nums[mid + 1] && target <= nums[right]) {
+            left = mid + 1
+          } else {
+            right = mid
+          }
+
+        } else {
+          /**
+           * [left,mid]有序
+           */
+          if (target >= nums[left] && target <= nums[mid]) {
+            right = mid
+          } else {
+            left = mid + 1
+          }
+        }
+      }
+      return nums[left] === target ? left : -1
+    };
+
+    console.log(
+      search2(
+        [4, 5, 6, 7, 0, 1, 2], 2
+      )
+    )
+  </script>
+</body>
