@@ -1,7 +1,7 @@
 <body>
 
   <script>
-    var findClosestElements = function (arr, k, x) {
+    var findClosestElements1 = function (arr, k, x) {
       let left = 0, right = arr.length - 1
       while (left + 1 < right) {
         let mid = Math.floor((left + right) / 2)
@@ -37,10 +37,55 @@
       }
       return ans.sort((a, b) => a - b)
     };
+
+    var findClosestElements = function (arr, k, x) {
+      // 在[0,len-1]范围内寻找到第一个大于等于x，如果没有x，就定在左右边界
+      const len = arr.length
+      let left = 0, right = len - 1
+      while (left < right) {
+        const mid = Math.floor(left + (right - left) / 2)
+        if (arr[mid] < x) {
+          left = mid + 1
+        } else {
+          right = mid
+        }
+      }
+      // 寻找到了起始位置
+      const index = left
+      // 利用两个指针i,j分别向左和向右判断
+      const ans = []
+      /**
+       * 这里的细节值得注意 我们寻找到的位置是第一个大于等于x的位置
+       * 所以arr[x]不一定是x 我们仍然要判断这个位置与x的差值
+       */
+      let i = index - 1, j = index, cnt = 0
+      while (i >= 0 && j <= len - 1 && cnt !== k) {
+        if (x - arr[i] <= arr[j] - x) {
+          ans.push(arr[i])
+          i--
+        } else {
+          ans.push(arr[j])
+          j++
+        }
+        cnt++
+      }
+      while (cnt !== k ) {
+        if (i >= 0) {
+          ans.push(arr[i])
+          i--
+        } else {
+          ans.push(arr[j])
+          j++
+        }
+        cnt++
+      }
+      return ans.sort((a, b) => a - b)
+    }
+
     console.log(
       findClosestElements(
-        [1, 2, 3, 4, 5],
-        4, 3
+        [0, 1, 1, 1, 2, 3, 6, 7, 8, 9],
+        9, 4
       )
     )
   </script>

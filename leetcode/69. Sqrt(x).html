@@ -1,7 +1,7 @@
 <body>
 
   <script>
-    var solution = function (x) {
+    var mySqrt1 = function (x) {
       // 非负整数[0-Infinity]
       if (x === 0) return 0
       if (x === 1) return 1
@@ -27,7 +27,7 @@
       * @param {number} x
       * @return {number}
       */
-    var mySqrt = function (x) {
+    var mySqrt2 = function (x) {
       let l = 0, r = x
       // 规定搜索区间为[l,r]
       while (l <= r) {
@@ -43,8 +43,23 @@
       return r
     };
 
+    // 利用减治思想能够很快写出来，思考很容易
+    var mySqrt = function (x) {
+      let left = 0, right = x
+      // 找到第一个小于等于sqrt(x)de 值
+      while (left < right) {
+        const mid = Math.ceil(left + (right - left) / 2)
+        if (mid * mid > x) {
+          right = mid - 1
+        } else {
+          left = mid
+        }
+      }
+      return left
+    }
+
     console.log(
-      mySqrt(1)
+      mySqrt(10)
     )
   </script>
 </body>
