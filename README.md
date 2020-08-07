@@ -4,6 +4,7 @@
 
 - [算法小炒](https://labuladong.gitbook.io/algo/)
 - [leetcode](https://leetcode.wang/)
+- [喜欢❤️](https://www.liwei.party/)
 
 
 ## Tips
