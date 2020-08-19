@@ -1,0 +1,62 @@
+<body>
+
+  <script>
+    /**
+      * @param {string} s
+      * @param {string} p
+      * @return {number[]}
+      */
+    var findAnagrams = function (s, p) {
+      const
+        lenS = s.length,
+        lenP = p.length,
+        state = Array(26).fill(0),
+        sample = Array(26).fill(0),
+        ans = []
+      if (lenS === 0 || lenP > lenS) return []
+      // init
+      for (let i = 0; i < lenP; i++) {
+        state[
+          getCharCode(s[i])
+        ]++
+        sample[
+          getCharCode(p[i])
+        ]++
+      }
+      if (isEqual()) ans.push(0)
+      let l = 1, r = l + lenP - 1
+      while (r < s.length) {
+        // 状态更新 刚刚去掉的，新加入的
+        state[
+          getCharCode(s[l - 1])
+        ]--
+        state[
+          getCharCode(s[r])
+        ]++
+        if (isEqual()) ans.push(l)
+        l++, r++
+      }
+
+      return ans
+
+      function getCharCode(s) {
+        // a charAt 97
+        return s.charCodeAt() - 97
+      }
+
+      function isEqual() {
+        for (let i = 0; i < 26; i++) {
+          if (state[i] !== sample[i]) return false
+        }
+        return true
+      }
+    };
+
+    console.log(
+      findAnagrams(
+        "baa",
+        "aaaaa"
+      )
+    )
+  </script>
+</body>
