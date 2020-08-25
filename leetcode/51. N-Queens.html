@@ -1,0 +1,53 @@
+<body>
+
+  <script>
+    var solveNQueens = function (n) {
+      /**
+       * track中的值表示所在列，值对应的index表示所在行
+       * 默认完成了对于行不重复的要求
+       */
+      const track = [], ans = []
+
+      backtrack()
+
+      return ans.map(track =>
+        track.map(number => {
+          const arr = Array(n).fill('.')
+          arr[number] = 'Q'
+          return arr.join('')
+        })
+      )
+
+      function backtrack() {
+        if (track.length === n) {
+          ans.push(track.slice())
+          return
+        }
+
+        for (let i = 0; i < n; i++) {
+          if (!isValid(i)) continue
+          track.push(i)
+          backtrack()
+          track.pop()
+        }
+      }
+
+      // 判断当前i值加入皇后是否可行
+      function isValid(i) {
+        // 没有在同一列的
+        if (track.includes(i)) return false
+        const x = i, y = track.length
+        for (let i = 0; i < track.length; i++) {
+          const xi = track[i], yi = i
+          if (x + y === xi + yi || x - xi === y - yi) return false
+        }
+
+        return true
+      }
+    };
+
+    console.log(
+      solveNQueens(5)
+    )
+  </script>
+</body>
