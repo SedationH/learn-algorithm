@@ -1,0 +1,36 @@
+<body>
+
+  <script>
+
+    /**
+     * 回溯进行选择 + 通过字符串+set去重即可
+     */
+    var findSubsequences = function (nums) {
+      const ans = new Set(), tarck = [], len = nums.length
+      backtrack(0)
+
+      return Array.from(
+        ans,
+        str => str.split(',').map(char => Number(char))
+      )
+
+      function backtrack(start) {
+        if (tarck.length > 1) {
+          ans.add(tarck.join(','))
+        }
+        for (let i = start; i < len; i++) {
+          if (nums[i] < tarck[tarck.length - 1]) continue
+          tarck.push(nums[i])
+          backtrack(i + 1)
+          tarck.pop()
+        }
+      }
+    };
+
+    console.log(
+      findSubsequences(
+        [1, 2, 3]
+      )
+    )
+  </script>
+</body>

@@ -36,6 +36,7 @@
       function isValid(i) {
         // 没有在同一列的
         if (track.includes(i)) return false
+        // 注意理清楚横纵坐标
         const x = i, y = track.length
         for (let i = 0; i < track.length; i++) {
           const xi = track[i], yi = i
