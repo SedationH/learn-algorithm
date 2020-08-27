@@ -1,0 +1,35 @@
+<body>
+
+  <script>
+    /**
+    * @param {string} S
+    * @return {string[]}
+    */
+    var permutation = function (S) {
+      const
+        ans = [],
+        track = [],
+        len = S.length
+
+      backtrack()
+
+      return ans
+
+      function backtrack() {
+        if (track.length === len) ans.push(track.join(''))
+        for (let i = 0; i < len; i++) {
+          if (track.includes(S[i])) continue
+          track.push(S[i])
+          backtrack()
+          track.pop()
+        }
+      }
+    };
+
+    console.log(
+      permutation(
+        "qwe"
+      )
+    )
+  </script>
+</body>

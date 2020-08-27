@@ -1,0 +1,124 @@
+<body>
+
+  <script>
+
+    /**
+    * @param {number} n
+    * @return {string[]}
+    */
+    var generateParenthesis = function (n) {
+      const ans = []
+
+      dfs(0, 0, '')
+
+      return ans
+
+      /**
+       * 左括号 右括号 当前合成字串
+       */
+      function dfs(left, right, str) {
+        if (left < right || left > n || right > n) return
+        if (left === n && right === n) {
+          ans.push(str)
+          return
+        }
+        dfs(left + 1, right, str + '(')
+        dfs(left, right + 1, str + ')')
+      }
+    };
+
+    // 上面方法的回溯模版
+    /**
+     * str的维护交给栈空间 代替了stack的作用!!!
+     */
+    var solution2 = function (n) {
+      const ans = [], track = []
+
+      backtrack(0, 0)
+      return ans
+
+
+      function backtrack(left, right) {
+        if (left < right || left > n || right > n) return
+        if (left === n && right === n) {
+          ans.push(track.join(''))
+          return
+        }
+        // 进行选择
+        track.push('(')
+        backtrack(left + 1, right)
+        track.pop()
+        // 进行选择
+        track.push(')')
+        backtrack(left, right + 1)
+        track.pop()
+      }
+    }
+
+
+    // 超时
+    var solution1 = function (n) {
+      /**
+       * track中存的是所选择的位置
+       */
+      const
+        choose = Array(n).fill('()').join(''),
+        track = [],
+        ans = []
+      let popInfo = []
+
+      backtrack()
+
+      return Array.from(new Set(ans))
+
+      function backtrack() {
+        if (track.length === n * 2) {
+          if (isValid(track)) {
+            ans.push(
+              track
+                .map(i => choose[i])
+                .join('')
+            )
+          }
+        }
+
+        for (let i = 0; i < n * 2; i++) {
+          if (track.includes(i)) continue
+          if (
+            track.length === popInfo[1] &&
+            choose[i] === popInfo[0]
+          ) continue
+          track.push(i)
+          backtrack()
+          popInfo = [choose[track.pop()], track.length]
+        }
+        /**
+         * 如何确认popChar是通过当前层次的选择
+         */
+      }
+
+      function isValid(track) {
+        const
+          arr = track.map(i => choose[i]),
+          stack = []
+        for (let i = 0; i < n * 2; i++) {
+          if (arr[i] === '(') {
+            stack.push('(')
+          } else {
+            if (stack.pop() === undefined) {
+              return false
+            }
+          }
+        }
+        return true
+      }
+    };
+
+    console.log(
+      solution2(
+        3
+      )
+    )
+
+  </script>
+</body>

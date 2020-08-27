@@ -1,0 +1,25 @@
+<body>
+
+  <script>
+    var generateParenthesis = function (n) {
+      const ans = []
+
+      dfs(0, 0, '')
+
+      return ans
+
+      /**
+       * 左括号 右括号 当前合成字串
+       */
+      function dfs(left, right, str) {
+        if (left < right || left > n || right > n) return
+        if (left === n && right === n) {
+          ans.push(str)
+          return
+        }
+        dfs(left + 1, right, str + '(')
+        dfs(left, right + 1, str + ')')
+      }
+    };
+  </script>
+</body>
