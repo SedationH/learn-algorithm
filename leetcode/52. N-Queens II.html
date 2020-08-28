@@ -1,7 +1,7 @@
 <body>
 
   <script>
-    var solveNQueens = function (n) {
+    var totalNQueens = function (n) {
       /**
        * track中的值表示所在列，值对应的index表示所在行
        * 默认完成了对于行不重复的要求
@@ -10,13 +10,7 @@
 
       backtrack()
 
-      return ans.map(track =>
-        track.map(number => {
-          const arr = Array(n).fill('.')
-          arr[number] = 'Q'
-          return arr.join('')
-        })
-      )
+      return ans.length
 
       function backtrack() {
         if (track.length === n) {
@@ -51,13 +45,9 @@
           // add ↗️ sub ↘️
           if (x + y === xi + yi || x - xi === y - yi) return false
         }
-        
+
         return true
       }
     };
-
-    console.log(
-      solveNQueens(5)
-    )
   </script>
 </body>

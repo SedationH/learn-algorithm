@@ -1,6 +1,14 @@
 # 回溯
 
-回溯的核心在于选择与撤销选择
+回溯算法就是在树形图上的深度优先遍历
+
+具体来说回溯：指回到上一个节点(树的角度)/回到上一次选择 -> 回溯
+
+回溯是现象，本质是DFS
+
+通过track对每个选择的信息进行保存
+
+
 
 通用版子
 
@@ -79,4 +87,14 @@ var combinationSum = function (candidates, target) {
   }
 };
 ```
+
+
+
+## Tip
+
+track因为是引用传递，具体修改的是地址，调用栈无法为我们进行管理（仔细体会值传递和引用传递  又或者说是 Primitives & Object的区别）
+
+但当我们所需要的状态是string (Primitive stirng)进行维护的，那么我们便不用自己维护了
+
+e.g. [22. Generate Parentheses](https://leetcode-cn.com/problems/generate-parentheses/)
 
