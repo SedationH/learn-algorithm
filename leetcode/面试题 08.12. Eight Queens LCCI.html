@@ -1,0 +1,65 @@
+<body>
+
+  <script>
+    /**
+    * @param {number} n
+    * @return {string[][]}
+    */
+    var solveNQueens = function (n) {
+      const
+        // track中存储的是列值
+        ans = [], track = []
+
+      backtrack()
+
+      return ans.map(arr => (
+        arr.map(
+          index => {
+            const tem = Array(n).fill('.')
+            tem[index] = 'Q'
+            return tem.join('')
+          }
+        )
+      ))
+
+      function backtrack() {
+        if (track.length === n) {
+          ans.push(track.slice())
+          return
+        }
+        for (let i = 0; i < n; i++) {
+          if (!isValid(i)) continue
+          track.push(i)
+          backtrack()
+          track.pop()
+        }
+      }
+
+      /**
+       * 判断当前位置是否满足要求
+       */
+      function isValid(x) {
+        if (track.includes(x)) return false
+        const
+          len = track.length,
+          y = len
+        for (let i = 0; i < len; i++) {
+          const
+            xi = track[i],
+            yi = i
+          // (x,y)为当前判断位置 (xi,yi)是track中已经存放的位置
+          /**
+           *  ↗️ add same
+           *  ↘️ sub same
+           */
+          if (x + y === xi + yi || x - y === xi - yi) return false
+        }
+        return true
+      }
+    };
+
+    console.log(
+      solveNQueens(4)
+    )
+  </script>
+</body>

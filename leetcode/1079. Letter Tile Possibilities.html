@@ -1,0 +1,45 @@
+<body>
+
+  <script>
+    /**
+     * @param {string} tiles
+     * @return {number}
+     */
+    var numTilePossibilities = function (tiles) {
+      const
+        ans = [],
+        // 存的是index
+        track = [],
+        len = tiles.length
+      // [层，valve]
+      let popTile = []
+      // 把相同的放在一起，同层选择剪枝
+      tiles = tiles.split('').sort()
+
+      backtrack()
+
+      return ans
+
+      function backtrack() {
+        for (let i = 0; i < len; i++) {
+          if (
+            track.includes(i) ||
+            track.length === popTile[0] && tiles[i] === tiles[popTile[1]]
+          ) continue
+          track.push(i)
+          backtrack()
+          popTile = [track.length, track.pop()]
+        }
+        if (track.length !== 0) {
+          ans.push(track.map(i => tiles[i]).join(''))
+        }
+      }
+    };
+
+    console.log(
+      numTilePossibilities(
+        'ABA'
+      )
+    )
+  </script>
+</body>

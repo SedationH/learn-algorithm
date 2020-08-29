@@ -1,0 +1,39 @@
+<body>
+
+  <script>
+    /**
+     * @param {number} n 选择范围
+     * @param {number} k 选择个数
+     * @return {number[][]}
+     */
+    var combine = function (n, k) {
+      const
+        ans = [],
+        track = []
+
+      backtrack()
+
+      return ans
+
+      function backtrack(start = 1) {
+        if (track.length === k) {
+          ans.push(track.slice())
+          return
+        }
+        for (let i = start; i <= n; i++) {
+          if (track.includes(i)) continue
+          track.push(i)
+          backtrack(i + 1)
+          track.pop()
+        }
+      }
+    };
+
+    console.log(
+      combine(
+        4,
+        2
+      )
+    )
+  </script>
+</body>
