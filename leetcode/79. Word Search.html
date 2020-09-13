@@ -8,20 +8,22 @@
       */
     var exist = function (board, word) {
       const
-        lenX = board.length,
-        lenY = board[0].length,
+        row = board.length,
+        col = board[0].length,
         lenWord = word.length,
-        visited = Array.from({ length: 210 }).fill(Array(210).fill(false))
+        visited = Array.from({ length: 210 }, () => Array(210).fill(false))
       // 用于查找到后快速跳出
       let flag = false
       const dire = [
         [-1, 0], [0, 1], [1, 0], [0, -1]
       ]
-      for (let i = 0; i < lenX; i++) {
-        for (let j = 0; j < lenY; j++) {
+      for (let i = 0; i < row; i++) {
+        for (let j = 0; j < col; j++) {
 
           if (board[i][j] === word[0]) {
+            visited[i][j] = true
             backtrack(i, j, 0)
+            visited[i][j] = false
             if (flag) return true
           }
         }
@@ -41,22 +43,72 @@
             nextX = x + dire[k][0],
             nextY = y + dire[k][1]
           if (canVist(nextX, nextY)) {
-            visited[x][y] = true
+            visited[nextX][nextY] = true
             backtrack(nextX, nextY, wordIndex + 1)
-            visited[x][y] = false
+            visited[nextX][nextY] = false
           }
         }
       }
 
       function canVist(x, y) {
-        return x >= 0 && x < lenX && y >= 0 && y < lenY && !visited[x][y]
+        return x >= 0 && x < row && y >= 0 && y < col && !visited[x][y]
       }
     };
+
+    // var exist = function (board, word) {
+    //   // 找到一个起点，尝试下一步，看结果，再返回上一步，走别的
+    //   if (board.length == 0) return false
+    //   if (word.length == 0) return false
+    //   // 列
+    //   const row = board.length
+    //   // 行
+    //   const col = board[0].length
+
+    //   // 递归+回溯
+
+    //   // 起点 0
+    //   for (let i = 0; i < row; i++) {
+    //     for (let j = 0; j < col; j++) {
+    //       const ret = find(i, j, 0)
+    //       if (ret) return true
+    //     }
+    //   }
+    //   // 如果没有找到
+    //   return false
+
+    //   // 递归函数
+    //   function find(i, j, index) {
+    //     // 1、终止条件判断
+    //     if (i >= row || i < 0) return false
+    //     if (j >= col || j < 0) return false
+    //     const letter = board[i][j]
+    //     // 当前字母不匹配
+    //     if (letter != word[index]) return false
+    //     // 找到最后一个还相等
+    //     if (index == word.length - 1) return true
+
+    //     // 2、做标记
+    //     board[i][j] = null
+    //     // 3、递归进行查找下一个，查这个字母的上下左右
+    //     const ret =
+    //       find(i + 1, j, index + 1) ||
+    //       find(i - 1, j, index + 1) ||
+    //       find(i, j + 1, index + 1) ||
+    //       find(i, j - 1, index + 1)
+    //     // 4、撤回标记,方便后续别的字母查找
+    //     board[i][j] = letter
+    //     return ret
+    //   }
+    // };
 
     console.log(
       exist(
         [["A", "B", "C", "E"], ["S", "F", "C", "S"], ["A", "D", "E", "E"]],
-        "ABCCED"
+        "ABE"
+      ),
+      exist(
+        [["a", "a"]],
+        'aa'
       )
     )
   </script>
