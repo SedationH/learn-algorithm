@@ -1,0 +1,57 @@
+<body>
+
+  <script>
+    /**
+     * 比较难理解的部分在为什么不尽量减少每条船剩下的weight 而是用最大的和最小的
+     * 如 1 2 4 5 limit = 7
+     * 为什么不采用(2,5) (1,4) 而是 (1,5)(2,4)
+     * 注意前提，每条船最多只能有两个人,剩下多少是无所谓的
+     * 其关键在于只要2能与5(max)配，那么2就能与其他的值配，不会出现2选不上的情况
+     * 这样就把计算速度提升了很多
+     */
+    var numRescueBoats = function (people, limit) {
+      people.sort((a, b) => a - b)
+      let ans = 0, left = 0, right = people.length - 1
+      // 每条船上只能上两人,任意 people[i] <= limit
+      while (left <= right) {
+        ans++
+        if (people[left] + people[right] <= limit) {
+          left++, right--
+        } else {
+          right--
+        }
+      }
+      return ans
+    };
+
+    var TIMEOUTSolution = function (people, limit) {
+      people.sort((a, b) => b - a)
+      let ans = 0
+      while (people.length !== 0) {
+        ans++
+        let leftWeight = limit - people[0]
+        const needToDelete = [0]
+        if (leftWeight > 0) {
+          // 在剩下的里面找合适的数放进来，从大的开始尝试,
+          // Each boat carries at most 2 people at the same time,
+          for (let i = 1; i < people.length; i++) {
+            if (people[i] <= leftWeight) {
+              leftWeight -= people[i]
+              needToDelete.push(i)
+              break
+            }
+          }
+        }
+        // 从people中将数据删除
+        people = people.filter((_, i) => !needToDelete.includes(i))
+      }
+      return ans
+    };
+
+    console.log(
+      numRescueBoats(
+        [1, 2, 4, 5], 7
+      )
+    )
+  </script>
+</body>
