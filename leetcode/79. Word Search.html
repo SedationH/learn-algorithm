@@ -1,0 +1,63 @@
+<body>
+
+  <script>
+    /**
+      * @param {character[][]} board
+      * @param {string} word
+      * @return {boolean}
+      */
+    var exist = function (board, word) {
+      const
+        lenX = board.length,
+        lenY = board[0].length,
+        lenWord = word.length,
+        visited = Array.from({ length: 210 }).fill(Array(210).fill(false))
+      // 用于查找到后快速跳出
+      let flag = false
+      const dire = [
+        [-1, 0], [0, 1], [1, 0], [0, -1]
+      ]
+      for (let i = 0; i < lenX; i++) {
+        for (let j = 0; j < lenY; j++) {
+
+          if (board[i][j] === word[0]) {
+            backtrack(i, j, 0)
+            if (flag) return true
+          }
+        }
+      }
+      return false
+
+      function backtrack(x, y, wordIndex) {
+        if (board[x][y] !== word[wordIndex] || flag) {
+          return
+        }
+        if (wordIndex === lenWord - 1) {
+          flag = true
+          return
+        }
+        for (let k = 0; k < 4; k++) {
+          const
+            nextX = x + dire[k][0],
+            nextY = y + dire[k][1]
+          if (canVist(nextX, nextY)) {
+            visited[x][y] = true
+            backtrack(nextX, nextY, wordIndex + 1)
+            visited[x][y] = false
+          }
+        }
+      }
+
+      function canVist(x, y) {
+        return x >= 0 && x < lenX && y >= 0 && y < lenY && !visited[x][y]
+      }
+    };
+
+    console.log(
+      exist(
+        [["A", "B", "C", "E"], ["S", "F", "C", "S"], ["A", "D", "E", "E"]],
+        "ABCCED"
+      )
+    )
+  </script>
+</body>
