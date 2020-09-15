@@ -1,0 +1,53 @@
+<body>
+
+  <script>
+    /**
+     * @param {string} s
+     * @return {string}
+     */
+    var replaceSpace = function (s) {
+      /**
+       * 不同语言对于str是否可变处理不一样
+       * mutable  py java js 新字符串遍历添加
+       */
+      let ansStr = ""
+      for (const char of s) {
+        if (char !== ' ') {
+          ansStr += char
+        } else {
+          ansStr += '%20'
+        }
+      }
+      return ansStr
+    };
+    /**
+     * @param {string} s
+     * @return {string}
+     */
+    var replaceSpace2 = function (s) {
+      // immutable c++  原地修改 修改注意扩容两个指针从后往前进行
+      const list = s.split('')
+      let cntSpace = 0
+      for (const char of list) {
+        if (char === ' ') cntSpace++
+      }
+      let i = list.length - 1, j = i + cntSpace * 2
+      while (i !== -1) {
+        if (list[i] === ' ') {
+          list[j] = '0', j--
+          list[j] = '2', j--
+          list[j] = '%', j--
+        } else {
+          list[j] = list[i], j--
+        }
+        i--
+      }
+      return list.join('')
+    }
+
+    console.log(
+      replaceSpace("We are happy."),
+      replaceSpace2("We are happy.")
+    )
+  </script>
+</body>

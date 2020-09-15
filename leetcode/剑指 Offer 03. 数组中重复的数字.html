@@ -1,0 +1,19 @@
+<body>
+
+  <script>
+    /**
+     * 上来就想到的解法
+     * 时间 O(n* n/2) => O(n^2) 空间 O(1)
+     */
+    var findRepeatNumber = function (nums) {
+      for (let i = 0; i < nums.length; i++) {
+        if (nums.indexOf(nums[i], i + 1) !== -1) {
+          return nums[i]
+        }
+      }
+    };
+    /**
+     * 使用set
+     */
+  </script>
+</body>
