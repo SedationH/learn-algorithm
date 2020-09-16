@@ -1,0 +1,38 @@
+<body>
+
+  <script>
+
+    function TreeNode(val) {
+      this.val = val;
+      this.left = this.right = null;
+    }
+    /**
+     * @param {number[]} preorder
+     * @param {number[]} inorder
+     * @return {TreeNode}
+     */
+    var buildTree = function (preorder, inorder) {
+      return help(0, preorder.length, 0, inorder.length)
+
+      function help(pStart, pEnd, iStart, iEnd) {
+        if (pStart >= pEnd) return null
+        const head = new TreeNode(preorder[pStart])
+        let leftCnt = 0, i = iStart
+        for (; i < iEnd; i++) {
+          if (inorder[i] !== preorder[pStart]) leftCnt++
+          else break
+        }
+        head.left = help(pStart + 1, pStart + 1 + leftCnt, iStart, i)
+        head.right = help(pStart + 1 + leftCnt, pEnd, i + 1, pEnd)
+        return head
+      }
+    };
+
+    console.log(
+      buildTree(
+        [3, 9, 20, 15, 7],
+        [9, 3, 15, 20, 7]
+      )
+    )
+  </script>
+</body>

@@ -1,0 +1,39 @@
+<body>
+
+  <script src="kit/ListNode.js"></script>
+  <script>
+    /**
+     * Definition for singly-linked list.
+     * function ListNode(val) {
+     *     this.val = val;
+     *     this.next = null;
+     * }
+     */
+    /**
+     * @param {ListNode} head
+     * @return {number[]}
+     */
+    var reversePrint = function (head) {
+      const ans = []
+      help(head)
+      return ans
+
+      function help(head) {
+        if (head === null) return
+        help(head.next)
+        ans.push(head.val)
+      }
+    };
+
+    const linkList = Array2ListNode([1, 3, 2])
+
+    ShowListNode(linkList)
+
+
+    console.log(
+      reversePrint(
+        linkList
+      )
+    )
+  </script>
+</body>
