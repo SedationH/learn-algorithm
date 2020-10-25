@@ -1,0 +1,40 @@
+<script>
+  // 利用动态规划，记录某一点的左边数字情况和右边数字情况
+  /**
+   * @param {number[]} A
+   * @return {number}
+   */
+  var longestMountain = function (A) {
+    // dpl[i]的定义，包含A[i]这个数字，最长的严格递增数列长度
+    const dpl = [],
+      dpr = [],
+      len = A.length
+    for (let i = 0; i < len; i++) {
+      if (i > 0 && A[i - 1] < A[i]) {
+        dpl[i] = dpl[i - 1] + 1
+      } else {
+        dpl[i] = 1
+      }
+    }
+    for (let i = len - 1; i >= 0; i--) {
+      if (i < len - 1 && A[i] > A[i + 1]) {
+        dpr[i] = dpr[i + 1] + 1
+      } else {
+        dpr[i] = 1
+      }
+    }
+    let ans = 0
+    for (let i = 0; i < len; i++) {
+      if (dpl[i] > 1 && dpr[i] > 1) {
+        ans = Math.max(ans, dpl[i] + dpr[i] - 1)
+      }
+    }
+    return ans
+  }
+
+  console.log(
+    longestMountain([0, 1, 4, 7, 3, 2, 5]),
+    longestMountain([2, 2, 2]),
+    longestMountain([1, 2, 3, 4, 5])
+  )
+</script>

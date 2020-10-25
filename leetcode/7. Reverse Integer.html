@@ -1,0 +1,33 @@
+<body>
+
+  <script>
+    // 以下为伪代码
+    var reverse = function (x) {
+      // 关键点在于对x反转的时候可能造成溢出，如何解决这个问题
+      // js是不存在这个问题的的
+      // 对于Java来说 可以暂时使用更大范围的值包含中间过程,进行比较
+      let ans = 0 //use long
+      while (x) {
+        ans = ans * 10 + x % 10
+        x /= 10
+      }
+
+      // 比较的时候默认转向范围最大的
+      return ans >= -Math.pow(2, 32) && ans <= (Math.pow(2, 32) - 1) ? ans : 0
+    };
+
+    // 暴力字符串
+    var reverse = function (x) {
+      const revX = Math.abs(x).toString().split('').reverse().join('')
+      if (x > 0) {
+        return revX <= (Math.pow(2, 32) - 1) ? revX : 0
+      } else {
+        return -revX >= -Math.pow(2, 32) ? -revX : 0
+      }
+    }
+
+    console.log(
+      reverse(-123)
+    )
+  </script>
+</body>
