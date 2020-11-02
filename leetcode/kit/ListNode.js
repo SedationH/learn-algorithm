@@ -5,11 +5,12 @@
  * @FilePath: /learn-algorithm/leetcode/kit/ListNode.js
  */
 function ListNode(val) {
-  this.val = val;
-  this.next = null;
+  this.val = val
+  this.next = null
 }
 function Array2ListNode(arr) {
-  let head = new ListNode(arr[0]), p = head
+  let head = new ListNode(arr[0]),
+    p = head
   for (let i = 1; i < arr.length; i++) {
     p.next = new ListNode(arr[i])
     p = p.next
@@ -21,6 +22,30 @@ function ShowListNode(head) {
   while (head !== null) {
     console.log(head.val)
     head = head.next
+  }
+}
+
+export function CompleteBinaryTree(arr) {
+  /**
+   * 传入数组中的元素应该按照2n+1 2n+2 n为index的格式填入
+   * 2n+1 left
+   * 2n+2 right
+   */
+  let root = null
+  for (let i = 0; i < arr.length; i++) {
+    let tem = new ListNode(arr[i])
+    tem.left = new ListNode(arr[2 * i + 1])
+    tem.right = new ListNode(arr[2 * i + 2])
+    if (i === 0) root = tem
+  }
+  return root
+
+  function ListNode(val) {
+    if (val === undefined) {
+      val = null
+    }
+    this.val = val
+    this.left = this.right = null
   }
 }
 

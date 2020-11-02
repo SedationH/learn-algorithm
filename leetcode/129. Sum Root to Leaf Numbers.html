@@ -1,0 +1,41 @@
+<body>
+  <script type="module">
+    import { CompleteBinaryTree } from "./kit/ListNode.js"
+
+    /**
+     * Definition for a binary tree node.
+     * function TreeNode(val) {
+     *     this.val = val;
+     *     this.left = this.right = null;
+     * }
+     */
+    /**
+     * @param {TreeNode} root
+     * @return {number}
+     */
+    var sumNumbers = function (root) {
+      let state = 0,
+        ans = 0
+      backtrack(root)
+      return ans
+
+      // 进行pre order
+      function backtrack(node) {
+        if (node === null) return null
+        state = state * 10 + node.val
+        // 当前节点是叶子节点 加和到结果中
+        const left = backtrack(node.left),
+          right = backtrack(node.right)
+        if (left === null && right === null) {
+          ans += state
+          state = Math.floor(state / 10)
+        }
+        //撤销选择
+        return 1
+      }
+    }
+
+    const headNode = CompleteBinaryTree([4, 9, 0, 5, 1])
+    console.log(sumNumbers(headNode))
+  </script>
+</body>

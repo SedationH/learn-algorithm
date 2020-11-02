@@ -1,0 +1,66 @@
+<body>
+  <script>
+    /**
+     * @param {string} S
+     * @param {character} C
+     * @return {number[]}
+     */
+    // var shortestToChar = function (S, C) {
+    //   const ans = []
+    //   for (let i = 0; i < S.length; i++) {
+    //     ans[i] = Math.min(
+    //       S.lastIndexOf(C, i) === -1
+    //         ? Infinity
+    //         : i - S.lastIndexOf(C, i),
+    //       S.indexOf(C, i) === -1
+    //         ? Infinity
+    //         : S.indexOf(C, i) - i
+    //     )
+    //   }
+    //   return ans
+    // }
+
+    var shortestToChar = function (S, C) {
+      const indexArr = [],
+        len = S.length,
+        ans = Array(len).fill(len)
+      for (let i = 0; i < len; i++) {
+        if (S[i] === C) indexArr.push(i)
+      }
+      for (let i = 0; i < len; i++) {
+        if (S[i] === C) {
+          ans[i] = 0
+          continue
+        }
+        for (const index of indexArr) {
+          const dist = Math.abs(index - i)
+
+          if (dist >= ans[i]) break
+          ans[i] = dist
+        }
+      }
+      return ans
+    }
+
+    // 这里取巧用了api，尝试自己写个indexOf & lastIndexOf
+    function myIndexOf(S, C, fromIndex = 0) {
+      const len = S.length
+      for (let i = fromIndex; i < len; i++) {
+        if (S[i] === C) return i
+      }
+      return -1
+    }
+
+    function myLastIndexOf(S, C, fromIndex) {
+      const len = S.length
+      fromIndex =
+        fromIndex === undefined ? len - 1 : fromIndex
+      for (let i = fromIndex; i >= 0; i--) {
+        if (S[i] === C) return i
+      }
+      return -1
+    }
+
+    console.log(shortestToChar("loveleetcode", "e"))
+  </script>
+</body>
