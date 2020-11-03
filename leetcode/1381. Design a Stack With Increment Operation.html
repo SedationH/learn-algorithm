@@ -1,0 +1,55 @@
+<body>
+  <script>
+    /**
+     * @param {number} maxSize
+     */
+    var CustomStack = function (maxSize) {
+      this.maxSize = maxSize
+      this.stack = []
+    }
+
+    /**
+     * @param {number} x
+     * @return {void}
+     */
+    CustomStack.prototype.push = function (x) {
+      const { maxSize, stack } = this
+      if (stack.length < maxSize) stack.push(x)
+    }
+
+    /**
+     * @return {number}
+     */
+    CustomStack.prototype.pop = function () {
+      const { stack } = this
+      if (stack.length === 0) return -1
+      return stack.pop()
+    }
+
+    /**
+     * @param {number} k
+     * @param {number} val
+     * @return {void}
+     */
+    CustomStack.prototype.increment = function (k, val) {
+      const { maxSize, stack } = this
+      if (k > maxSize) k = maxSize
+      for (let i = 0; i < k && i < stack.length; i++) {
+        stack[i] += val
+      }
+    }
+
+    /**
+     * Your CustomStack object will be instantiated and called as such:
+     * var obj = new CustomStack(maxSize)
+     * obj.push(x)
+     * var param_2 = obj.pop()
+     * obj.increment(k,val)
+     */
+
+    const stack = new CustomStack(3)
+    stack.push(1)
+    stack.push(2)
+    console.log(stack.pop())
+  </script>
+</body>
