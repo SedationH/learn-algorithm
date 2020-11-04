@@ -5,22 +5,22 @@
      * @param {character} C
      * @return {number[]}
      */
-    // var shortestToChar = function (S, C) {
-    //   const ans = []
-    //   for (let i = 0; i < S.length; i++) {
-    //     ans[i] = Math.min(
-    //       S.lastIndexOf(C, i) === -1
-    //         ? Infinity
-    //         : i - S.lastIndexOf(C, i),
-    //       S.indexOf(C, i) === -1
-    //         ? Infinity
-    //         : S.indexOf(C, i) - i
-    //     )
-    //   }
-    //   return ans
-    // }
-
     var shortestToChar = function (S, C) {
+      const ans = []
+      for (let i = 0; i < S.length; i++) {
+        ans[i] = Math.min(
+          S.lastIndexOf(C, i) === -1
+            ? Infinity
+            : i - S.lastIndexOf(C, i),
+          S.indexOf(C, i) === -1
+            ? Infinity
+            : S.indexOf(C, i) - i
+        )
+      }
+      return ans
+    }
+
+    var solution = function (S, C) {
       const indexArr = [],
         len = S.length,
         ans = Array(len).fill(len)
@@ -34,7 +34,6 @@
         }
         for (const index of indexArr) {
           const dist = Math.abs(index - i)
-
           if (dist >= ans[i]) break
           ans[i] = dist
         }
@@ -94,8 +93,8 @@
     /**
      * 最终想拿到的效果 ans[i] = i - indexArr[i]
      * 即 indexArr[i] 保存着距离最近的C字符的位置，没有标记为Infinity
-     * 时间 $$ 
-     * 空间 $O(3N)$ $O(N)$ 
+     * 时间 $O(3N)$ $O(N)$
+     * 空间 $O(3N)$ $O(N)$ 空间这里可以再优化 只使用一个数组就好
      */
     function solution3(S, C) {
       const len = S.length,
@@ -114,7 +113,7 @@
         }
       }
 
-      // 从左到右，寻找距离i左边最近的C的位置
+      // 从右边到左边，寻找距离i右边最近的C的位置
       for (let i = len - 1; i >= 0; i--) {
         if (S[i] === C) {
           indexArrFromRight[i] = i
@@ -126,6 +125,7 @@
         }
       }
 
+      // 得出我们最终需要的 保存着距离最近（左右均包含）的C字符的位置
       for (let i = 0; i < len; i++) {
         ans[i] = Math.min(
           Math.abs(indexArrFromLeft[i] - i),
@@ -134,8 +134,31 @@
       }
       return ans
     }
-    console.log(shortestToChar('loveleetcode', 'e'))
-    console.log(solution2('loveleetcode', 'e'))
-    console.log(solution3('loveleetcode', 'e'))
+
+    // 滑动窗口
+    // 关键点是确定一个又一个的小区间，在这个区间里度量距离各个位置的距离
+    /**
+     * @param {string} S
+     * @param {character} C
+     * @return {number[]}
+     */
+    function solution4(S, C) {
+      let l = S[0] === C ? 0 : Infinity,
+        r = S.indexOf(C, 1)
+      const len = S.length,
+        ans = []
+      for (let i = 0; i < len; i++) {
+        ans[i] = Math.min(Math.abs(i - l), Math.abs(i - r))
+        if (i === r) {
+          l = r
+          r = S.indexOf(C, r + 1)
+        }
+      }
+      return ans
+    }
+    console.log(shortestToChar("loveleetcode", "e"))
+    console.log(solution2("loveleetcode", "e"))
+    console.log(solution3("loveleetcode", "e"))
+    console.log(solution4("baaa", "b"))
   </script>
 </body>

@@ -30,6 +30,7 @@
      * @param {number} k
      * @param {number} val
      * @return {void}
+     * 这里还需要优化 时间 $O(k)$ 取决于操作的数量
      */
     CustomStack.prototype.increment = function (k, val) {
       const { maxSize, stack } = this
@@ -39,17 +40,49 @@
       }
     }
 
-    /**
-     * Your CustomStack object will be instantiated and called as such:
-     * var obj = new CustomStack(maxSize)
-     * obj.push(x)
-     * var param_2 = obj.pop()
-     * obj.increment(k,val)
-     */
+    // stack.length本身就可以表示栈中元素，pop和push系统自动维护这个值
+    // 类似前缀和的思路
+    class Solution {
+      constructor(maxSize) {
+        this.maxSize = maxSize
+        this.stack = []
+        this.increments = Array(maxSize + 1).fill(0)
+      }
 
-    const stack = new CustomStack(3)
+      push(x) {
+        const { maxSize, stack } = this
+        if (stack.length < maxSize) stack.push(x)
+      }
+
+      pop() {
+        const { stack, increments } = this
+        const curLen = stack.length
+        if (curLen === 0) return -1
+        const popResult = stack.pop(),
+          incrementsTemp = increments[curLen]
+        increments[curLen - 1] += incrementsTemp
+        increments[curLen] = 0
+        return popResult + incrementsTemp
+      }
+
+      // k是k个 注意 incrementsp[k]为在stack中第k个元素pop出的时候，需要增加的大小
+      // 时间 $O(1)$ pop也还是$O(1)$
+      increment(k, val) {
+        const { stack, increments } = this,
+          len = stack.length
+        if (k > len) k = len
+        increments[k] += val
+      }
+    }
+
+    // 还能接着优化空间 即不用创建increments maxSize大小的空间，也维护一个stakc，进行同时的pop & push 就好
+    // 时间有限，暂时只是记一下 待完成 TODO
+
+    const stack = new Solution(3)
     stack.push(1)
     stack.push(2)
+    stack.increment(5, 10)
+    console.log(stack.pop())
     console.log(stack.pop())
   </script>
 </body>
