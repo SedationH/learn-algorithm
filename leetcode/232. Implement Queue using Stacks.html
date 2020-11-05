@@ -1,0 +1,62 @@
+<body>
+  <script>
+    /**
+     * Initialize your data structure here.
+     */
+    var MyQueue = function () {
+      this.stack = []
+      this.helpStack = []
+    }
+
+    /**
+     * Push element x to the back of queue.
+     * @param {number} x
+     * @return {void}
+     */
+    MyQueue.prototype.push = function (x) {
+      // 新的元素都压到栈底部,需要一个辅助栈来暂时存放pop出来的值
+      while (this.stack.length !== 0) {
+        this.helpStack.push(this.stack.pop())
+      }
+      // 新来的元素放到最后
+      this.stack.push(x)
+      while (this.helpStack.length !== 0) {
+        this.stack.push(this.helpStack.pop())
+      }
+    }
+
+    /**
+     * Removes the element from in front of queue and returns that element.
+     * @return {number}
+     */
+    MyQueue.prototype.pop = function () {
+      return this.stack.pop()
+    }
+
+    /**
+     * Get the front element.
+     * @return {number}
+     */
+    MyQueue.prototype.peek = function () {
+      const temp = this.stack[this.stack.length - 1]
+      return temp === undefined ? null : temp
+    }
+
+    /**
+     * Returns whether the queue is empty.
+     * @return {boolean}
+     */
+    MyQueue.prototype.empty = function () {
+      return this.stack.length === 0
+    }
+
+    /**
+     * Your MyQueue object will be instantiated and called as such:
+     * var obj = new MyQueue()
+     * obj.push(x)
+     * var param_2 = obj.pop()
+     * var param_3 = obj.peek()
+     * var param_4 = obj.empty()
+     */
+  </script>
+</body>
