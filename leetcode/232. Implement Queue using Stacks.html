@@ -1,5 +1,118 @@
 <body>
+  推荐阅读 https://www.geeksforgeeks.org/queue-using-stacks/
   <script>
+    /**
+     * 整理来看两种解决方案
+     *  1. 让inQueue | push 操作费劲一些
+     *  2. 让deQueue | pop 操作费劲一些
+     * implement queue not trick it is useful to handle muti operate queue
+     * read stack & write stack
+     */
+
+    // push 操作费劲一些
+    class Solution1 {
+      constructor() {
+        // 实现的效果，新进入的都放在stack1的底部
+        this.stack1 = []
+        // 需要stack2 来辅助实现上面的效果
+        this.stack2 = []
+
+        // 增加top方法方便使用
+        this.stack1.top = this.stack2.top = function () {
+          return this[this.length - 1] === undefined
+            ? null
+            : this[this.length - 1]
+        }
+      }
+
+      push(x) {
+        const { stack1, stack2 } = this
+        while (stack1.top() !== null) {
+          stack2.push(stack1.pop())
+        }
+        stack1.push(x)
+        while (stack2.top() !== null) {
+          stack1.push(stack2.pop())
+        }
+        // 都是为了链式调用push
+        return this
+      }
+
+      pop() {
+        const tem = this.stack1.pop()
+        return tem === undefined ? null : tem
+      }
+    }
+
+    const p1 = new Solution1()
+    console.log(p1.push(1).push(2).pop())
+
+    // pop操作费劲一些
+    class Solution2 {
+      constructor() {
+        // 实现的效果，新进入的都放在stack1的底部
+        this.stack1 = []
+        // 需要stack2 来辅助实现上面的效果
+        this.stack2 = []
+
+        // 增加top方法方便使用
+        this.stack1.top = this.stack2.top = function () {
+          return this[this.length - 1] === undefined
+            ? null
+            : this[this.length - 1]
+        }
+      }
+
+      pop() {
+        const { stack1, stack2 } = this
+        // 每次只pop stack2中的元素，只要stack2中的顺序是入栈顺序就好了
+        if (stack2.top() === null) {
+          while (stack1.top() !== null) {
+            stack2.push(stack1.pop())
+          }
+        }
+        return stack2.pop()
+      }
+
+      push(x) {
+        const { stack1 } = this
+        stack1.push(x)
+        return this
+      }
+    }
+
+    // 这个是利用函数递归拿到最开始的元素，也算是pop费劲的类型
+    class Solution3 {
+      constructor() {
+        // 通过函数调用栈来维护，不需要再用一个stack了
+        this.stack = []
+
+        this.stack.top = function () {
+          return this[this.length - 1] === undefined
+            ? null
+            : this[this.length - 1]
+        }
+      }
+
+      push(x) {
+        this.stack.push(x)
+        return this
+      }
+
+      pop() {
+        const { stack } = this
+        if (stack.top() === null) return null
+        const x = stack.pop()
+        if (stack.top() === null) return x
+        const item = this.pop()
+        stack.push(x)
+        return item
+      }
+    }
+
+    // const q3 = new Solution3()
+    // console.log(q3.push(1).push(2).push(3).pop())
+
     /**
      * Initialize your data structure here.
      */

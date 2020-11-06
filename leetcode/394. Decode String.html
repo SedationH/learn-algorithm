@@ -6,40 +6,71 @@
      */
     // 啥都没想好，用栈加细节处理硬做
     // 细节 数组位数可能不唯一 考虑字符串相加的位置
+    // var decodeString = function (s) {
+    //   const stack = []
+    //   let ans = ""
+    //   for (const c of s) {
+    //     if (c === "]") {
+    //       // pop到数字的时候
+    //       let str = ""
+    //       let tem = null
+    //       while (!/\d/.test(tem)) {
+    //         tem = stack.pop()
+    //         if (/\d/.test(tem) || tem === "[") continue
+    //         str = tem + str
+    //       }
+    //       let n = tem
+    //       while (/\d/.test(tem)) {
+    //         tem = stack.pop()
+    //         if (/\d/.test(tem)) {
+    //           n = tem + n
+    //         } else {
+    //           if (tem === undefined) break
+    //           stack.push(tem)
+    //           break
+    //         }
+    //       }
+    //       str = str.repeat(Number(n))
+    //       stack.push(str)
+    //     } else {
+    //       stack.push(c)
+    //     }
+    //   }
+    //   for (const str of stack) {
+    //     ans += str
+    //   }
+    //   return ans
+    // }
+
+    /**
+     * @param {string} s
+     */
     var decodeString = function (s) {
-      const stack = []
-      let ans = ""
-      for (const c of s) {
-        if (c === "]") {
-          // pop到数字的时候
-          let str = ""
-          let tem = null
-          while (!/\d/.test(tem)) {
-            tem = stack.pop()
-            if (/\d/.test(tem) || tem === "[") continue
-            str = tem + str
+      const stack = [],
+        len = s.length
+      stack.top = function () {
+        return this[this.length - 1]
+      }
+      for (let i = 0; i < len; i++) {
+        let str = ""
+        if (s[i] === "]") {
+          while (stack.top() !== "[") {
+            str = stack.pop() + str
           }
-          let n = tem
-          while (/\d/.test(tem)) {
-            tem = stack.pop()
-            if (/\d/.test(tem)) {
-              n = tem + n
-            } else {
-              if (tem === undefined) break
-              stack.push(tem)
-              break
-            }
+          // 移除 [
+          stack.pop()
+          // 当前字符为数字的时候
+          let number = ""
+          while (/\d/.test(stack.top())) {
+            number = stack.pop() + number
           }
-          str = str.repeat(Number(n))
-          stack.push(str)
+          number = Number(number)
+          stack.push(str.repeat(number))
         } else {
-          stack.push(c)
+          stack.push(s[i])
         }
       }
-      for (const str of stack) {
-        ans += str
-      }
-      return ans
+      return stack.join("")
     }
     console.log(decodeString("100[leetcode]"))
   </script>
