@@ -1,0 +1,32 @@
+<body>
+  <script>
+    /**
+     * Definition for singly-linked list.
+     * function ListNode(val, next) {
+     *     this.val = (val===undefined ? 0 : val)
+     *     this.next = (next===undefined ? null : next)
+     * }
+     */
+    /**
+     * @param {ListNode} head
+     * @return {ListNode}
+     */
+    var swapPairs = function (head) {
+      const dummy = new ListNode(null, head)
+      let prev = dummy,
+        curr = prev.next
+
+      while (curr && curr.next) {
+        // 按照上图，指针更换顺序是这样子的
+        prev.next = curr.next
+        curr.next = prev.next.next
+        prev.next.next = curr
+
+        prev = curr
+        curr = curr.next
+      }
+      return dummy.next
+    }
+    // TODO try again
+  </script>
+</body>
