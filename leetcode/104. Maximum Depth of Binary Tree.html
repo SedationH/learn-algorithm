@@ -1,0 +1,27 @@
+<body>
+  <script>
+    /**
+     * Definition for a binary tree node.
+     * function TreeNode(val) {
+     *     this.val = val;
+     *     this.left = this.right = null;
+     * }
+     */
+    /**
+     * @param {TreeNode} root
+     * @return {number}
+     */
+    var maxDepth = function (root) {
+      return help(root, 0)
+
+      function help(node, layer) {
+        if (!node) return layer
+
+        return Math.max(
+          help(node.left, layer + 1),
+          help(node.right, layer + 1)
+        )
+      }
+    }
+  </script>
+</body>

@@ -1,0 +1,49 @@
+<body>
+  <script>
+    /**
+     * Definition for singly-linked list.
+     * function ListNode(val) {
+     *     this.val = val;
+     *     this.next = null;
+     * }
+     */
+
+    /**
+     * @param {ListNode} headA
+     * @param {ListNode} headB
+     * @return {ListNode}
+     */
+    var getIntersectionNode = function (headA, headB) {
+      // 方法一 hash 空间换时间
+      const hashMap = new Map()
+      // 最好不要动传入的值
+      let pA = headA
+      while (pA) {
+        hashMap.set(pA, true)
+        pA = pA.next
+      }
+      let pB = headB
+      while (pB) {
+        // 地址相同
+        if (hashMap.has(pB)) return pB
+        pB = pB.next
+      }
+      return null
+    }
+    // lc 160. Intersection of Two Linked Lists
+    // time: $O(m+n)$ space: $(1)$
+    var getIntersectionNode = function (headA, headB) {
+      if (!headA || !headB) return null
+      // 双指针
+      // 对的人终将相遇
+      // a+c+b = b+c+a
+      let he = headA,
+        she = headB
+      while (he !== she) {
+        he = he === null ? headB : he.next
+        she = she === null ? headA : she.next
+      }
+      return he
+    }
+  </script>
+</body>

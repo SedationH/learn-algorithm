@@ -1,5 +1,11 @@
 <body>
+  <img
+    src="http://picbed.sedationh.cn/20201109185403.png"
+  />
   <script>
+    // 复杂度分析
+    // 时间复杂度：$O(N)$, N 为链表长度。
+    // 空间复杂度：$O(1)$。
     /**
      * Definition for singly-linked list.
      * function ListNode(val, next) {
@@ -14,10 +20,8 @@
     var swapPairs = function (head) {
       const dummy = new ListNode(null, head)
       let prev = dummy,
-        curr = prev.next
-
+        curr = dummy.next
       while (curr && curr.next) {
-        // 按照上图，指针更换顺序是这样子的
         prev.next = curr.next
         curr.next = prev.next.next
         prev.next.next = curr
@@ -25,8 +29,19 @@
         prev = curr
         curr = curr.next
       }
+
       return dummy.next
     }
-    // TODO try again
+
+    // 产品经理法
+    //   我需要swapPairs给我返回两两交换后的头节点
+    const swapPairs = function (head) {
+      if (!head || !head.next) return head
+
+      const next = head.next
+      head.next = swapPairs(next.next)
+      next.next = head
+      return next
+    }
   </script>
 </body>

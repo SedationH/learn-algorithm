@@ -1,0 +1,54 @@
+<body>
+  <script>
+    /**
+     * Definition for singly-linked list.
+     * function ListNode(val) {
+     *     this.val = val;
+     *     this.next = null;
+     * }
+     */
+
+    /**
+     * @param {ListNode} head
+     * @return {ListNode}
+     */
+    var detectCycle = function (head) {
+      // t: $O(n)$ s: $O(n)$
+      if (head === null) return null
+      // 先实现个简单的 打个卡 另一种方法 a === c ... 逻辑晓得了
+      // TODO
+      const hash = new Map()
+      let p = head
+      while (p) {
+        if (hash.get(p)) return p
+        hash.set(p, true)
+        p = p.next
+      }
+      return null
+    }
+
+    var detectCycle = function (head) {
+      // t: $O(n)$ s: $O(1)$
+      let fast = head,
+        slow = head
+      while (fast && fast.next) {
+        fast = fast.next.next
+        slow = slow.next
+
+        // 相遇了
+        if (fast === slow) {
+          fast = head
+          // 现在调整为一样的步速
+          while (fast !== slow) {
+            fast = fast.next
+            slow = slow.next
+          }
+          // 再相遇跳出的时候就是所求点
+          return fast
+        }
+      }
+      // 能够走出来证明是不成环的
+      return null
+    }
+  </script>
+</body>

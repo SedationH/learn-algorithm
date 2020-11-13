@@ -1,0 +1,64 @@
+<body>
+  <script>
+    /**
+     * Definition for singly-linked list.
+     * function ListNode(val, next) {
+     *     this.val = (val===undefined ? 0 : val)
+     *     this.next = (next===undefined ? null : next)
+     * }
+     */
+    /**
+     * Definition for a binary tree node.
+     * function TreeNode(val, left, right) {
+     *     this.val = (val===undefined ? 0 : val)
+     *     this.left = (left===undefined ? null : left)
+     *     this.right = (right===undefined ? null : right)
+     * }
+     */
+    /**
+     * @param {ListNode} head
+     * @return {TreeNode}
+     */
+    var sortedListToBST = function (head) {
+      // 通过快慢指针，可以找到中点
+      return help(head, null)
+      function help(head, tail) {
+        // 递归终止 head === tail 因为链表的结尾不好拿
+        // so 定义为 [head,tail)  这样的区间 tail 就是null了
+        if (head === tail) return null
+        let fast = head,
+          slow = head
+        while (fast !== tail && fast.next !== tail) {
+          fast = fast.next.next
+          slow = slow.next
+        }
+        // 跳出的时候slow就在中点位置了
+        const root = new TreeNode(slow.val)
+        root.left = help(head, slow)
+        root.right = help(slow.next, tail)
+        return root
+      }
+    }
+
+    var sortedListToBST = function (head) {
+      // 因为链表中点的访问事件复杂度为O(n)
+      // 可以把链表先缓存下来 用空间换时间
+      const listToArray = []
+      while (head) {
+        listToArray.push(head.val)
+        head = head.next
+      }
+      return help(listToArray)
+
+      function help(arr) {
+        const len = arr.length
+        if (len === 0) return null
+        const mid = Math.floor(len / 2)
+        const root = new TreeNode(arr[mid])
+        root.left = help(arr.slice(0, mid))
+        root.right = help(arr.slice(mid + 1, len))
+        return root
+      }
+    }
+  </script>
+</body>
