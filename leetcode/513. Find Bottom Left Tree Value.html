@@ -1,0 +1,63 @@
+<body>
+  <script>
+    var findBottomLeftValue = function (root) {
+      // dfs 记录深度 每当深度第一次变化的时候进行值的保存
+      // 最后一次保存即最左
+      let maxLayer = -1,
+        ans
+      dfs(root, 0)
+      return ans
+
+      function dfs(node, layer) {
+        if (!node) return
+        if (!node.left && !node.left && layer > maxLayer) {
+          maxLayer = layer
+          ans = node.val
+        }
+        dfs(node.left, layer + 1)
+        dfs(node.right, layer + 1)
+      }
+    }
+
+    /**
+     * @param {TreeNode} root
+     * @return {number}
+     */
+    var findBottomLeftValue = function (root) {
+      // bfs 层遍历
+      // const queue = []
+      // queue.push(root)
+      // while(queue.length){
+      //   const curr = queue.pop()
+      //   这样好像不太容易记录层这个特征
+      // }
+      // 层序不太会写 参考下dalao
+      // 层次遍历模板 2：
+      // const queue = [root]
+      // while (queue.length) {
+      //   // 先记录这一层的节点数
+      //   let len = queue.length
+      //   while (len--) {
+      //     const node = queue.shift()
+      //     node.left && queue.push(node.left)
+      //     node.right && queue.push(node.right)
+      //   }
+      // }
+      let currLayer = [root],
+        ans = -1
+      while (currLayer.length) {
+        const len = currLayer.length,
+          nextLayer = []
+        for (let i = 0; i < len; i++) {
+          const node = currLayer[i]
+          !i && (ans = node.val)
+          node.left && nextLayer.push(node.left)
+          node.right && nextLayer.push(node.right)
+        }
+        if (!nextLayer.length) break
+        currLayer = nextLayer
+      }
+      return ans
+    }
+  </script>
+</body>
