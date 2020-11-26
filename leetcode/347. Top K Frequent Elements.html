@@ -1,0 +1,19 @@
+<body>
+  <script>
+    /**
+     * @param {number[]} nums
+     * @param {number} k
+     * @return {number[]}
+     */
+    var topKFrequent = function (nums, k) {
+      const hash = { a }
+      nums.forEach(
+        e => (hash[e] = hash[e] ? hash[e] + 1 : 1)
+      )
+      return Object.entries(hash)
+        .sort((a, b) => b[1] - a[1])
+        .slice(0, k)
+        .map(a => +a[0]) // 变为数字
+    }
+  </script>
+</body>

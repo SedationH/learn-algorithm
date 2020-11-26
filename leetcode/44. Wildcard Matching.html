@@ -6,13 +6,15 @@
 -->
 
 <body>
-
   <script>
     var isMatch = function (s, p) {
-      let lenS = s.length, lenP = p.length
+      let lenS = s.length,
+        lenP = p.length
 
       // 定义dp[i][j] 为s的前i个字符是否与p的前j个字符匹配
-      let dp = Array.from({ length: lenS + 1 }, () => Array(lenP + 1).fill(false))
+      let dp = Array.from({ length: lenS + 1 }, () =>
+        Array(lenP + 1).fill(false)
+      )
       dp[0][0] = true
       /**
        * 处理
@@ -21,7 +23,7 @@
        * 的情况
        */
       for (let i = 0; i < lenP; i++) {
-        if (p[i] === '*') {
+        if (p[i] === "*") {
           dp[0][i + 1] = true
         } else {
           break
@@ -31,34 +33,30 @@
       for (let i = 0; i < lenS; i++) {
         for (let j = 0; j < lenP; j++) {
           switch (p[j]) {
-            case '*':
+            case "*":
               /**
                * 理解转移方程的时候注意联系dp定义！
-               * 
+               *
                * *可以匹配任意长度的串[0,infinity)
                * 所以对j位置的*的使用可能有一下三种情况
                * 1. 不需要当前*去匹配，前面有*已经匹配过了 dp[i+1][j+1] = dp[i+1][j]
                * 2. 需要当前*去匹配，而且后面也要用到 dp[i+1][j+1] = dp[i][j+1]
                * 3. 只用匹配当前的 dp[i+1][j+1] = dp[i][j]
                */
-              dp[i + 1][j + 1] = dp[i][j + 1] || dp[i + 1][j] || dp[i][j]
+              dp[i + 1][j + 1] =
+                dp[i][j + 1] || dp[i + 1][j] || dp[i][j]
               break
             case "?":
               dp[i + 1][j + 1] = dp[i][j]
               break
             default:
-              dp[i + 1][j + 1] = (dp[i][j] && p[j] === s[i])
+              dp[i + 1][j + 1] = dp[i][j] && p[j] === s[i]
           }
         }
       }
       return dp[lenS][lenP]
-    };
+    }
 
-    console.log(
-      isMatch(
-        "",
-        "*?"
-      )
-    )
+    console.log(isMatch("", "*?"))
   </script>
 </body>

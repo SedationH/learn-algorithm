@@ -1,0 +1,108 @@
+<body>
+  <script>
+    /**
+     * @param {character[][]} board
+     * @return {void} Do not return anything, modify board in-place instead.
+     */
+    var solveSudoku = function (board) {
+      // 回溯 模拟决策
+      // 哈希 为决策提供支持
+      // 哈希的细节
+      //   1. 每一行都有着自己的hash 记录在这一行上有哪些值
+      //   2. 每一列都有着自己的hash 记录在这一列的有哪些值
+      //   3. 一共九个小格子 每个小格子中还要记录有哪些值
+
+      console.log(getHash(3))
+
+      function getHash(size) {
+        return new Array(size)
+          .fill(0)
+          .map(_ => new Object())
+      }
+    }
+
+    solveSudoku()
+
+    /**
+     * @param {character[][]} board
+     * @return {void} Do not return anything, modify board in-place instead.
+     */
+    var solveSudoku = function (board) {
+      // 记录每行已填的数字
+      const rows = matrix(9, 0)
+      // 记录每列已填的数字
+      const cols = matrix(9, 0)
+      // 记录每个小宫已填的数字
+      const boxes = matrix(3, 3)
+
+      // 记录所有空格子的坐标
+      const spaces = []
+      // 遍历数独：
+      // 1. 找空格
+      // 2. 标记已填数字
+      board.forEach((row, x) =>
+        row.forEach((cell, y) => {
+          // 记录空格的坐标
+          if (cell === ".") spaces.push([x, y])
+          // 不是空格的话，标记这个数字已经使用
+          else mark(x, y, cell, true)
+        })
+      )
+
+      // 开始填空格
+      dfs(0)
+
+      // *******************************************
+
+      function dfs(pos) {
+        // 所有空格都填完了，说明这条路是通的，返回 true
+        if (pos >= spaces.length) return true
+
+        const [x, y] = spaces[pos]
+
+        // 1~9 的数字都试着填一遍
+        for (let n = 1; n <= 9; n++) {
+          // 同一行、同一列、同一个小宫出现过的数字不能填
+          if (!isValidDigit(x, y, n)) continue
+
+          // 填入数字
+          board[x][y] = n + ""
+          mark(x, y, n, true)
+
+          // 递归填下一个空格
+          const res = dfs(pos + 1)
+          // 回溯
+          mark(x, y, n, false)
+
+          // 如果这条路可行，就可以提前返回了
+          // 不然递归回来会进入下一个循环
+          // 就把原来填的数字覆盖了
+          if (res) return true
+        }
+      }
+
+      // 根据坐标判断是哪个小宫里的格子
+      function getBox(x, y) {
+        return boxes[(x / 3) >> 0][(y / 3) >> 0]
+      }
+
+      // 检查对应的行和列，还有小宫里有没有出现过该数字
+      function isValidDigit(x, y, n) {
+        return (
+          !rows[x][n] && !cols[y][n] && !getBox(x, y)[n]
+        )
+      }
+
+      // 标记已填数字
+      function mark(x, y, n, status) {
+        rows[x][n] = cols[y][n] = getBox(x, y)[n] = status
+      }
+
+      function matrix(rows = 0, cols = 0) {
+        return Array(rows)
+          .fill(0)
+          .map(_ => (cols === 0 ? {} : matrix(cols, 0)))
+      }
+    }
+  </script>
+</body>
