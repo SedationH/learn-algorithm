@@ -1,0 +1,48 @@
+<body>
+  <script>
+    /**
+     * @param {number[]} nums
+     * @return {number}
+     */
+    // var removeDuplicates = function (nums) {
+    //   let l = 0,
+    //     r = 0
+    //   while (r != nums.length) {
+    //     // 如果数字相等，区间增加
+    //     if (nums[l] == nums[r]) {
+    //       r++
+    //     } else {
+    //       // 删除区间中的值
+    //       nums.splice(l, r - l, nums[l])
+    //       r = ++l
+    //     }
+    //   }
+    //   if (r != l) {
+    //     nums.splice(l, r - l, nums[l])
+    //   }
+    //   return nums.length
+    // }
+    /**
+     * @param {number[]} nums
+     * @return {number}
+     */
+    var removeDuplicates = function (nums) {
+      // 快慢指针 读指针 写指针
+      // 用一个临时变量缓存读到的内容，重复了就不写
+      const len = nums.length
+      let buffer = null,
+        l = 0,
+        r = 0
+      while (r != len) {
+        if (nums[r] != buffer) {
+          buffer = nums[r]
+          nums[l++] = buffer
+        }
+        r++
+      }
+      nums.length = l
+      return l
+    }
+    console.log(removeDuplicates([1, 1, 2]))
+  </script>
+</body>

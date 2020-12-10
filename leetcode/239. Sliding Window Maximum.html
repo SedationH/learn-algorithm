@@ -1,0 +1,29 @@
+<body>
+  <script>
+    /**
+     * @param {number[]} nums
+     * @param {number} k
+     * @return {number[]}
+     */
+    var maxSlidingWindow = function (nums, k) {
+      if (k === 1) {
+        return nums
+      }
+      const len = nums.length,
+        ans = []
+      let r = len < k ? len - 1 : k - 1,
+        temp = -Infinity
+      // init
+      temp = Math.max(...nums.slice(0, r + 1))
+      ans.push(temp)
+      r++
+      while (r < len) {
+        temp = Math.max(temp, nums[r])
+        ans.push(temp)
+        r++
+      } 
+      return ans
+    }
+    maxSlidingWindow([1, 3, -1, -3, 5, 3, 6, 7], 3)
+  </script>2
+</body>
