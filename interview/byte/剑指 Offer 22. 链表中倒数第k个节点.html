@@ -1,0 +1,32 @@
+<body>
+  <script>
+    var getKthFromEnd = function (head, k) {
+      let cnt = 0
+      let p = head
+      while (p) {
+        cnt++
+        p = p.next
+      }
+      let order = cnt - k + 1
+      p = head
+      while (--order) {
+        p = p.next
+      }
+      return p
+    }
+
+    // 快慢指针
+    var getKthFromEnd = function (head, k) {
+      let slow = head
+      let fast = head
+      while (--k) {
+        fast = fast.next
+      }
+      while (fast.next) {
+        fast = fast.next
+        slow = slow.next
+      }
+      return slow
+    }
+  </script>
+</body>

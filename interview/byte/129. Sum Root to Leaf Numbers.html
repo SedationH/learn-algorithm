@@ -1,0 +1,50 @@
+<body>
+  <script>
+    /**
+     * Definition for a binary tree node.
+     * function TreeNode(val, left, right) {
+     *     this.val = (val===undefined ? 0 : val)
+     *     this.left = (left===undefined ? null : left)
+     *     this.right = (right===undefined ? null : right)
+     * }
+     */
+    /**
+     * @param {TreeNode} root
+     * @return {number}
+     */
+    var sumNumbers = function (root) {
+      let state = 0
+      let ans = 0
+      backtrack(root)
+      return ans
+
+      function backtrack(node) {
+        if (!node) return
+        state = state * 10 + node.val
+        backtrack(node.left)
+        backtrack(node.right)
+        if (!node.left && !node.right) {
+          ans += state
+        }
+        // 撤销
+        state = Math.floor(state / 10)
+      }
+    }
+
+    var sumNumbers = function (root) {
+      let ans = 0
+      backtrack(root, 0)
+      return ans
+
+      function backtrack(node, state) {
+        if (!node) return
+        state = state * 10 + node.val
+        backtrack(node.left, state)
+        backtrack(node.right, state)
+        if (!node.left && !node.right) {
+          ans += state
+        }
+      }
+    }
+  </script>
+</body>

@@ -1,0 +1,31 @@
+<body>
+  <script>
+    /**
+     * @param {string} num1
+     * @param {string} num2
+     * @return {string}
+     */
+    var addStrings = function (num1, num2) {
+      // 补0
+      while (num1.length < num2.length) {
+        num1 = '0' + num1
+      }
+      while (num1.length > num2.length) {
+        num2 = '0' + num2
+      }
+      const len = num1.length
+      let carry = 0
+      let ans = ''
+      for (let i = len - 1; i >= 0; i--) {
+        const sum = +num1[i] + +num2[i] + carry
+        const value = sum % 10
+        ans = value + ans
+        carry = Math.floor(sum / 10)
+      }
+      if (carry) {
+        ans = 1 + ans
+      }
+      return ans
+    }
+  </script>
+</body>

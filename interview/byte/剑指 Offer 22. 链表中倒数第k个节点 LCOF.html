@@ -1,0 +1,37 @@
+<body>
+  <script>
+    /**
+     * Definition for singly-linked list.
+     * function ListNode(val) {
+     *     this.val = val;
+     *     this.next = null;
+     * }
+     */
+    /**
+     * @param {ListNode} head
+     * @param {number} k
+     * @return {ListNode}
+     */
+    var getKthFromEnd = function (head, k) {
+      const reversedLinkListHead = getReversedLinkList(head)
+      while (reversedLinkListHead && --k) {
+        reversedLinkListHead = reversedLinkListHead.next
+      }
+      return reversedLinkListHead.val
+
+      function getReversedLinkList(head) {
+        if (!head || !head.next) return head
+        let previous = null
+        let current = head
+        let following = head
+        while (current) {
+          following = current.next
+          current.next = previous
+          previous = current
+          current = following
+        }
+        return previous
+      }
+    }
+  </script>
+</body>
