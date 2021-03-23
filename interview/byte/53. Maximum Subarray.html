@@ -1,0 +1,20 @@
+<body>
+  <script>
+    /**
+     * @param {number[]} nums
+     * @return {number}
+     */
+var maxSubArray = function (nums) {
+  const len = nums.length
+  // from index 0 to index current
+  // 能够得到的最大值是多少？
+  // 判断 当前值+前面最大值 or 当前值
+  const sum = []
+  sum[-1] = -Infinity
+  for (let i = 0; i < len; i++) {
+    sum[i] = Math.max(sum[i - 1] + nums[i], nums[i])
+  }
+  return Math.max(...sum)
+}
+  </script>
+</body>

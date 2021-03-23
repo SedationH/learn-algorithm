@@ -1,0 +1,54 @@
+<body>
+  <p>
+    Given two sorted integer arrays nums1 and nums2, merge
+    nums2 into nums1 as one sorted array.
+    来源：力扣（LeetCode） 链接：<a
+      href="https://leetcode-cn.com/problems/merge-sorted-array"
+      >Link</a
+    >
+    著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
+  </p>
+
+  <p style="color: red">
+    描述很奇怪 sorted 没有指明从大到小还是从小到大
+  </p>
+  <script>
+    // 利用JS数组也是对象的性质
+    var merge = function (nums1, m, nums2, n) {
+      let i = m - 1,
+        j = n - 1,
+        k = m + n - 1
+      nums1[-1] = nums2[-1] = -Infinity
+      while (k !== -1) {
+        if (nums1[i] > nums2[j]) {
+          nums1[k] = nums1[i]
+          i--
+        } else {
+          nums1[k] = nums2[j]
+          j--
+        }
+        k--
+      }
+    }
+
+    // 通解
+    var merge = function (nums1, m, nums2, n) {
+      let i = m - 1,
+        j = n - 1,
+        k = m + n - 1
+      while (i !== -1 && j !== -1) {
+        nums1[i] > nums2[j]
+          ? (nums1[k--] = nums1[i--])
+          : (nums1[k--] = nums2[j--])
+      }
+      // 两种可能
+      //  j :-1 不需要进行处理
+      //  i :-1 需要把nums2中剩下的移过来
+      if (i === -1) {
+        for (let index = 0; index <= j; index++) {
+          nums1[index] = nums2[index]
+        }
+      }
+    }
+  </script>
+</body>

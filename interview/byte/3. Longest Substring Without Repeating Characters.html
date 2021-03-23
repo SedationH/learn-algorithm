@@ -1,0 +1,52 @@
+<script>
+  /**
+   * @param {string} s
+   * @return {number}
+   */
+  var lengthOfLongestSubstring = function (s) {
+    let left = 0 // 用于收缩
+    let right = 0 // 用于探测
+    const memo = {}
+    const len = s.length
+    let ans = 0
+    while (right < len) {
+      // 向前尝试探测
+      const char = s[right]
+      // 产生重复，进行收缩
+      while (memo[char]) {
+        // 取消左边进行收缩的字符
+        let temChar = s[left]
+        memo[temChar] = false
+        left++
+      }
+      // 收缩完成后，区间不存在重复值
+      ans = Math.max(ans, right - left + 1)
+      // 真正加入拓展
+      memo[char] = true
+      // 开始尝试新的探测
+      right++
+    }
+    return ans
+  }
+
+  // brute solution
+  // substring
+  // 超时
+  var lengthOfLongestSubstring = function (s) {
+    const length = s.length
+    let len = length
+    while (len) {
+      for (let i = 0; i + len <= length; i++) {
+        const subString = s.substring(i, i + len)
+        const memo = new Set(subString)
+        if (memo.size === len) {
+          return len
+        }
+      }
+      len--
+    }
+    return len
+  }
+
+  console.log(lengthOfLongestSubstring('abcabcbb'))
+</script>

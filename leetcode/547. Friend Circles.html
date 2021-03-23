@@ -6,15 +6,66 @@
 -->
 
 <body>
-
   <script>
+/**
+  * @param {number[][]} M
+  * @return {number}
+  */
+var findCircleNum = function (M) {
+  class UnionFind {
+    constructor(length) {
+      this.length = length
+      // 学到一招
+      this.parents = Array.from({ length }, (_, i) => i)
+    }
+
+    // 找到a的老祖先
+    find(a) {
+      while (this.parents[a] !== a) {
+        a = this.parents[a]
+      }
+      return a
+    }
+
+    // 让a的老祖先成为b的老祖先
+    union(a, b) {
+      const fa = this.find(a),
+        fb = this.find(b)
+      if (fa !== fb) {
+        this.parents[fb] = fa
+      }
+    }
+
+    getSize() {
+      const { length } = this
+      const set = new Set()
+      for (let i = 0; i < length; i++) {
+        set.add(this.find(i))
+      }
+      return set.size
+    }
+  }
+  const len = M.length
+  const uf = new UnionFind(len)
+  for (let i = 0; i < len; i++) {
+    for (let j = 0; j < i; j++) {
+      if (M[i][j]) {
+        uf.union(i, j)
+      }
+    }
+  }
+  return uf.getSize()
+}
+
     /**
-    * @param {number[][]} M
-    * @return {number}
-    */
+     * @param {number[][]} M
+     * @return {number}
+     */
     var findCircleNum = function (M) {
       const n = M.length
-      const parent = Array(n).fill(0).map((_, i) => i)
+      const parent = Array(n)
+        .fill(0)
+        .map((_, i) => i)
       for (let i = 0; i < n; i++) {
         for (let j = 0; j < n; j++) {
           if (M[i][j] === 1) {
@@ -39,11 +90,12 @@
        * 把b加入a的集合
        */
       function union(a, b) {
-        const pa = find(a), pb = find(b)
+        const pa = find(a),
+          pb = find(b)
         if (pa !== pb) {
           parent[pb] = pa
         }
       }
-    };
+    }
   </script>
 </body>

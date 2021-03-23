@@ -1,0 +1,38 @@
+<body>
+  <script>
+    /**
+     * @param {number[]} nums
+     * @param {number} target
+     * @return {number[]}
+     */
+    var twoSum = function (nums, target) {
+      const len = nums.length
+      for (let i = 0; i < len; i++) {
+        const sub = target - nums[i]
+        // for (let j = i + 1; j < len; j++) {
+        //   if (nums[j] === sub) {
+        //     return [i, j]
+        //   }
+        // }
+        nums.indexOf(sub, i + 1)
+      }
+    }
+
+    // 利用map进行优化
+    var twoSum = function (nums, target) {
+      const len = nums.length
+      const memo = {}
+      for (let i = 0; i < len; i++) {
+        memo[nums[i]] = i
+      }
+      for (let i = 0; i < len; i++) {
+        const curr = nums[i]
+        const sub = target - curr
+        const j = memo[sub]
+        if (j !== undefined && i !== j) {
+          return [i, memo[sub]]
+        }
+      }
+    }
+  </script>
+</body>

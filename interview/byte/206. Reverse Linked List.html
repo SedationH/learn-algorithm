@@ -1,0 +1,58 @@
+<body>
+  <script>
+    /**
+     * Definition for singly-linked list.
+     * function ListNode(val, next) {
+     *     this.val = (val===undefined ? 0 : val)
+     *     this.next = (next===undefined ? null : next)
+     * }
+     */
+    /**
+     * @param {ListNode} head
+     * @return {ListNode}
+     */
+    // 第一版本 拉垮的时空复杂度 递归 闭包引用
+    var reverseList = function (head) {
+      const dumyNode = new ListNode(null)
+      let cur = dumyNode
+
+      function help(node) {
+        if (!node) return
+        const next = node.next
+        help(next)
+        cur.next = node
+        cur = node
+      }
+      help(head)
+      cur.next = null
+      return dumyNode.next
+    }
+
+    // 三个指针～
+    // 这篇文章讲的忒好了～
+    // https://medium.com/outco/reversing-a-linked-list-easy-as-1-2-3-560fbffe2088
+    var reverseList = function (head) {
+      let previous = null
+      let current = head
+      let following = head
+      while (current) {
+        following = current.next
+        current.next = previous
+        previous = current
+        current = following
+      }
+      return previous
+    }
+
+    // 产品经理法
+    //  任务就是给我返回反转后链表的头节点
+    var reverseList = function (head) {
+      if (!head || !head.next) return head
+      const lastNode = head.next
+      const reversedNodeHead = reverseList(lastNode)
+      lastNode.next = head
+      head.next = null
+      return reversedNodeHead
+    }
+  </script>
+</body>
