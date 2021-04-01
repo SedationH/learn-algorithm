@@ -1,0 +1,44 @@
+<script>
+  // const rs = [
+  //   [1, 1, 0],
+  //   [1, 1, 0],
+  //   [0, 0, 1],
+  // ]
+  const rs = [
+    [1, 1, 0],
+    [1, 1, 1],
+    [0, 1, 1],
+  ]
+
+  class UnionFind {
+    constructor(size) {
+      this.parents = Array(size)
+        .fill(0)
+        .map((_, i) => i)
+    }
+
+    find(x) {
+      while (x !== this.parents[x]) {
+        x = this.parents[x]
+      }
+      return x
+    }
+    union(a, b) {
+      const fa = this.find(a),
+        fb = this.find(b)
+      if (fa !== fb) {
+        this.parents[fb] = fa
+      }
+    }
+  }
+  const len = rs.length
+  const uf = new UnionFind(len)
+  for (let i = 0; i < len; i++) {
+    for (let j = i + 1; j < len; j++) {
+      if (rs[i][j]) {
+        uf.union(uf.parents[i], uf.parents[j])
+      }
+    }
+  }
+  console.log(new Set(uf.parents).size)
+</script>

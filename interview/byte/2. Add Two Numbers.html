@@ -1,0 +1,23 @@
+<script>
+  var addTwoNumbers = function (l1, l2) {
+    // dummyNode
+    const dummyNode = new ListNode(-1)
+    let p = dummyNode
+    let carry
+    while (l1 || l2) {
+      // 不确定val的类型
+      const val1 = l1 ? +l1.val : 0
+      const val2 = l2 ? +l2.val : 0
+      const sum = val1 + val2 + carry
+      const currVal = sum % 10
+      carry = Math.floor(sum / 10)
+      p.next = new ListNode(currVal)
+      p = p.next
+
+      l1 && (l1 = l1.next)
+      l2 && (l2 = l2.next)
+    }
+    carry && (curr.next = new ListNode(carry))
+    return dummyNode.next
+  }
+</script>

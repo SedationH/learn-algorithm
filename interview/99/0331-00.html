@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      // 自己实现JS的查找和替换函数
+      String.prototype.myIndexOf = function (searchValue, fromIndex = 0) {
+        const len = this.length
+        const lenSearch = searchValue.length
+        if (lenSearch + fromIndex > len) {
+          return -1
+        }
+        for (let i = fromIndex; i + lenSearch <= len; i++) {
+          if (this.slice(i, i + lenSearch) === searchValue) {
+            return i
+          }
+        }
+        return -1
+      }
+      Array.prototype.mySplice = function (start, deleteCount, ...items) {
+        const newArr = [].concat(
+          this.slice(0, start),
+          items,
+          this.slice(start + deleteCount)
+        )
+        newArr.forEach((v, i) => (this[i] = v))
+        this.length = newArr.length
+        return this
+      }
+
+      function replace1(a, b, c) {
+        function handleError(b, c) {
+          // b: d
+          // c: dd c包含b
+          if (c.myIndexOf(b) !== -1) {
+            return true
+          } else {
+            return false
+          }
+        }
+
+        while (1) {
+          if (handleError(b, c)) {
+            throw Error('无法处理')
+          }
+          const start = a.myIndexOf(b)
+          if (start !== -1) {
+            const tempArr = a.split('')
+            tempArr.mySplice(start, b.length, ...Array.from(c))
+            a = tempArr.join('')
+          } else {
+            return a
+          }
+        }
+      }
+      const a = 'aabbcc'
+      const b = 'bb'
+      const c = 'vv'
+      console.log(replace1(a, b, c))
+      // aavvcc
+    </script>
+  </body>
+</html>

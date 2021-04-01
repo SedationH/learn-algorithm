@@ -1,0 +1,32 @@
+<script>
+  var hasCycle = function (head) {
+    if (!head) return false
+    let slow = head
+    let fast = head
+    while (fast) {
+      if (fast.next) {
+        fast = fast.next.next
+        slow = slow.next
+      } else {
+        break
+      }
+      if (fast === slow) {
+        return true
+      }
+    }
+    return false
+  }
+  // -----|---| a + b
+  //      |---|
+
+  var hasCycle = function (head) {
+    const memo = new Map()
+    let p = head
+    while (p) {
+      if (memo.get(p)) return true
+      memo.set(p, true)
+      p = p.next
+    }
+    return false
+  }
+</script>

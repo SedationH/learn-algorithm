@@ -1,0 +1,50 @@
+<script>
+  /**
+   * @param {number} n
+   * @param {number[][]} connections
+   * @return {number}
+   */
+  var makeConnected = function (n, connections) {
+    class UnionFind {
+      constructor(size) {
+        this.parents = new Array(size).fill(0).map((_, i) => i)
+        this.rejuest = 0
+      }
+      find(x) {
+        while (x !== this.parents[x]) {
+          x = this.parents[x]
+        }
+        return x
+      }
+
+      union(a, b) {
+        const fa = this.find(a),
+          fb = this.find(b)
+        if (fa !== fb) {
+          this.parents[fb] = fa
+          this.rejuest++
+        }
+      }
+    }
+    const uf = new UnionFind(n)
+    for (const rs of connections) {
+      const [i, j] = rs
+      uf.union(i, j)
+    }
+    const cables = connections.length
+    const least = n - 1
+    const ans = least - uf.rejuest
+    if (cables < least) {
+      return -1
+    }
+    return ans
+  }
+
+  // 有多余操作
+
+  makeConnected(4, [
+    [0, 1],
+    [0, 2],
+    [1, 2],
+  ])
+</script>
