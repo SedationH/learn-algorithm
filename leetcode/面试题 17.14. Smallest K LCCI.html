@@ -1,0 +1,26 @@
+<body>
+  <script>
+    /**
+     * @param {number[]} arr
+     * @param {number} k
+     * @return {number[]}
+     */
+    var smallestK = function (arr, k) {
+      function quickSort(arr) {
+        const len = arr.length
+        if (len === 1 || len === 0) {
+          return arr
+        }
+        const pivot = arr[0]
+        const subArray = arr.slice(1)
+        const leftArray = subArray.filter(v => v < pivot)
+        const rightArray = subArray.filter(v => v >= pivot)
+
+        return [...quickSort(leftArray), pivot, ...quickSort(rightArray)]
+      }
+      return quickSort(arr).slice(0, k)
+    }
+
+    console.log(smallestK([1, 2, 3], 0))
+  </script>
+</body>

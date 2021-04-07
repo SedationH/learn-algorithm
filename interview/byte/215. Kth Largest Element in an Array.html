@@ -4,7 +4,7 @@
         var findKthLargest = function (nums, k) {
           return quickSort(nums)[nums.length - 2]
 
-          function quickSort(arr) {
+          function kSort(arr) {
             const len = arr.length
             if ((len === 1) | (len === 0)) {
               return arr
