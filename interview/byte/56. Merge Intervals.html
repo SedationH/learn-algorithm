@@ -1,0 +1,30 @@
+<script>
+  /**
+   * @param {number[][]} intervals
+   * @return {number[][]}
+   */
+  var merge = function (intervals) {
+    if (!intervals.length) return []
+    const ans = []
+    // sort
+    intervals.sort((a, b) => a[0] - b[0])
+    // 那么以后所有来的元素 起始处都是按顺序的
+    // 每次进行可能的修改都是最后一个元素
+    ans.push(intervals[0])
+    const len = intervals.length
+    for (let i = 1; i < len; i++) {
+      const curr = intervals[i]
+      const last = ans[ans.length - 1]
+      const [currStart, currEnd] = curr
+      const [lastStart, lastEnd] = last
+      if (currStart > lastEnd) {
+        ans.push(curr)
+        continue
+      }
+      if (currEnd > lastEnd) {
+        last[1] = currEnd
+      }
+    }
+    return ans
+  }
+</script>

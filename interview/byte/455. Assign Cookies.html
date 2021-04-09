@@ -1,0 +1,23 @@
+<body>
+  <script>
+    var findContentChildren = function (g, s) {
+      const lenG = g.length
+      const lenS = s.length
+      g = g.slice().sort((a, b) => a - b)
+      s = s.slice().sort((a, b) => a - b)
+      let pG = 0
+      let pS = 0
+      let ans = 0
+      while (pG < lenG && pS < lenS) {
+        if (g[pG] <= s[pS]) {
+          pG++
+          pS++
+          ans++
+        } else {
+          pS++
+        }
+      }
+      return ans
+    }
+  </script>
+</body>

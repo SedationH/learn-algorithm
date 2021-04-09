@@ -1,0 +1,33 @@
+<script>
+  var inorderTraversal = function (root) {
+    const ans = []
+    help(root)
+    return ans
+
+    function help(node) {
+      if (!node) return
+      help(node.left)
+      ans.push(node.val)
+      help(node.right)
+    }
+  }
+
+  var postorderTraversal = function (root) {
+    const ans = []
+    const stack = [[0, root]]
+
+    while (stack.length !== 0) {
+      const [state, node] = stack.pop()
+      if (!node) continue
+      if (!state) {
+        stack.push([1, node])
+        stack.push([0, node.right])
+        stack.push([0, node.left])
+      } else {
+        ans.push(node.val)
+      }
+    }
+
+    return ans
+  }
+</script>

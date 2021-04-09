@@ -1,0 +1,26 @@
+<script>
+  /**
+   * @param {number[]} nums
+   * @return {number[]}
+   */
+  var sortedSquares = function (nums) {
+    let l = 0
+    let r = nums.length - 1
+    const ans = []
+    let i = nums.length - 1
+    while (l <= r) {
+      const squaredLNum = nums[l] * nums[l]
+      const squaredRNum = nums[r] * nums[r]
+      if (squaredLNum > squaredRNum) {
+        ans[i] = squaredLNum
+        l++
+      } else {
+        ans[i] = squaredRNum
+        r--
+      }
+      i--
+    }
+    return ans
+  }
+  sortedSquares([-4, -1, 0, 3, 10])
+</script>
