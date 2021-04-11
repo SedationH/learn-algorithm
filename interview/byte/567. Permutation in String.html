@@ -1,0 +1,60 @@
+<script>
+  /**
+   * @param {string} s1
+   * @param {string} s2
+   * @return {boolean}
+   */
+  var checkInclusion = function (s1, s2) {
+    const mp = {}
+    s1.split('').forEach(char => {
+      if (!mp[char]) {
+        mp[char] = 1
+      } else {
+        mp[char]++
+      }
+    })
+
+    let l = 0,
+      r = 0
+    const len = s2.length
+    const memo = {}
+    while (r < len) {
+      const char = s2[r]
+      if (memo[char] === undefined) {
+        memo[char] = 1
+      } else {
+        memo[char]++
+      }
+      // 尝试收缩
+      while (has(memo, mp) && l <= r) {
+        if (isEqual(memo, mp)) {
+          return true
+        }
+        const deleteChar = s2[l]
+        memo[deleteChar]--
+        l++
+      }
+      r++
+    }
+    return false
+
+    function has(memo, mp) {
+      for (const key in mp) {
+        if (memo[key] === undefined) memo[key] = 0
+        if (memo[key] < mp[key]) return false
+      }
+      return true
+    }
+
+    function isEqual(memo, mp) {
+      for (const key in memo) {
+        if (mp[key] === undefined) mp[key] = 0
+        if (memo[key] !== mp[key]) return false
+      }
+      return true
+    }
+  }
+
+
+  console.log(checkInclusion('a', 'ab'))
+</script>

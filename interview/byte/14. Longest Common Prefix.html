@@ -1,0 +1,29 @@
+<script>
+/**
+ * @param {string[]} strs
+ * @return {string}
+ */
+var longestCommonPrefix = function (strs) {
+  const len = strs.length
+  let ans = strs[0] || ""
+  for (let i = 1; i < len; i++) {
+    ans = getPrefix(ans, strs[i])
+    if (!ans) break
+  }
+  return ans
+
+  function getPrefix(str1, str2) {
+    let i = 0,
+      j = 0
+    const lenStr1 = str1.length
+    const lenStr2 = str2.length
+    while (i < lenStr1 && j < lenStr2 && str1[i] === str2[j]) {
+      i++
+      j++
+    }
+    return str1.slice(0, i)
+  }
+}
+
+  console.log(longestCommonPrefix(['flower', 'flow', 'flight']))
+</script>
