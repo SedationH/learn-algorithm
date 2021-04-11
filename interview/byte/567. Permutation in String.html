@@ -55,6 +55,83 @@
     }
   }
 
+  var checkInclusion = function (s1, s2) {
+    const window = {}
+    const need = {}
+    for (const char of s1) {
+      need[char] ? need[char]++ : (need[char] = 1)
+    }
+    const validLen = Object.keys(need).length
+    // 窗口状态区间[left, right)
+    let left = 0,
+      right = 0,
+      valid = 0
+    const len = s2.length
+    const needLen = s1.length
+    if (len < needLen) return false
+    while (right < len) {
+      // 扩增
+      const char = s2[right]
+      right++
+      if (need[char]) {
+        window[char] ? window[char]++ : (window[char] = 1)
+        if (window[char] === need[char]) valid++
+      }
+      // 尝试收缩
+      while (valid === validLen) {
+        if (right - left === needLen) {
+          return true
+        }
+        const deleteChar = s2[left]
+        left++
+        window[deleteChar]--
+        if (window[deleteChar] < need[deleteChar]) valid--
+      }
+    }
+    return false
+  }
 
-  console.log(checkInclusion('a', 'ab'))
+var checkInclusion = function (s1, s2) {
+  const len1 = s1.length
+  const len2 = s2.length
+  if (len1 > len2) return false
+  // 词频统计
+  const need = Object.values(s1).reduce((prev, curr) => {
+    return Object.assign(prev, {
+      [curr]: prev[curr] ? prev[curr] + 1 : 1,
+    })
+  }, {})
+  const validLen = Object.values(need).length
+  const window = {}
+  let left = 0,
+    right = 0
+  let valid = 0
+  // 窗口状态区间 [l, r)
+  while (right < len2) {
+    // 探索可能解
+    const char = s2[right]
+    right++
+    if (char in need) {
+      window[char] ? window[char]++ : (window[char] = 1)
+      if (window[char] === need[char]) valid++
+    }
+
+    // 是否可以尝试优化？
+    while (valid === validLen) {
+      // 是否已经是最优解 ?
+      if (right - left === len1) return true
+
+      // 尝试删除
+      const deleteChar = s2[left]
+      left++
+      window[deleteChar]--
+      // 两种可能
+      //  need中有这个
+      //  need中无  undefined => NaN 都会为fasle
+      if (window[deleteChar] < need[deleteChar]) valid--
+    }
+  }
+  return false
+}
+  console.log(checkInclusion('aabb', 'aaabb'))
 </script>
