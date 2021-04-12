@@ -1,0 +1,34 @@
+<script>
+/**
+ * @param {string} s
+ * @return {string[]}
+ */
+var permutation = function (s) {
+  const ans = []
+  const trace = []
+  const memo = {}
+  const len = s.length
+
+  backtrack()
+
+  return Array.from(new Set(ans))
+
+  function backtrack() {
+    if (trace.length === len) {
+      ans.push(trace.join(''))
+      return
+    }
+    for (let i = 0; i < len; i++) {
+      const char = s[i]
+      if (memo[i]) continue
+      trace.push(char)
+      memo[i] = true
+      backtrack()
+      trace.pop()
+      memo[i] = false
+    }
+  }
+}
+
+  console.log(permutation('aac'))
+</script>
