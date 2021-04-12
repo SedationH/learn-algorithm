@@ -1,0 +1,41 @@
+<script>
+  /**
+   * @param {number[]} nums
+   * @return {number}
+   */
+  var findLengthOfLCIS = function (nums) {
+    const len = nums.length
+    if (!len) return 0
+    let cnt = 1
+    let ans = 0
+    for (let i = 0; i < len - 1; i++) {
+      if (nums[i] < nums[i + 1]) {
+        cnt++
+      } else {
+        ans = Math.max(ans, cnt)
+        cnt = 1
+      }
+    }
+    ans = Math.max(ans, cnt)
+    return ans
+  }
+
+  var findLengthOfLCIS = function (nums) {
+    const len = nums.length
+    if (!len) return 0
+    // dp[i] 定义为 到 index = i 为止的最长长度
+    const dp = Array.from({ length: len }, () => 1)
+    for (let i = 1; i < len; i++) {
+      if (nums[i] > nums[i - 1]) {
+        dp[i] = dp[i - 1] + 1
+      }
+    }
+    let ans = 0
+    for (let i = 0; i < len; i++) {
+      ans = Math.max(ans, dp[i])
+    }
+    return ans
+  }
+
+  console.log(findLengthOfLCIS([1, 1, 1]))
+</script>

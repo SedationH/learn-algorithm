@@ -1,0 +1,23 @@
+<script>
+/**
+ * @param {string} path
+ * @return {string}
+ */
+var simplifyPath = function (path) {
+  const dir = path.split('/')
+  const stack = []
+  for (const d of dir) {
+    // 处理// 和 /./
+    if (d === '' || d === '.') continue
+    // 处理 ../
+    if (d === '..') {
+      stack.length ? stack.pop() : void 0
+      continue
+    }
+    stack.push(d)
+  }
+  return `/${stack.join('/')}`
+}
+
+  console.log(simplifyPath('/home//foo/'))
+</script>

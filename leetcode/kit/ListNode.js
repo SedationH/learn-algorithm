@@ -25,7 +25,7 @@ function ShowListNode(head) {
   }
 }
 
-export function CompleteBinaryTree(arr) {
+function CompleteBinaryTree(arr) {
   /**
    * 传入数组中的元素应该按照2n+1 2n+2 n为index的格式填入
    * 2n+1 left

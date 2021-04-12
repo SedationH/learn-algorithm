@@ -95,7 +95,8 @@
 
     function qS2(arr, k) {
       const targetIndex = arr.length - k
-      return help(arr, 0, arr.length - 1, targetIndex)
+      help(arr, 0, arr.length - 1, targetIndex)
+      return arr
 
       // 区间定义 [l, r] 进行区间排序
       function help(arr, l, r, targetIndex) {

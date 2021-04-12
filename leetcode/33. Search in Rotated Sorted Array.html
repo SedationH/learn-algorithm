@@ -2,13 +2,14 @@
   两种写法 因为floor和ceil的差异而产生
   <script>
     /**
-      * @param {number[]} nums
-      * @param {number} target
-      * @return {number}
-      */
+     * @param {number[]} nums
+     * @param {number} target
+     * @return {number}
+     */
     var search = function (nums, target) {
       const len = nums.length
-      let left = 0, right = len - 1
+      let left = 0,
+        right = len - 1
       while (left < right) {
         const mid = Math.ceil(left + (right - left) / 2)
 
@@ -20,12 +21,11 @@
           } else {
             right = mid - 1
           }
-
         } else {
           /**
            * 数字都不相等，要么 < 要么 >
            * [left,mid]有序
-           * 但为了mid的计算统一 我们仅仅认为[left,mid-1]有序 
+           * 但为了mid的计算统一 我们仅仅认为[left,mid-1]有序
            * 这一点的理解需要晓得 left || mid = mid  floor ceil 三者的关系
            */
           if (target >= nums[left] && target <= nums[mid - 1]) {
@@ -36,11 +36,12 @@
         }
       }
       return nums[left] === target ? left : -1
-    };
+    }
 
     var search2 = function (nums, target) {
       const len = nums.length
-      let left = 0, right = len - 1
+      let left = 0,
+        right = len - 1
       while (left < right) {
         const mid = Math.floor(left + (right - left) / 2)
 
@@ -53,7 +54,6 @@
           } else {
             right = mid
           }
-
         } else {
           /**
            * [left,mid]有序
@@ -66,12 +66,8 @@
         }
       }
       return nums[left] === target ? left : -1
-    };
+    }
 
-    console.log(
-      search2(
-        [4, 5, 6, 7, 0, 1, 2], 2
-      )
-    )
+    console.log(search2([4, 5, 6, 7, 0, 1, 2], 2))
   </script>
 </body>

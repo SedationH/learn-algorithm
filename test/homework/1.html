@@ -1,0 +1,33 @@
+<script>
+//定义数组
+var arr = [120, 34, 56, 17, 234, 12]
+/* arr:数组
+  *  start：数组起始下标
+  *  end：数组结束下标
+  *  method:获取最大值还是最小值，1表示最大值，0表示最小值
+  **/
+//获取数组最大值
+function getMaxOrMin(arr, start, end, method) {
+  if (start == end) {
+    return arr[start]
+  } else {
+    var mid = parseInt((start + end) / 2)
+    var prev = arguments.callee(arr, start, mid, method)
+    var next = arguments.callee(arr, mid + 1, end, method)
+
+    if (method) {
+      return prev > next ? prev : next
+    } else {
+      return prev > next ? next : prev
+    }
+  }
+}
+console.log('max=' + getMaxOrMin(arr, 0, 5, 1))
+console.log('min=' + getMaxOrMin(arr, 0, 5, 0))
+
+
+
+
+
+  
+</script>

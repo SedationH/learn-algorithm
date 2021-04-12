@@ -1,10 +1,28 @@
 <script>
-  /**
-   * @param {number[]} nums
-   * @return {number[][]}
-   */
-  var permute = function (nums) {
+/**
+ * @param {number[]} nums
+ * @return {number[][]}
+ */
+var permute = function (nums) {
+  const len = nums.length
+  const track = []
+  const ans = []
+  backtrack()
+  return ans
 
-    
+  function backtrack() {
+    if (track.length === len) {
+      ans.push(track.slice())
+      return
+    }
+    for (let i = 0; i < len; i++) {
+      if (track.includes(nums[i])) continue
+      track.push(nums[i])
+      backtrack()
+      track.pop()
+    }
   }
+}
+
+  console.log(permute([1, 2, 3]))
 </script>

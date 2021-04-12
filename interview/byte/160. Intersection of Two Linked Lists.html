@@ -1,0 +1,22 @@
+<script>
+  var getIntersectionNode = function (headA, headB) {
+    let pA = headA,
+      pB = headB
+    let flag = 0
+    while (pA !== pB) {
+      if (flag > 2) return null
+      pA = pA.next
+      pB = pB.next
+
+      if (!pA) {
+        flag++
+        pA = headB
+      }
+      if (!pB) {
+        flag++
+        pB = headA
+      }
+    }
+    return pA
+  }
+</script>

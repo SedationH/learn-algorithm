@@ -30,9 +30,86 @@
         const sub = target - curr
         const j = memo[sub]
         if (j !== undefined && i !== j) {
-          return [i, memo[sub]]
+          return [i, j]
         }
       }
     }
+
+    /**
+     * @param {number[]} nums
+     * @param {number} target
+     * @return {number[]}
+     */
+    var twoSum = function (nums, target) {
+      const len = nums.length
+      nums.sort((a, b) => a - b)
+      for (let i = 0; i < len - 1; i++) {
+        for (let j = i + 1; j < len; j++) {
+          if (nums[i] + nums[j] === target) {
+            return [i, j]
+          }
+          if (nums[i] + nums[j] > target) break
+        }
+      }
+    }
+
+    var twoSum = function (nums, target) {
+      const len = nums.length
+      nums.sort((a, b) => a - b)
+      for (let i = 0; i < len - 1; i++) {
+        for (let j = i + 1; j < len; j++) {
+          if (nums[i] + nums[j] === target) {
+            return [i, j]
+          }
+          if (nums[i] + nums[j] > target) break
+        }
+      }
+    }
+
+    /**
+     * @param {number[]} nums
+     * @param {number} target
+     * @return {number[]}
+     */
+    var twoSum = function (nums, target) {
+      const len = nums.length
+      const mp = {}
+      for (let i = 0; i < len; i++) {
+        const key = nums[i]
+        mp[key] = i
+      }
+      for (let i = 0; i < len; i++) {
+        const currValue = nums[i]
+        const subValue = target - currValue
+        if (mp[subValue]) {
+          return [i, mp[subValue]]
+        }
+      }
+    }
+
+    /**
+     * @param {number[]} nums
+     * @param {number} target
+     * @return {number[]}
+     */
+    var twoSum = function (nums, target) {
+      // wa 所需要的是index 而不是值 不过能展示一种想法
+      const len = nums.length
+      nums.sort((a, b) => a - b)
+      let l = 0,
+        r = len - 1
+      while (l < r) {
+        const sum = nums[l] + nums[r]
+        if (sum === target) {
+          return [l, r]
+        } else if (sum < target) {
+          l++
+        } else {
+          r--
+        }
+      }
+    }
+
+    console.log(twoSum([3, 2, 4], 6))
   </script>
 </body>

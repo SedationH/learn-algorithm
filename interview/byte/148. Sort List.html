@@ -1,0 +1,45 @@
+<script src="../../leetcode/kit/ListNode.js"></script>
+
+<script>
+var sortList = function (head) {
+  if (!head || !head.next) return head
+  let fast = head,
+    slow = head
+  let prevSlow = null
+  while (fast && fast.next) {
+    prevSlow = slow
+    slow = slow.next
+    fast = fast.next.next
+  }
+  prevSlow.next = null
+  const l = sortList(head)
+  const r = sortList(slow)
+  return merge(l, r)
+
+  function merge(l, r) {
+    const dummy = new ListNode(null)
+    let p = dummy
+    while (l && r) {
+      if (l.val < r.val) {
+        p.next = l
+        l = l.next
+      } else {
+        p.next = r
+        r = r.next
+      }
+      p = p.next
+    }
+    if (l) {
+      p.next = l
+      l = l.next
+    }
+    if (r) {
+      p.next = r
+      r = r.next
+    }
+    return dummy.next
+  }
+}
+
+  console.log(sortList(Array2ListNode([4, 2, 1, 3])))
+</script>

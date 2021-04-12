@@ -1,0 +1,55 @@
+<script>
+/**
+ * @param {number[][]} grid
+ * @return {number}
+ */
+var maxAreaOfIsland = function (grid) {
+  const row = grid.length
+  const col = grid[0].length
+  const dirs = [
+    [0, -1],
+    [1, 0],
+    [0, 1],
+    [-1, 0],
+  ]
+  let ans = 0
+  for (let i = 0; i < row; i++) {
+    for (let j = 0; j < col; j++) {
+      ans = Math.max(ans, getCnt(i, j))
+    }
+  }
+  return ans
+
+  // 获得x行 y列上的数量
+  function getCnt(x, y) {
+    if (!canGo(x, y)) return 0
+    // 进行染色，防止重复
+    grid[x][y] = 0
+    let cnt = 1
+    for (let i = 0; i < 4; i++) {
+      const nextX = x + dirs[i][0]
+      const nextY = y + dirs[i][1]
+      cnt += getCnt(nextX, nextY)
+    }
+
+    return cnt
+  }
+
+  function canGo(x, y) {
+    return x >= 0 && x < row && y >= 0 && y < col && grid[x][y]
+  }
+}
+
+  console.log(
+    maxAreaOfIsland([
+      [0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0],
+      [0, 1, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 1, 0, 0, 1, 1, 0, 0, 1, 0, 1, 0, 0],
+      [0, 1, 0, 0, 1, 1, 0, 0, 1, 1, 1, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0],
+    ])
+  )
+</script>

@@ -1,0 +1,40 @@
+<script>
+  /**
+   * @param {number[]} nums
+   * @param {number} target
+   * @return {number}
+   */
+  var search = function (nums, target) {
+    const len = nums.length
+    if (!len) return -1
+    let l = 0,
+      r = len - 1
+    // 定义搜索区间为[l, r]
+    while (l <= r) {
+      const mid = (l + r) | 0
+      const value = nums[mid]
+
+      if (value === target) {
+        return mid
+      }
+
+      if (value <= nums[r]) {
+        // [mid, r] 区间有序
+        if (target > value && target <= nums[r]) {
+          l = mid + 1
+        } else {
+          r = mid - 1
+        }
+      } else {
+        // [l, mid]
+        if (target >= nums[l] && target > value) {
+          r = mid - 1
+        } else {
+          l = mid + 1
+        }
+      }
+    }
+    return -1
+  }
+  console.log(search([1, 2, 3, 4, 5, 3, 1], 3))
+</script>

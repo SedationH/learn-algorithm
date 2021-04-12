@@ -1,0 +1,49 @@
+<script>
+/**
+ * @param {string} s
+ * @return {string[]}
+ */
+var restoreIpAddresses = function (s) {
+  const len = s.length
+  const track = []
+  const ans = []
+  backtrack(0)
+  return ans
+
+  function backtrack(start) {
+    // 满足答案要求
+    if (track.length === 4 && start == len) {
+      ans.push(track.join('.'))
+    }
+
+    // 剪枝
+    // 证明此时有剩余
+    if (track.length === 4) return
+
+    // 长度控制
+    for (let i = 0; i < 3; i++) {
+      // [start, end]
+      const end = start + i
+      // 越界处理
+      if (end >= len) return
+      const str = s.slice(start, end + 1)
+      // 有效性判断
+      let valid = true
+      {
+        if (i !== 0 && str[0] === '0') valid = false
+        const num = Number(str)
+        if (!(num >= 0 && num <= 255)) valid = false
+      }
+      if (!valid) return
+      // 进行选择
+      track.push(str)
+      // 基于当下选择 开始下一次选择
+      backtrack(end + 1)
+      // 撤销选择
+      track.pop()
+    }
+  }
+}
+
+  console.log(restoreIpAddresses("1111"))
+</script>

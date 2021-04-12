@@ -54,5 +54,32 @@
       head.next = null
       return reversedNodeHead
     }
+
+    var reverseList = function (head) {
+      const dummy = new ListNode(null)
+      let p = head
+      while (p) {
+        const next = p.next
+
+        p.next = dummy.next
+        dummy.next = p
+
+        p = next
+      }
+      return dummy.next
+    }
+
+    var reverseList = function (head) {
+      let previous = null
+      let current = head
+      let following = head
+      while (current) {
+        following = current.next
+        current.next = previous
+        previous = current
+        current = following
+      }
+      return previous
+    }
   </script>
 </body>

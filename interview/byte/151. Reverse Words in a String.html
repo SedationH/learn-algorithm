@@ -1,1 +1,35 @@
-<script></script>
+<script>
+  /**
+   * @param {string} s
+   * @return {string}
+   */
+  var reverseWords = function (s) {
+    s = s.trim().replace(/\s+/g, ' ')
+    const sArr = s.split(' ')
+    return sArr.reverse().join(' ')
+  }
+/**
+ * @param {string} s
+ * @return {string}
+ */
+reverseWords = function (s) {
+  let ans = ''
+  let r = s.length - 1
+  while (1) {
+    // 定位到最后一个单词
+    while (s[r] === ' ') r--
+    if (r === -1) break
+    // 定位到单词起始位置
+    let l = r
+    while (s[l] !== ' ' && s[l] !== undefined) l--
+    l += 1
+    // [l, r]
+    const _s = s.slice(l, r + 1) + ' '
+    ans = ans + _s
+    r = l - 1
+  }
+  return ans.slice(0, ans.length - 1)
+}
+
+  console.log(reverseWords('  Bob    Loves  Alice   '))
+</script>

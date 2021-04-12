@@ -1,0 +1,136 @@
+<script>
+  /**
+   * @param {number[]} nums
+   * @return {number[][]}
+   */
+  var threeSum = function (nums) {
+    const len = nums.length
+    if (len < 3) return []
+    const memo = {}
+    nums.sort((a, b) => a - b)
+    for (let i = 0; i < len - 1; i++) {
+      for (let j = i + 1; j < len; j++) {
+        const needValue = 0 - nums[i] - nums[j]
+        memo[needValue] = memo[needValue]
+          ? [...memo[needValue], [i, j]]
+          : [[i, j]]
+      }
+    }
+    const ans = []
+    for (let i = 0; i < len; i++) {
+      const curr = nums[i]
+      if (memo[curr]) {
+        for (const arr of memo[curr]) {
+          if (arr.indexOf(i) !== -1) continue
+          ans.push(
+            [...arr, i]
+              .sort((a, b) => a - b)
+              .map(i => nums[i])
+              .join()
+          )
+        }
+      }
+    }
+    return Array.from(new Set(ans), v => v.split(',').map(Number))
+  }
+
+  // 优化
+  var threeSum = function (nums) {
+    const len = nums.length
+    if (len < 3) return []
+    const memo = {}
+    nums.sort((a, b) => a - b)
+    for (let i = 0; i < len - 1; i++) {
+      for (let j = i + 1; j < len; j++) {
+        const needValue = 0 - nums[i] - nums[j]
+        memo[needValue] = memo[needValue]
+          ? [...memo[needValue], [i, j]]
+          : [[i, j]]
+      }
+    }
+    let ans = new Set()
+    for (let i = 0; i < len; i++) {
+      const curr = nums[i]
+      if (memo[curr]) {
+        for (const arr of memo[curr]) {
+          // 只有当前元素的位置大于缓存索引中的后者的时候才放入
+          // 保证了顺序
+          if (i <= arr[1]) continue
+          ans.add(
+            Array.from([...arr, i], index => nums[index]).join()
+          )
+        }
+      }
+    }
+    return Array.from(ans, v => v.split(',').map(Number))
+  }
+
+  /**
+   * @param {number[]} nums
+   * @return {number[][]}
+   */
+  var threeSum = function (nums) {
+    // 定一 另外两个值双指针
+    const len = nums.length
+    const ans = new Set()
+    nums.sort((a, b) => a - b)
+    for (let i = 0; i < len - 2; i++) {
+      let l = i + 1
+      let r = len - 1
+      if (nums[i] > 0) continue
+      while (l < r) {
+        const sum = nums[i] + nums[l] + nums[r]
+        if (sum === 0) {
+          ans.add([nums[i], nums[l], nums[r]].toString())
+          l++
+          r--
+        } else if (sum < 0) {
+          l++
+        } else {
+          r--
+        }
+      }
+    }
+    return Array.from(ans).map(str => str.split(',').map(Number))
+  }
+
+  /**
+   * @param {number[]} nums
+   * @return {number[][]}
+   */
+  var threeSum = function (nums) {
+    // 定一 另外两个值双指针
+    const len = nums.length
+    if (len < 3) {
+      return []
+    }
+    const ans = []
+    nums.sort((a, b) => a - b)
+    for (let i = 0; i < len - 2; i++) {
+      if (i > 0 && nums[i] === nums[i - 1]) {
+        continue
+      }
+      let l = i + 1
+      let r = len - 1
+      if (nums[i] > 0) continue
+      while (l < r) {
+        const sum = nums[i] + nums[l] + nums[r]
+        if (sum === 0) {
+          ans.push([nums[i], nums[l], nums[r]])
+          // 重复处理
+          while (l + 1 < r && nums[l] === nums[l + 1]) l++
+          while (l < r - 1 && nums[r] === nums[r - 1]) r--
+          l++
+          r--
+        } else if (sum < 0) {
+          l++
+        } else {
+          r--
+        }
+      }
+    }
+    return ans
+  }
+
+  console.log(threeSum([-1, 0, 1, 2, -1, -4]))
+</script>

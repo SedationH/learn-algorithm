@@ -1,0 +1,63 @@
+<script src="../../leetcode/kit/ListNode.js"></script>
+<script>
+  /**
+   * Definition for singly-linked list.
+   * function ListNode(val, next) {
+   *     this.val = (val===undefined ? 0 : val)
+   *     this.next = (next===undefined ? null : next)
+   * }
+   */
+  /**
+   * @param {ListNode} head
+   * @return {boolean}
+   */
+  var isPalindrome = function (head) {
+    const arr = []
+    let p = head
+    while (p) {
+      arr.push(p.val)
+      p = p.next
+    }
+    let l = 0,
+      r = arr.length - 1
+    // [l, r]区间搜索🔍
+    while (l <= r) {
+      if (arr[l] !== arr[r]) return false
+      l++
+      r--
+    }
+    return true
+  }
+
+  var isPalindrome = function (head) {
+    let slow = head,
+      fast = head
+    // 拿到中间Node
+    while (fast && fast.next) {
+      slow = slow.next
+      fast = fast.next.next
+    }
+    // slow指向的是中间
+    const dummy = new ListNode(undefined)
+    // 链表逆转
+    let p = fast ? slow.next : slow
+    while (p) {
+      const next = p.next
+
+      p.next = dummy.next
+      dummy.next = p
+
+      p = next
+    }
+    let p1 = head,
+      p2 = dummy.next
+    while (p1 && p2) {
+      if (p1.val !== p2.val) return false
+      p1 = p1.next
+      p2 = p2.next
+    }
+    return true
+  }
+
+  console.log(isPalindrome(Array2ListNode([1, 2])))
+</script>
