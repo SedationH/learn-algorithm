@@ -1,0 +1,46 @@
+<script>
+/**
+ * @param {number[][]} isConnected
+ * @return {number}
+ */
+var findCircleNum = function (isConnected) {
+  const len = isConnected.length
+  const list = Array.from({ length: len }, () => [])
+  for (let i = 0; i < len; i++) {
+    for (let j = 0; j < len; j++) {
+      if (isConnected[i][j] && i !== j) {
+        list[i].push(j)
+      }
+    }
+  }
+
+  let ans = 0
+  const visited = {}
+  for (let i = 0; i < len; i++) {
+    if (!visited[i]) {
+      ans++
+      dfs(i)
+    }
+  }
+  return ans
+
+  function dfs(i) {
+    if (visited[i]) {
+      return
+    }
+    visited[i] = true
+    for (const next of list[i]) {
+      dfs(next)
+    }
+  }
+}
+
+  console.log(
+    findCircleNum([
+      [1, 0, 0, 1],
+      [0, 1, 1, 0],
+      [0, 1, 1, 1],
+      [1, 0, 1, 1],
+    ])
+  )
+</script>

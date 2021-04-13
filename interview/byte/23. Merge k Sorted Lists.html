@@ -1,0 +1,75 @@
+<script>
+  var mergeKLists = function (lists) {
+    const dummy = new ListNode(null)
+    for (const head of lists) {
+      dummy.next = merge(dummy.next, head)
+    }
+    return dummy.next
+
+    function merge(l1, l2) {
+      const dummy = new ListNode(null)
+      let p = dummy
+      while (l1 && l2) {
+        if (l1.val < l2.val) {
+          p.next = l1
+          l1 = l1.next
+        } else {
+          p.next = l2
+          l2 = l2.next
+        }
+        p = p.next
+      }
+      while (l1) {
+        p.next = l1
+        l1 = l1.next
+        p = p.next
+      }
+      while (l2) {
+        p.next = l2
+        l2 = l2.next
+        p = p.next
+      }
+      return dummy.next
+    }
+  }
+
+mergeKLists = function (lists) {
+  const len = lists.length
+  if (!len) return null
+  return partition(0, len - 1)
+
+  function partition(l, r) {
+    if (l === r) return lists[l]
+    const mid = (l + (r - l) / 2) | 0
+    const l1 = partition(l, mid)
+    const l2 = partition(mid + 1, r)
+    return merge(l1, l2)
+  }
+
+  function merge(l1, l2) {
+    const dummy = new ListNode(null)
+    let p = dummy
+    while (l1 && l2) {
+      if (l1.val < l2.val) {
+        p.next = l1
+        l1 = l1.next
+      } else {
+        p.next = l2
+        l2 = l2.next
+      }
+      p = p.next
+    }
+    while (l1) {
+      p.next = l1
+      l1 = l1.next
+      p = p.next
+    }
+    while (l2) {
+      p.next = l2
+      l2 = l2.next
+      p = p.next
+    }
+    return dummy.next
+  }
+}
+</script>

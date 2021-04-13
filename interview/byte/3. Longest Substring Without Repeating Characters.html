@@ -71,5 +71,30 @@
     return len
   }
 
-  console.log(lengthOfLongestSubstring('abcabcbb'))
+/**
+ * @param {string} s
+ * @return {number}
+ */
+var lengthOfLongestSubstring = function (s) {
+  const len = s.length
+  let l = 0,
+    r = 0
+  const memo = {}
+  let ans = 0
+  while (r < len) {
+    const char = s[r]
+    r++
+    // 尝试优化
+    while (memo[char]) {
+      const deletChar = s[l]
+      l++
+      memo[deletChar] && memo[deletChar]--
+    }
+    memo[char] = true
+    ans = Math.max(ans, r - l)
+  }
+  return ans
+}
+
+  console.log(lengthOfLongestSubstring('pwwkew'))
 </script>

@@ -32,3 +32,9 @@ https://juejin.cn/post/6947842412102287373#heading-0
 
 https://leetcode-cn.com/explore/interview/card/bytedance/243/array-and-sorting/1021/
 
+
+
+## 142
+
+![image-20210413164600672](http://picbed.sedationh.cn/image-20210413164600672.png)
+

@@ -27,4 +27,33 @@
     }
     return ans
   }
+
+/**
+ * @param {number[][]} intervals
+ * @return {number[][]}
+ */
+var merge = function (intervals) {
+  const len = intervals.length
+  intervals.sort((a, b) => a[0] - b[0])
+  const ans = [intervals[0]]
+  for (let i = 1; i < len; i++) {
+    const [currStart, currEnd] = intervals[i]
+    const [lastStart, lastEnd] = ans[ans.length - 1]
+    // 合并
+    if (currStart <= lastEnd && currEnd > lastEnd) {
+      ans[ans.length - 1][1] = currEnd
+    }
+    // 新增
+    if (currStart > lastEnd) {
+      ans.push(intervals[i])
+    }
+  }
+  return ans
+}
+  console.log(
+    merge([
+      [1, 4],
+      [2, 3],
+    ])
+  )
 </script>

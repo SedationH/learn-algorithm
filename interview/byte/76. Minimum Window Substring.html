@@ -1,0 +1,58 @@
+<script>
+/**
+ * @param {string} s
+ * @param {string} t
+ * @return {string}
+ */
+var minWindow = function (s, t) {
+  const len = s.length
+  let l = 0,
+    r = 0
+  const need = {}
+  const window = {}
+  let needValid = 0
+  for (const char of t) {
+    if (need[char]) {
+      need[char]++
+    } else {
+      need[char] = 1
+      window[char] = 0
+      needValid++
+    }
+  }
+
+  let valid = 0
+  let ans = ''
+  let ansLen = Infinity
+  while (r < len) {
+    const char = s[r]
+    r++
+    if (need[char]) {
+      window[char]++
+      if (window[char] === need[char]) {
+        valid++
+      }
+    }
+    // 尝试进行优化
+    while (needValid === valid) {
+      const len = r - l
+      if (len < ansLen) {
+        ansLen = Math.min(len, ansLen)
+        ans = s.slice(l, r)
+      }
+      const deleteChar = s[l]
+      l++
+      window[deleteChar]--
+      if (
+        need[deleteChar] &&
+        window[deleteChar] < need[deleteChar]
+      ) {
+        valid--
+      }
+    }
+  }
+  return ans
+}
+
+  console.log(minWindow('ADOBECODEBANC', 'ABC'))
+</script>

@@ -1,0 +1,35 @@
+<script>
+/**
+ * @param {number} n
+ * @param {number} k
+ * @return {string}
+ */
+var getPermutation = function (n, k) {
+  let cnt = 0
+  const track = []
+  let ans = ''
+  return backtrack()
+
+  function backtrack() {
+    if (track.length === n) {
+      cnt++
+      if (cnt === k) {
+        return track.join('')
+      }
+      return
+    }
+    for (let i = 1; i <= n; i++) {
+      if (track.includes(i)) continue
+      track.push(i)
+      const res = backtrack()
+      // 拿到结果 直接跑路
+      if (res) {
+        return res
+      }
+      track.pop()
+    }
+  }
+}
+
+  console.log(getPermutation(3, 3))
+</script>

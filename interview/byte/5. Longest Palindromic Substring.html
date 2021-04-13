@@ -1,0 +1,31 @@
+<script>
+  /**
+   * @param {string} s
+   * @return {string}
+   */
+var longestPalindrome = function (s) {
+  const len = s.length
+  let maxLen = 0
+  let ans = ''
+  // i处于有效区间[0,len-1] 向两边扩增
+  for (let i = 0; i < len; i++) {
+    let l = i,
+      r = i
+    // 相等控制
+    while (s[l - 1] === s[l]) l--
+    while (s[r + 1] === s[r]) r++
+    // [l, r] 区间扩增
+    while (l - 1 >= 0 && r + 1 < len && s[l - 1] === s[r + 1]) {
+      l--
+      r++
+    }
+    const currentLen = r - l + 1
+    if (currentLen > maxLen) {
+      ans = s.slice(l, r + 1)
+      maxLen = Math.max(currentLen, maxLen)
+    }
+  }
+  return ans
+}
+  console.log(longestPalindrome('aaaa'))
+</script>
