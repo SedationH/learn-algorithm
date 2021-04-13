@@ -33,4 +33,22 @@
 
     return ans
   }
+
+var levelOrder = function (root) {
+  if (!root) return []
+  const queue = [root]
+  const ans = []
+  while (queue.length) {
+    let cnt = queue.length
+    const level = []
+    while (cnt--) {
+      const curr = queue.shift()
+      level.push(curr.val)
+      curr.left && queue.push(curr.left)
+      curr.right && queue.push(curr.right)
+    }
+    ans.push(level)
+  }
+  return ans
+}
 </script>

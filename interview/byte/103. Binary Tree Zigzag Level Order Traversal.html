@@ -1,0 +1,23 @@
+<script>
+var zigzagLevelOrder = function (root) {
+  if (!root) return []
+  const ans = []
+  const queue = [root]
+  let needReverse = false
+  while (queue.length) {
+    let cnt = queue.length
+    const level = []
+    while (cnt--) {
+      const curr = queue.shift()
+      level.push(curr.val)
+      curr.left && queue.push(curr.left)
+      curr.right && queue.push(curr.right)
+    }
+    needReverse &&  level.reverse()
+    ans.push(level)
+
+    needReverse = !needReverse
+  }
+  return ans
+}
+</script>
