@@ -1,3 +1,59 @@
+## 206
+
+**分析**
+
+条件 单向链表
+
+问题 改变了节点的指向  那么节点所存的原先节点的信息会被覆盖
+
+因此需要改变之前需要能够保存指向的下一个值
+
+又因为是单向 所以前面的元素也需要临时保存
+
+所以整体使用三个指针
+
+prev 保留前面的
+
+curr 当前进行修改的
+
+next 防止修改覆盖的
+
+**CODE**
+
+```js
+/**
+ * Definition for singly-linked list.
+ * function ListNode(val, next) {
+ *     this.val = (val===undefined ? 0 : val)
+ *     this.next = (next===undefined ? null : next)
+ * }
+ */
+/**
+ * @param {ListNode} head
+ * @return {ListNode}
+ */
+var reverseList = function(head) {
+  let prev = null
+  let curr = head
+  let next = head
+  while (curr){
+    next = next.next
+    curr.next = prev
+    prev = curr
+    curr = next
+  }
+  return prev
+};
+```
+
+
+
+
+
+
+
+
+
 ## 区间合并问题
 
 

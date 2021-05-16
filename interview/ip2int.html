@@ -1,0 +1,16 @@
+<script>
+  const ip = '10.0.3.193'
+  function ipTpInt() {
+    return ip
+      .split('.')
+      .map(str => {
+        let ans = Number(str).toString(2)
+        while (ans.length !== 8) {
+          ans = 0 + ans
+        }
+        return ans
+      })
+      .join('.')
+  }
+  console.log(ipTpInt())
+</script>

@@ -1,0 +1,51 @@
+<script>
+  /**
+   * @param {number[]} nums
+   * @return {number}
+   */
+  var rob = function (nums) {
+    return robTo(nums, nums.length - 1)
+    function robTo(nums, lastIndex) {
+      if (lastIndex === 0) return nums[lastIndex]
+      if (lastIndex === 1)
+        return Math.max(nums[lastIndex - 1], nums[lastIndex])
+      const methord1 = robTo(nums, lastIndex - 2) + nums[lastIndex]
+      const methord2 = robTo(nums, lastIndex - 1)
+      return Math.max(methord1, methord2)
+    }
+  }
+  var rob = function (nums) {
+    const memo = {}
+    return robTo(nums, nums.length - 1)
+    function robTo(nums, lastIndex) {
+      if (memo[lastIndex]) return memo[lastIndex]
+      if (lastIndex === 0) return nums[lastIndex]
+      if (lastIndex === 1)
+        return Math.max(nums[lastIndex - 1], nums[lastIndex])
+      const methord1 = robTo(nums, lastIndex - 2) + nums[lastIndex]
+      const methord2 = robTo(nums, lastIndex - 1)
+      memo[lastIndex] = Math.max(methord1, methord2)
+      return memo[lastIndex]
+    }
+  }
+
+var rob = function (nums) {
+  const len = nums.length
+  // 定义dp[i] 为到index = 2 位置所能够拿到的最大值
+  const dp = [
+    nums[0],
+    nums[1] ? Math.max(nums[1], nums[0]) : nums[0],
+  ]
+  for (let i = 2; i < len; i++) {
+    dp[i] = Math.max(
+      // 选
+      dp[i - 2] + nums[i],
+      // 不选
+      dp[i - 1]
+    )
+  }
+  return Math.max(...dp)
+}
+
+  console.log(rob([2, 1, 1, 2]))
+</script>
