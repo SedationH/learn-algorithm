@@ -193,3 +193,39 @@ var findKthLargest = function (nums, k) {
 };
 ```
 
+## [3. Longest Substring Without Repeating Characters](https://leetcode-cn.com/problems/longest-substring-without-repeating-characters/)
+
+经典滑动窗口
+
+注意明晰在维护什么状态
+
+```js
+/**
+ * @param {string} s
+ * @return {number}
+ */
+var lengthOfLongestSubstring = function (s) {
+  const len = s.length
+  let ans = 0
+  const memo = {}
+  let l = 0
+  let r = -1
+  // 在[l, r]区间进行答案搜寻，开始区间长度为0，满足ans的对应关系
+  while (r < len - 1) {
+    // 进行扩展
+    r++
+    const currChar = s[r]
+    memo[currChar] = memo[currChar] ? memo[currChar] + 1 : 1
+    // 可行性维持 让新加入的满足要求
+    while (memo[currChar] !== 1) {
+      const deleteChar = s[l]
+      memo[deleteChar]--
+      l++
+    }
+    // 执行到此处[l, r] 一定没有重复char
+    ans = Math.max(ans, r - l + 1)
+  }
+  return ans
+};
+```
+
