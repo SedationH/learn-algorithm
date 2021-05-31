@@ -1,6 +1,95 @@
 <body>
   考察堆或者快速排序
+
+
+
   <script>
+    /**
+     * @param {number[]} nums
+     * @param {number} k
+     * @return {number}
+     */
+    var findKthLargest = function (nums, k) {
+      // 利用选择排序
+
+      // 定义有序区间 [0,i)
+      // 因为i从0开始，所以开始的有序区间长度为0
+      // 每次选择最大的元素交换到i这个位置
+      for (let i = 0; i < nums.length; i++) {
+        let maxValue = nums[i]
+        let maxValueIndex = i
+        for (let j = i + 1; j < nums.length; j++) {
+          const currValue = nums[j]
+          if (currValue > maxValue) {
+            maxValue = currValue
+            maxValueIndex = j
+          }
+        }
+        swap(nums, i, maxValueIndex)
+        if (i + 1 === k) {
+          return maxValue
+        }
+      }
+
+      return null
+
+
+      function swap(nums, i, j) {
+        const temp = nums[i]
+        nums[i] = nums[j]
+        nums[j] = temp
+      }
+    };
+
+
+    /**
+     * @param {number[]} nums
+     * @param {number} k
+     * @return {number}
+     */
+    var findKthLargest = function (nums, k) {
+      let left = 0
+      let right = nums.length - 1
+      // if len = 6 k = 1 , 则 k = 5 🙆
+      k = nums.length - k
+      while (true) {
+        const pivotIndex = partition(nums, left, right)
+        if (pivotIndex === k) {
+          return nums[pivotIndex]
+          // 找的位置比需要的大
+        } else if (pivotIndex > k) {
+          right = pivotIndex - 1
+          // 找到的位置比需要的小
+        } else {
+          left = pivotIndex + 1
+        }
+      }
+
+
+      function partition(arr, left, right) {
+        const pivot = arr[left]
+        let lt = left
+        for (let i = left + 1; i <= right; i++) {
+          if (arr[i] < pivot) {
+            lt++
+            swap(arr, i, lt)
+          }
+        }
+        swap(arr, lt, left)
+        return lt
+      }
+
+      function swap(arr, i, j) {
+        const temp = arr[i]
+        arr[i] = arr[j]
+        arr[j] = temp
+      }
+    };
+    console.log(findKthLargest([3, 1, 2, 4], 2))
+  </script>
+
+  <script>
+    throw 1
     var findKthLargest = function (nums, k) {
       return quickSort(nums)[nums.length - k]
 
@@ -136,6 +225,7 @@
   </script>
 
   <script>
+    throw 1
     function quickSort(arr) {
       const len = arr.length
       if ((len === 1) | (len === 0)) {
@@ -151,6 +241,7 @@
   </script>
 
   <script>
+    throw 1
     // 举例子
     ;[5, 2, 7, 9, 6, 1, 4, 5, 0]
 

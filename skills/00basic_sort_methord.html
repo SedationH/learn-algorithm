@@ -1,0 +1,76 @@
+<script>
+  function quickSort(arr) {
+
+    return _quickSort(arr, 0, arr.length - 1)
+
+    // 对 nums [left, right] 区间的值进行排序
+    function _quickSort(arr, left, right) {
+      const len = arr.length
+      if (len == 0 || len == 1) {
+        // 没有排序的必要
+        return arr
+      }
+
+      const pivot = arr[left]
+
+      const subArr = arr.slice(1)
+      const leftArr = subArr.filter((v) => v < pivot)
+      const rightArr = subArr.filter((v) => v >= pivot)
+      return [
+        ...quickSort(leftArr), pivot, ...quickSort(rightArr)
+      ]
+    }
+  }
+
+  // 使用自己实现的partition操作
+  function quickSort(arr) {
+    const len = arr.length
+    if (len == 0 || len == 1) {
+      // 没有排序的必要
+      return arr
+    }
+
+    _quickSort(arr, 0, arr.length - 1)
+
+    return arr
+
+    // 对 arr [left, right] 区间的值进行排序
+    function _quickSort(arr, left, right) {
+      if (left > right) {
+        return
+      }
+      const pivotIndex = partition(arr, left, right)
+      _quickSort(arr, left, pivotIndex - 1)
+      _quickSort(arr, pivotIndex + 1, right)
+    }
+
+
+    // 对 arr [left, right] 的区间进行partition
+    // 最终的效果，以arr[left] 为pivot，使得区间内进行分块
+    // 处理完成后，返回pivotIndex
+    function partition(arr, left, right) {
+      const pivot = arr[left]
+      // 循环不变量
+      // 严格小于 lt
+      // [left+1, lt] 见的所有值都 < pivot
+      // lt = left 所以开始这个区间没有值
+      let lt = left
+      for (let i = left + 1; i <= right; i++) {
+        if (arr[i] < pivot) {
+          lt++
+          swap(arr, i, lt)
+        }
+      }
+      swap(arr, lt, left)
+      return lt
+    }
+
+    function swap(arr, i, j) {
+      const temp = arr[i]
+      arr[i] = arr[j]
+      arr[j] = temp
+    }
+  }
+
+  console.log(quickSort([1, 4, 5, 2, 0]))
+</script>
