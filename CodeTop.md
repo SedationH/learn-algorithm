@@ -229,3 +229,316 @@ var lengthOfLongestSubstring = function (s) {
 };
 ```
 
+
+
+## [146. LRU Cache](https://leetcode-cn.com/problems/lru-cache/)
+
+Design a data structure that follows the constraints of a Least Recently Used (LRU) cache.
+
+Implement the LRUCache class:
+
+- LRUCache(int capacity) Initialize the LRU cache with positive size capacity.
+- int get(int key) Return the value of the key if the key exists, otherwise return -1.
+- void put(int key, int value) Update the value of the key if the key exists. Otherwise, add the key-value pair to the cache. If the number of keys exceeds the capacity from this operation, evict the least recently used key.
+
+Follow up:
+Could you do get and put in O(1) time complexity?
+
+
+
+### 背景解释
+
+LRU (Least Recently Used)
+
+这是一个Policy 策略
+
+考虑如下情况：
+
+限制大小为4
+
+1. if
+
+cache =  4、3、1、2
+
+add 5
+
+cache = 5、4、3、1
+
+2. if
+
+cache = 3、4、2、1
+
+get 2
+
+cache = 2、3、4、1
+
+简而言之，在这样的策略下，最经常使用的会放到整个cache的前面
+
+
+
+what is cache?
+
+典型的用空间换取时间
+
+提前准备可能会用到的时间，或者计算过程中产生过的数据，下次查询的时候减少已经经历的重复计算
+
+good vedios https://www.youtube.com/watch?v=S6IfqDXWa10
+
+
+
+所以LRU Cache就是使用LRU作为eviction policy的cache
+
+
+
+### 数据结构和逻辑分析
+
+现在考虑数据结构
+
+Get time:O(1): HashTable
+
+Remove: O(1): Linked List (Double)
+
+
+
+
+
+考虑操作逻辑
+
+```js
+function get(key) {
+  const node = memo.get(key)
+  if(node) {
+    提前
+  } else {
+    return -1
+  }
+}
+
+function put(key, val) {
+  const node = memo.get(key)
+  if(node) {
+    变化值、提前
+  } else {
+    if(当前存储大小 == 限制大小) {
+      删除最后一个、添加、提前
+    }else{
+      添加、提前
+    }
+  }
+}
+```
+
+提前 等价于 删除原有的、在头部添加
+
+问题得以转化为
+
+实现下面两个基础函数
+
+```js
+// 添加直接添加到头部
+function add(Node) {
+  
+}
+  
+// 移出指定的节点
+function remove(Node) {
+  
+}
+```
+
+### 整体实现
+
+```js
+function Node(key, val) {
+  this.key = key
+  this.val = val
+  this.next = null
+  this.prev = null
+}
+
+/**
+ * @param {number} capacity
+ */
+var LRUCache = function (capacity) {
+  this.capacity = capacity
+
+  // 初始化double list 存储结构
+  this.dummyHeadNode = new Node(null, null)
+  this.dummyTailNode = new Node(null, null)
+  this.dummyHeadNode.next = this.dummyTailNode
+  this.dummyTailNode.prev = this.dummyHeadNode
+
+  // 初始化Map<number, Node>
+  this.cacheMemo = new Map()
+};
+
+/** 
+ * @param {number} key
+ * @return {number}
+ */
+LRUCache.prototype.get = function (key) {
+  const node = this.cacheMemo.get(key)
+  let result = -1
+  if (node) {
+    // 提前
+    this.remove(node)
+    this.add(node)
+    result = node.val
+  }
+  return result
+};
+
+/** 
+ * @param {number} key 
+ * @param {number} value
+ * @return {void}
+ */
+LRUCache.prototype.put = function (key, value) {
+  // 复用还是删除看具体情况吧，这里感觉差异不大
+  // 出于简化考虑，直接删除
+  const oldNode = this.cacheMemo.get(key)
+  const newNode = new Node(key, value)
+  if (oldNode) {
+    this.remove(oldNode)
+    this.add(newNode)
+    this.cacheMemo.set(key, newNode)
+  } else {
+    const currSize = this.cacheMemo.size
+    if (currSize === this.capacity) {
+      const lastNode = this.dummyTailNode.prev
+      this.cacheMemo.delete(lastNode.key)
+      this.remove(lastNode)
+    }
+    this.add(newNode)
+    this.cacheMemo.set(key, newNode)
+  }
+};
+
+LRUCache.prototype.add = function (node) {
+  const dummyHeadNodeNext = this.dummyHeadNode.next
+
+  // 处理node和dummyHeadNode
+  this.dummyHeadNode.next = node
+  node.prev = this.dummyHeadNode
+
+  // 处理node和dummyHeadNodeNext
+  node.next = dummyHeadNodeNext
+  dummyHeadNodeNext.prev = node
+}
+
+LRUCache.prototype.remove = function (node) {
+  node.prev.next = node.next
+  node.next.prev = node.prev
+}
+```
+
+
+
+put中容易犯错误
+
+明晰两个数据结构之间的关系可以降低错误发生的可能
+
+
+
+memo 是为了 查找双向链表上的具体元素而存在的
+
+因此memo的更新要和对双向链表的修改同步
+
+
+
+我感觉这个操作绑定到add 和 remove中更合理
+
+
+
+下面进行修改
+
+```js
+function Node(key, val) {
+  this.key = key
+  this.val = val
+  this.next = null
+  this.prev = null
+}
+
+/**
+ * @param {number} capacity
+ */
+var LRUCache = function (capacity) {
+  this.capacity = capacity
+
+  // 初始化double list 存储结构
+  this.dummyHeadNode = new Node(null, null)
+  this.dummyTailNode = new Node(null, null)
+  this.dummyHeadNode.next = this.dummyTailNode
+  this.dummyTailNode.prev = this.dummyHeadNode
+
+  // 初始化Map<number, Node>
+  this.cacheMemo = new Map()
+};
+
+/** 
+ * @param {number} key
+ * @return {number}
+ */
+LRUCache.prototype.get = function (key) {
+  const node = this.cacheMemo.get(key)
+  let result = -1
+  if (node) {
+    // 提前
+    this.remove(node)
+    this.add(node)
+    result = node.val
+  }
+  return result
+};
+
+/** 
+ * @param {number} key 
+ * @param {number} value
+ * @return {void}
+ */
+LRUCache.prototype.put = function (key, value) {
+  // 复用还是删除看具体情况吧，这里感觉差异不大
+  // 出于简化考虑，直接删除
+  const oldNode = this.cacheMemo.get(key)
+  const newNode = new Node(key, value)
+  if (oldNode) {
+    this.remove(oldNode)
+    this.add(newNode)
+  } else {
+    const currSize = this.cacheMemo.size
+    if (currSize === this.capacity) {
+      const lastNode = this.dummyTailNode.prev
+      this.remove(lastNode)
+    }
+    this.add(newNode)
+  }
+};
+
+LRUCache.prototype.add = function (node) {
+  const dummyHeadNodeNext = this.dummyHeadNode.next
+
+  // 处理node和dummyHeadNode
+  this.dummyHeadNode.next = node
+  node.prev = this.dummyHeadNode
+
+  // 处理node和dummyHeadNodeNext
+  node.next = dummyHeadNodeNext
+  dummyHeadNodeNext.prev = node
+
+  this.cacheMemo.set(node.key, node)
+}
+
+LRUCache.prototype.remove = function (node) {
+  node.prev.next = node.next
+  node.next.prev = node.prev
+
+  this.cacheMemo.delete(node.key)
+}
+```
+
+
+
+
+
+![image-20210601164411461](http://picbed.sedationh.cn/image-20210601164411461.png)

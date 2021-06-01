@@ -1,0 +1,100 @@
+<script>
+  function Node(key, val) {
+    this.key = key
+    this.val = val
+    this.next = null
+    this.prev = null
+  }
+
+  /**
+   * @param {number} capacity
+   */
+  var LRUCache = function (capacity) {
+    this.capacity = capacity
+
+    // 初始化double list 存储结构
+    this.dummyHeadNode = new Node(null, null)
+    this.dummyTailNode = new Node(null, null)
+    this.dummyHeadNode.next = this.dummyTailNode
+    this.dummyTailNode.prev = this.dummyHeadNode
+
+    // 初始化Map<number, Node>
+    this.cacheMemo = new Map()
+  };
+
+  /** 
+   * @param {number} key
+   * @return {number}
+   */
+  LRUCache.prototype.get = function (key) {
+    const node = this.cacheMemo.get(key)
+    let result = -1
+    if (node) {
+      // 提前
+      this.remove(node)
+      this.add(node)
+      result = node.val
+    }
+    return result
+  };
+
+  /** 
+   * @param {number} key 
+   * @param {number} value
+   * @return {void}
+   */
+  LRUCache.prototype.put = function (key, value) {
+    // 复用还是删除看具体情况吧，这里感觉差异不大
+    // 出于简化考虑，直接删除
+    const oldNode = this.cacheMemo.get(key)
+    const newNode = new Node(key, value)
+    if (oldNode) {
+      this.remove(oldNode)
+      this.add(newNode)
+    } else {
+      const currSize = this.cacheMemo.size
+      if (currSize === this.capacity) {
+        const lastNode = this.dummyTailNode.prev
+        this.remove(lastNode)
+      }
+      this.add(newNode)
+    }
+  };
+
+  LRUCache.prototype.add = function (node) {
+    const dummyHeadNodeNext = this.dummyHeadNode.next
+
+    // 处理node和dummyHeadNode
+    this.dummyHeadNode.next = node
+    node.prev = this.dummyHeadNode
+
+    // 处理node和dummyHeadNodeNext
+    node.next = dummyHeadNodeNext
+    dummyHeadNodeNext.prev = node
+
+    this.cacheMemo.set(node.key, node)
+  }
+
+  LRUCache.prototype.remove = function (node) {
+    node.prev.next = node.next
+    node.next.prev = node.prev
+
+    this.cacheMemo.delete(node.key)
+  }
+
+  /**
+   * Your LRUCache object will be instantiated and called as such:
+   * var obj = new LRUCache(capacity)
+   * var param_1 = obj.get(key)
+   * obj.put(key,value)
+   */
+  const t = new LRUCache(2)
+  t.put(1, 1)
+  t.put(2, 2)
+  t.get(1)
+  t.put(3, 3)
+  console.log(t.get(2))
+
+  // ["LRUCache", "put", "put", "get", "put", "get", "put", "get", "get", "get"]
+  // [[2], [1, 1], [2, 2], [1], [3, 3], [2], [4, 4], [1], [3], [4]]
+</script>
