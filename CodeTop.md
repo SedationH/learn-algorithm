@@ -542,3 +542,137 @@ LRUCache.prototype.remove = function (node) {
 
 
 ![image-20210601164411461](http://picbed.sedationh.cn/image-20210601164411461.png)
+
+
+
+## [912. Sort an Array](https://leetcode-cn.com/problems/sort-an-array/)
+
+Given an array of integers nums, sort the array in ascending order.
+
+ 
+
+Example 1:
+
+> Input: nums = [5,2,3,1]
+> Output: [1,2,3,5]
+
+Example 2:
+
+>  Input: nums = [5,1,1,2,0,0]
+> Output: [0,0,1,1,2,5]
+
+
+
+### 题目分析
+
+自己实现快速排序
+
+快排的大致思想
+
+按照一定标准每次在待排序区间中选择一个元素 pivot
+
+以pivot作为partition的标准去分隔区间
+
+目前实现的标准是使用区间left对应的值作为pivot
+
+
+
+比如 2, 0, 1, 3, 5
+
+以 2 作为pivot
+
+形成
+
+1, 0, 2, 3, 5
+
+(这里为啥1 在 0 前面？和具体的swap 和 partition过程有关系，不过核心是 1 小于2 ，所以在放在2的右边任意位置即可)
+
+ok 经过这样的过程，2就被放到了对应的位置 pationtion返回相应的pivotIndex = 2
+
+再根据这个结果再进行quickSort(left, pivotIndex - 1)  quickSort(pivotIndex + 1, right)
+
+
+
+### 具体实现
+
+下面说两种方法，第一种很好理解，但内存消耗太大了
+
+第二个是正常的在一个数组上进行操作
+
+```js
+/**
+ * @param {number[]} nums
+ * @return {number[]}
+ */
+var sortArray = function (nums) {
+  return quickSort(nums)
+
+  function quickSort(nums) {
+    if (nums.length === 1 || nums.length === 0) {
+      return nums
+    }
+    const pivot = nums[0]
+    const subNums = nums.slice(1)
+    const leftNums = subNums.filter(num => num < pivot)
+    const rightNums = subNums.filter(num => num >= pivot)
+
+    return [
+      ...quickSort(leftNums),
+      pivot,
+      ...quickSort(rightNums)
+    ]
+  }
+};
+```
+
+
+
+```js
+/**
+* @param {number[]} nums
+* @return {number[]}
+*/
+var sortArray = function (nums) {
+  quickSort(nums, 0, nums.length - 1)
+  return nums
+
+  // sort nums [left, right] 区间中的所有值
+  function quickSort(nums, left, right) {
+    if (left >= right) {
+      return
+    }
+
+    const pivotIndex = partition(nums, left, right)
+    quickSort(nums, left, pivotIndex - 1)
+    quickSort(nums, pivotIndex + 1, right)
+  }
+
+  // 对nums [left, right]区间中的值进行partition
+  function partition(nums, left, right) {
+    const pivot = nums[left]
+    // less than 严格小于 要求 [left+1, lt] 之间的值都小于pivot
+    // lt 初始等于left 所以开始区间大小为0 
+    let lt = left
+    for (let i = left + 1; i <= right; i++) {
+      if (nums[i] < pivot) {
+        lt++
+        swap(nums, lt, i)
+      }
+    }
+    swap(nums, left, lt)
+    return lt
+  }
+
+  function swap(nums, i, j) {
+    const temp = nums[i]
+    nums[i] = nums[j]
+    nums[j] = temp
+  }
+};
+```
+
+
+
+### 想法
+
+快排的核心思想是分治，这也是在许多算法中很重要的设计点。

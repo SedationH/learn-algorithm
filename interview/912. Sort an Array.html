@@ -1,0 +1,66 @@
+<script>
+/**
+ * @param {number[]} nums
+ * @return {number[]}
+ */
+var sortArray = function (nums) {
+  return quickSort(nums)
+
+  function quickSort(nums) {
+    if (nums.length === 1 || nums.length === 0) {
+      return nums
+    }
+    const pivot = nums[0]
+    const subNums = nums.slice(1)
+    const leftNums = subNums.filter(num => num < pivot)
+    const rightNums = subNums.filter(num => num >= pivot)
+
+    return [
+      ...quickSort(leftNums),
+      pivot,
+      ...quickSort(rightNums)
+    ]
+  }
+};
+
+/**
+* @param {number[]} nums
+* @return {number[]}
+*/
+var sortArray = function (nums) {
+  return quickSort(nums, 0, nums.length - 1)
+
+  // sort nums [left, right] 区间中的所有值
+  function quickSort(nums, left, right) {
+    if (left >= right) {
+      return
+    }
+
+    const pivotIndex = partition(nums, left, right)
+    quickSort(nums, left, pivotIndex - 1)
+    quickSort(nums, pivotIndex + 1, right)
+  }
+
+  // 对nums [left, right]区间中的值进行partition
+  function partition(nums, left, right) {
+    const pivot = nums[left]
+    // less than 严格小于 要求 [left+1, lt] 之间的值都小于pivot
+    // lt 初始等于left 所以开始区间大小为0 
+    let lt = left
+    for (let i = left + 1; i <= right; i++) {
+      if (nums[i] < pivot) {
+        lt++
+        swap(nums, lt, i)
+      }
+    }
+    swap(nums, left, lt)
+    return lt
+  }
+
+  function swap(nums, i, j) {
+    const temp = nums[i]
+    nums[i] = nums[j]
+    nums[j] = temp
+  }
+};
+</script>
