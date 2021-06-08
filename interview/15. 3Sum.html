@@ -1,4 +1,41 @@
 <script>
+
+/**
+* @param {number[]} nums
+* @return {number[][]}
+*/
+var threeSum = function (nums) {
+  let ans = []
+  for (let i = 0; i < nums.length; i++) {
+    const traget = nums[i]
+    const temp = twoSum(i, -traget)
+    if (temp.length !== 0) {
+      ans = ans.concat(temp)
+    }
+  }
+  // 还需要去除重复
+  return ans
+
+  function twoSum(ignoreIndex, traget) {
+    const subtractionValue2Index = new Map()
+    const ans = []
+    for (let i = 0; i < nums.length; i++) {
+      if (i === ignoreIndex) continue
+      const subtractionValue = traget - nums[i]
+      const subtractionIndex = subtractionValue2Index.get(subtractionValue)
+      if (subtractionIndex !== undefined) {
+        ans.push([-traget, nums[i], nums[subtractionIndex]])
+      } else {
+        subtractionValue2Index.set(nums[i], i)
+      }
+    }
+    return ans
+  }
+};
+
+  debugger
+  console.log(threeSum([-1, 0, 1, 2, -1, -4]
+  ))
   /**
    * @param {number[]} nums
    * @return {number[][]}

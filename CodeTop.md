@@ -4,7 +4,9 @@ Given the head of a singly linked list, reverse the list, and return the reverse
 
  ![img](https://assets.leetcode.com/uploads/2021/02/19/rev1ex1.jpg)
 
-- 链表
+
+
+迭代
 
 ```js
 /**
@@ -23,17 +25,53 @@ var reverseList = function(head) {
   // 使用更多的指针来进行临时保存
   let prev = null
   let curr = head
-  let next = head
   while(curr) {
     // 变换之前先保存
-    next = curr.next
+    const next = curr.next
     curr.next = prev
+    
     prev = curr
     curr = next
   }
   return prev
 };
 ```
+
+递归
+
+```js
+/**
+ * Definition for singly-linked list.
+ * function ListNode(val, next) {
+ *     this.val = (val===undefined ? 0 : val)
+ *     this.next = (next===undefined ? null : next)
+ * }
+ */
+/**
+ * @param {ListNode} head
+ * @return {ListNode}
+ */
+var reverseList = function(head) {
+  return reverse(null, head)
+
+  function reverse(prev, curr) {
+    if(!curr) return prev
+    const next = curr.next
+    curr.next = prev
+
+    // return reverse(prev = curr, curr = next)
+    return reverse(curr, next)
+  }
+};
+```
+
+
+
+在书写的时候，特意使用了一样的格式，可以看出迭代和递归的写法之间有很多相似之处
+
+过程中通过画图可以让这个过程更加清晰
+
+![image-20210607212714446](http://picbed.sedationh.cn/image-20210607212714446.png)
 
 
 
@@ -676,3 +714,237 @@ var sortArray = function (nums) {
 ### 想法
 
 快排的核心思想是分治，这也是在许多算法中很重要的设计点。
+
+
+
+## [1. Two Sum](https://leetcode-cn.com/problems/two-sum/)
+
+```js
+/**
+ * @param {number[]} nums
+ * @param {number} target
+ * @return {number[]}
+ */
+var twoSum = function(nums, target) {
+  const subtractionValue2IndexMap = new Map()
+  for(let i=0;i<nums.length;i++) {
+    const subtractionValue = target - nums[i]
+    const subtractionIndex = subtractionValue2IndexMap.get(subtractionValue)
+    if(subtractionIndex !== undefined) {
+      return [i, subtractionIndex]
+    } else {
+      subtractionValue2IndexMap.set(nums[i], i)
+    }
+  }
+};
+```
+
+
+
+## [53. Maximum Subarray](https://leetcode-cn.com/problems/maximum-subarray/)
+
+```js
+/**
+ * @param {number[]} nums
+ * @return {number}
+ */
+var maxSubArray = function(nums) {
+  // 定义 dp[i] 为使用index = i元素情况下，能够达到的连续最大值
+  const dp = [nums[0]]
+  for(let i = 1; i < nums.length; i++) {
+    if(dp[i-1] > 0) {
+      dp[i] = dp[i-1] + nums[i]
+    } else {
+      dp[i] = nums[i]
+    }
+  }
+  return Math.max(...dp)
+};
+```
+
+
+
+## [15. 3Sum](https://leetcode-cn.com/problems/3sum/)
+
+
+
+```js
+/**
+* @param {number[]} nums
+* @return {number[][]}
+*/
+var threeSum = function (nums) {
+  let ans = []
+  const targetMemo = {}
+  for (let i = 0; i < nums.length; i++) {
+    const traget = nums[i]
+    if(targetMemo[traget]) continue
+    targetMemo[traget] = true
+    const temp = twoSum(i, -traget)
+    if (temp.length !== 0) {
+      ans = ans.concat(temp)
+    }
+  }
+  // 还需要去除重复
+  const finalAns = []
+  for(const arr of ans) {
+    arr.sort((a,b) => a-b)
+    finalAns.push(arr.toString())
+  }
+  return Array.from(new Set(finalAns)).map(stringArr => stringArr.split(','))
+
+  function twoSum(ignoreIndex, traget) {
+    const subtractionValue2Index = new Map()
+    const ans = []
+    for (let i = 0; i < nums.length; i++) {
+      if (i === ignoreIndex) continue
+      const subtractionValue = traget - nums[i]
+      const subtractionIndex = subtractionValue2Index.get(subtractionValue)
+      if (subtractionIndex !== undefined) {
+        ans.push([-traget, nums[i], nums[subtractionIndex]])
+      } else {
+        subtractionValue2Index.set(nums[i], i)
+      }
+    }
+    return ans
+  }
+};
+```
+
+
+
+## [560. Subarray Sum Equals K](https://leetcode-cn.com/problems/subarray-sum-equals-k/)
+
+
+
+### 分析
+
+容易想到
+
+定区间，求区间内的总和，满足要求进行计数
+
+`[i, j]` 两个变量 时间复杂度为O(N^2)
+
+区间内加和还需要再走个循环，因此最终时间复杂度 O(N^3)
+
+
+
+内部的求和过程可以优化掉
+
+引入前缀和的概念
+
+定义
+
+`cumulativeSum[i]` 为 sum `[0, i]`区间的结果
+
+因此 区间`[i, j]` 内的总和可以被表示为
+
+`cumulativeSum[j]  - cumulativeSum[i-1]` 
+
+通过预处理可以优化掉求和运行的重复过程
+
+
+
+具体编码中可以用N的空间预处理 *见法1*，也可以在计算中不断累积使用空间O(1) *见法2*
+
+
+
+### 方案一
+
+空间预处理
+
+```js
+
+var subarraySum = function (nums, k) {
+  const cumulativeSum = []
+  cumulativeSum[-1] = 0
+  for (let i = 0; i < nums.length; i++) {
+    cumulativeSum[i] = cumulativeSum[i - 1] + nums[i]
+  }
+
+  let count = 0
+  for (let i = 0; i < nums.length; i++) {
+    for (let j = i; j < nums.length; j++) {
+      const sum = cumulativeSum[j] - cumulativeSum[i - 1]
+      if (sum === k) {
+        count++
+      }
+    }
+  }
+
+  return count
+};
+```
+
+
+
+### 方案二
+
+过程累积量
+
+```js
+
+var subarraySum = function (nums, k) {
+  let count = 0
+  for (let i = 0; i < nums.length; i++) {
+    let cumulativeSum = 0
+    for (let j = i; j < nums.length; j++) {
+      const sum = cumulativeSum + nums[j]
+      if (sum === k) {
+        count++
+      }
+      cumulativeSum = sum
+    }
+  }
+
+  return count
+};
+```
+
+
+
+### 反思，最终解
+
+但上述方案还是时间为O(N^2)
+
+费时的查询在寻找前面是否存在可行区间
+
+考虑使用hashmap来记忆这个过程
+
+```js
+var subarraySum = function (nums, k) {
+  const mp = {
+    0: 1
+  }
+  let cumulativeSum = 0
+  let ans = 0
+  for (let i = 0; i < nums.length; i++) {
+    cumulativeSum += nums[i]
+
+    if (cumulativeSum - k in mp) {
+      ans += mp[cumulativeSum - k]
+    }
+
+    mp[cumulativeSum] = (mp[cumulativeSum] || 0) + 1
+  }
+
+  return ans
+};
+```
+
+上述代码有许多细节
+
+考虑当下情况
+
+```js
+// [1,2,3,0,0,0]
+// 3
+```
+
+![image-20210608160936256](http://picbed.sedationh.cn/image-20210608160936256.png)
+
+
+
+感觉理解的难点在于 ans 所依赖的 mp 的动态累积的结果，
+
+当前i下的cumulativeSum对应着此时的mp

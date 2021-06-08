@@ -1,0 +1,55 @@
+<script>
+  /**
+   * @param {number[]} nums
+   * @param {number} k
+   * @return {number}
+   */
+  // ERROR
+  var subarraySum = function (nums, k) {
+    let l = 0
+    let r = -1
+    let currWindowSum = 0
+    let ans1 = 0
+    while (r < nums.length && l < nums.length) {
+      r++
+      currWindowSum += nums[r]
+
+      while (currWindowSum > k && l + 1 <= r) {
+        currWindowSum -= nums[l]
+        l++
+      }
+
+      if (currWindowSum === k && r - l >= 0) {
+        ans1++
+
+        currWindowSum -= nums[l]
+        l++
+      }
+    }
+    l = 0
+    r = -1
+    currWindowSum = 0
+    let ans2 = 0
+    while (r < nums.length && l < nums.length) {
+      r++
+      currWindowSum += nums[r]
+
+      while (currWindowSum < k && l + 1 <= r) {
+        currWindowSum -= nums[l]
+        l++
+      }
+
+      if (currWindowSum === k && r - l >= 0) {
+        ans2++
+
+        currWindowSum -= nums[l]
+        l++
+      }
+    }
+
+
+    return Math.max(ans1, ans2)
+  };
+
+  console.log(subarraySum([1, -1, 0], 0))
+</script>

@@ -35,61 +35,149 @@
       return ans
     }
 
-// 超时
-var subarraySum = function (nums, k) {
-  const prefixes = [],
-    len = nums.length
-  prefixes[-1] = 0
-  let currSum = 0,
-    ans = 0
-  for (let i = 0; i < len; i++) {
-    currSum += nums[i]
-    prefixes[i] = currSum
-  }
-  for (let i = -1; i < len; i++) {
-    for (let j = i + 1; j < len; j++) {
-      const sub = prefixes[j] - prefixes[i]
-      if (sub === k) {
-        ans++
+    // 超时
+    var subarraySum = function (nums, k) {
+      const prefixes = [],
+        len = nums.length
+      prefixes[-1] = 0
+      let currSum = 0,
+        ans = 0
+      for (let i = 0; i < len; i++) {
+        currSum += nums[i]
+        prefixes[i] = currSum
       }
-      // 不能这么写 范围在[-10^7,10^7]
-      // else if (sub > k) {
-      //   break
-      // }
+      for (let i = -1; i < len; i++) {
+        for (let j = i + 1; j < len; j++) {
+          const sub = prefixes[j] - prefixes[i]
+          if (sub === k) {
+            ans++
+          }
+          // 不能这么写 范围在[-10^7,10^7]
+          // else if (sub > k) {
+          //   break
+          // }
+        }
+      }
+      return ans
     }
-  }
-  return ans
-}
 
-/**
-  * @param {number[]} nums
-  * @param {number} k
-  * @return {number}
-  */
+    /**
+      * @param {number[]} nums
+      * @param {number} k
+      * @return {number}
+      */
+    var subarraySum = function (nums, k) {
+      // 关键信息 连续的subarrays 值等于k
+
+      // 定义cache[value] 为当前使用索引前 从[0, 当前i]中值为value的个数
+      const cache = {
+        0: 1,
+      },
+        len = nums.length
+      let prefix = 0,
+        ans = 0
+      for (let i = 0; i < len; i++) {
+        prefix += nums[i]
+        if (prefix - k in cache) {
+          ans += cache[prefix - k]
+        }
+        cache[prefix] = (cache[prefix] || 0) + 1
+      }
+      return ans
+    }
+
+    /**
+     * @param {number[]} nums
+     * @param {number} k
+     * @return {number}
+     */
+    // TLE
+
+    /**
+ * @param {number[]} nums
+ * @param {number} k
+ * @return {number}
+ */
+    // var subarraySum = function (nums, k) {
+    //   const dp = []
+    //   dp[-1] = 0
+    //   for (let i = 0; i < nums.length; i++) {
+    //     dp[i] = dp[i - 1] + nums[i]
+    //   }
+    //   let ans = 0
+    //   for (let i = -1; i < dp.length; i++) {
+    //     for (let j = i + 1; j < dp.length; j++) {
+    //       const currSum = dp[j] - dp[i]
+    //       if (currSum === k) {
+    //         ans++
+    //       }
+    //     }
+    //   }
+    //   return ans
+    // };
+
+    // 思考的内容
+    //   有重复计算 如何优化？ -> prefix
+    //   有低效率的查询 如何优化 -> cache/map
+
 var subarraySum = function (nums, k) {
-  // 关键信息 连续的subarrays 值等于k
-
-  // 定义cache[value] 为当前使用索引前 从[0, 当前i]中值为value的个数
-  const cache = {
-      0: 1,
-    },
-    len = nums.length
-  let prefix = 0,
-    ans = 0
-  for (let i = 0; i < len; i++) {
-    prefix += nums[i]
-    if (prefix - k in cache) {
-      ans += cache[prefix - k]
-    }
-    cache[prefix] = (cache[prefix] || 0) + 1
+  const cumulativeSum = []
+  cumulativeSum[-1] = 0
+  for (let i = 0; i < nums.length; i++) {
+    cumulativeSum[i] = cumulativeSum[i - 1] + nums[i]
   }
+
+  let count = 0
+  for (let i = 0; i < nums.length; i++) {
+    for (let j = i; j < nums.length; j++) {
+      const sum = cumulativeSum[j] - cumulativeSum[i - 1]
+      if (sum === k) {
+        count++
+      }
+    }
+  }
+
+  return count
+};
+
+var subarraySum = function (nums, k) {
+  let count = 0
+  for (let i = 0; i < nums.length; i++) {
+    let cumulativeSum = 0
+    for (let j = i; j < nums.length; j++) {
+      const sum = cumulativeSum + nums[j]
+      if (sum === k) {
+        count++
+      }
+      cumulativeSum = sum
+    }
+  }
+
+  return count
+};
+
+
+var subarraySum = function (nums, k) {
+  const mp = {
+    0: 1
+  }
+  let cumulativeSum = 0
+  let ans = 0
+  for (let i = 0; i < nums.length; i++) {
+    cumulativeSum += nums[i]
+
+    if (cumulativeSum - k in mp) {
+      ans += mp[cumulativeSum - k]
+    }
+
+    mp[cumulativeSum] = (mp[cumulativeSum] || 0) + 1
+  }
+
   return ans
-}
+};
 
-// 思考的内容
-//   有重复计算 如何优化？ -> prefix
-//   有低效率的查询 如何优化 -> cache/map
 
-    console.log(subarraySum([1, 1, 0, 1, 2], 2))
+
+    console.log(subarraySum([1, 1, 1], 2))
   </script>
 </body>
